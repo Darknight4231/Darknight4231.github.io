@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Raindrop beauty</title>
+    <style>
+* { padding: 0; margin: 0; }
+canvas { background: #eee; display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<canvas id="myCanvas">
+<p>This message is for those who can't have a canvas element running in their browser. Try a different browser to see what's on the page.</p>
+</canvas>
+<script>
+
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+//this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded is what you get.
+var canvas = document.querySelector('.myCanvas');
+var cramw = myCanvas.width = window.innerWidth;
+var cramh = myCanvas.height = window.innerHeight;
+
+
+var RainDropx =  [100];
+var RainDropy =  [60];
+
+var RainDropB = [255];
+var RainDropG = [200];
+var RainDropR = [0];
+var C = 0;
+
+window.addEventListener("click", click);
+
+function getRGBcolor(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+}
+
+function getDropStarty(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+}
+
+function getDropStartx(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+}
+
+function click(e){
+  
+  RainDropx.push (e.clientX);
+  RainDropy.push (e.clientY);
+  
+  RainDropR.push (getRGBcolor(0, 50));
+  RainDropG.push (getRGBcolor(0, 200));
+  RainDropB.push (getRGBcolor(50, 255));
+  
+}
+
+function DropDis() {
+  if (RainDropy[C] > cramh) {
+    
+    RainDropB[C] = getRGBcolor(100,255);
+    RainDropG[C] = getRGBcolor(50,200);
+    RainDropR[C] = getRGBcolor(0,20);
+    
+    RainDropx[C] = getDropStartx(0,cramw-70);
+    RainDropy[C] = getDropStarty(0, 60);
+  }
+}
+
+
+
+function raindrop() {
+  var r = RainDropR[C];
+  var g = RainDropG[C];
+  var b = RainDropB[C];
+  
+  ctx.beginPath();
+  ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
+  ctx.rect(RainDropx[C], RainDropy[C], 50, 50);
+  ctx.fill();
+  ctx.closePath();
+}
+
+function draw() {
+  
+  
+  ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+  ctx.fillStyle = `rgb(100,100,100)`;
+  ctx.rect(0,0,myCanvas.width,myCanvas.height);
+  ctx.fill();
+  for ( var C = 0; C < RainDropy.length; C++) {
+    
+    DropDis();
+    
+    if (RainDropy[C] > cramh) {
+      
+      RainDropB[C] = getRGBcolor(100,255);
+      RainDropG[C] = getRGBcolor(50,100);
+      RainDropR[C] = getRGBcolor(0,20);
+      
+      RainDropx[C] = getDropStartx(0,cramw-70);
+      RainDropy[C] = getDropStarty(-80,-50);
+    }
+    var r = RainDropR[C];
+    var g = RainDropG[C];
+    var b = RainDropB[C];
+    
+    ctx.beginPath();
+    ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
+    ctx.rect(RainDropx[C], RainDropy[C], 50, 50);
+    ctx.fill();
+    ctx.closePath();
+    RainDropy[C] += 6;
+    
+  }
+  
+  requestAnimationFrame(draw);
+};
+draw();
+
+</script>
+</body>
+</html>
