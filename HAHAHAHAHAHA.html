@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<!-- Created on Feb 12, 2019 7:34:42 PM -->
+
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      Enter a title here
+    </title>
+     <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: #eee; display: block; margin: 0 auto; }
+     </style>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+  </head>
+  
+  <body>
+    <canvas id="myCanvas">
+<p>This message is for those who can't have a canvas element running in their browser. Try a different one to see what's on the page.</p>
+</canvas>
+
+    <script>
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+//this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates..
+var canvas = document.querySelector('.myCanvas');
+var cramw = myCanvas.width = window.innerWidth;
+var cramh = myCanvas.height = window.innerHeight;
+
+var Drop = [255, 255, 0];
+var Rain = [20, 30];
+
+
+
+
+function draw(){
+
+ctx.beginPath();
+ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+ctx.fillStyle(255,255,0);
+ctx.rect(Rain[0],Rain[1], 40, 40);
+ctx.fill();
+ctx.closePath();
+}
+draw();
+    </script>
+    
+  </body>
+</html>
