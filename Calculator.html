@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<!-- Created on Feb 14, 2019 10:54:47 PM -->
+
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>This will be a calculator
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    
+  </head>
+  
+  <body>
+  
+  
+<canvas id="myCanvas">
+<p>This message is for those who can't have a canvas element running in their browser. Try a different browser to see what's on the page.</p>
+
+</canvas>
+    <button id="1">1</button>
+    <button id="2">2</button>
+    <button id="3">3</button>
+    <button id="4">4</button>
+    <button id="5">5</button>
+    <button id="6">6</button>
+    <button id="7">7</button>
+    <button id="8">8</button>
+    <button id="9">9</button>
+    <button id="0">0</button>
+    
+    <script>
+    document.addEventListener("button1", button1);
+    document.addEventListener("button2", button);
+    document.addEventListener("button3", button);
+    document.addEventListener("button4", button);
+    document.addEventListener("button5", button);
+    document.addEventListener("button6", button);
+    document.addEventListener("button7", button);
+    document.addEventListener("button8", button);
+    document.addEventListener("button9", button);
+    document.addEventListener("button0", button);
+    //that's a lot of listeners.
+    
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d"); 
+    
+    var cramw = myCanvas.width = 300;
+    var cramh = myCanvas.height = 300;
+        function button (e){    
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(200,255,0)`;
+      ctx.rect(200,200, 50, 50);
+      ctx.fill();
+      ctx.closePath();
+      }
+    
+      
+   function button1(e){
+     ctx.beginPath();
+     ctx.fillStyle = `rgb(200,255,0)`;
+     ctx.rect(300,300, 50, 50);
+     ctx.fill();
+     ctx.closePath();
+  }
+  
+  function draw(){
+      button();
+      button1();
+      requestAnimationFrame();
+      }
+      draw();
+    </script>
+  </body>
+</html>
