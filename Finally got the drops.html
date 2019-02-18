@@ -120,7 +120,7 @@ function raindrop(C) {
   ctx.closePath();
   }
   function raindroptop(C){
-       
+
   var r = RainDropR[C];
   var g = RainDropG[C];
   var b = RainDropB[C];
@@ -134,17 +134,17 @@ function raindrop(C) {
 
 //This draws things, as the name suggests.
 function draw() {
-  
+
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
   ctx.fillStyle = `rgb(100,100,100)`;
   ctx.rect(0,0,myCanvas.width,myCanvas.height);
   ctx.fill();
   for ( var C = 0; C < RainDropy.length; C++) {
-    
-    
- 
-    
-    
+
+
+
+
+
     DropDis(C);
     raindrop(C);
     //raindroptop(C);

@@ -43,11 +43,20 @@ function shot (e){
     arrowY.push (e.clientY);
     Gravity.push (2);
  }
+
+function background(){
     
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(50,50,50,0.4)`;
+    ctx.rect( 0, 0, cramw, cramh);
+    ctx.fill();
+    ctx.closePath();
+  }
  
 function draw(){
   
     ctx.clearRect(0,0,cramw,cramh);
+    background();
   
     for ( var C=0; C < arrowX.length; C++){
     
