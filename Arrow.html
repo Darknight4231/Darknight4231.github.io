@@ -44,7 +44,7 @@ var cramh = myCanvas.height = 600;
 var arrowX = [];
 var arrowY = [];
 var Gravity = [];
-var GravAngle = [];
+var ArrowPower =[];
 var mouseY = 0;
 
 var C = 0;
@@ -54,14 +54,14 @@ function arrowAngle(e){
 
  
  
- if (e.clientX > 200 && e.clientX < 400){
-   
    //mouseY needs to be converted to something divisible.
    //HOW DO I read the cursor Y position as an angle..?!?!?
    //that's what GravAngle is for.. would making mouseY into radians help?
   
  var mouseY = e.clientY;
-  console.log((-(Math.atan((mouseY-400)/160))));
+  //this shows the radians
+  //console.log((-(Math.atan((mouseY-400)/160))));
+  
   GravAngle = ((-(Math.atan((mouseY-400)/160)*180/Math.PI)));
   GravRad = ((-(Math.atan((mouseY-400)/160))));
   //there are two points, to find the distance between the two, and find the two sides of the triangle it'd make. (x1,y1) (x2,y2)
@@ -71,10 +71,17 @@ function arrowAngle(e){
   //we need the angle.
   //
   //this is to get an actual angle. it works wonderfully.  GravAngle = ((-(Math.atan((mouseY-400)/160)*180/Math.PI)));
-  //
+  //a
   //tan=O/A  tangent = Opposite/Adjacent, the two sides we have available.
   //opposite is Y
   //adjacent is X
+  
+  mouseX = e.clientX;
+  //find the distance between the two points, (60, 400) and (e.clientX, e.clientY)
+  //then add that (with some kinda multiplier ofc to scale it down) to arrowX[C]
+  pwr = (Math.pow( Math.pow(mouseX-60, 2) + Math.pow(mouseY-400, 2)  , 0.5));
+  console.log(pwr/100);
+ 
   shot();
   //found within the shot(); function
   //arrowX.push (60);
@@ -82,12 +89,11 @@ function arrowAngle(e){
 
   }
 
-}
-
 function shot (){
  
     arrowX.push (60);
     arrowY.push (400);
+    ArrowPower.push(pwr/100);
     Gravity.push ((-0.9)+GravRad*4);
  }
 
@@ -135,8 +141,8 @@ function draw(){
     ctx.fill();
     ctx.closePath();
     
-    arrowY[C]=  arrowY[C]-Gravity[C];
-    arrowX[C] +=6;
+    arrowY[C] =  arrowY[C]-Gravity[C];
+    arrowX[C] = arrowX[C]+ArrowPower[C];
     
     Gravity[C] = Gravity[C]-0.02;
  
@@ -149,7 +155,8 @@ draw();
     </script>    
     <p>
     This is a wonderful little project I'm working on. Hopefully one day you can actually do something in it. For now, though.. <br/><br/>
-    It shoots (soon to be) arrows with care to showcase gravity and Y value of clicks.
+    It shoots (soon to be) arrows with care to showcase gravity, and  (X,Y) values of clicks.
+    </p>
  
    <ul>
    <li>There is a red square that shows where the arrow is fired from
@@ -161,12 +168,10 @@ draw();
    <li>Next up need to fix so the mouse is read from inside the canvas, not from the friggin window.. or is it reading from the client screen.. idk atm..
    <li>I want to make it so the arrows angle.. gonna need to review translations. UGH hahahaa
    <li>Gotta add more to the arrows.Arrow head, a tail/feather or whatev.  it'd be neat to have a trail on each/last fired arrow.
-   <li>Add X values for sure, to change arrow speed and of course allow clicking anywhere inside the canvas (not the dang window itself!)
+   <s><li>Add X values for sure, to change arrow speed and of course allow clicking anywhere inside the canvas (not the dang window itself!)</s>
    <li>These are NOT currently in order, and even if they were-- 'Order subject to change' ;D </li>
     </ol>
-    </ul>
-    
-    </p>
+        
   
   </body>
 </html>
