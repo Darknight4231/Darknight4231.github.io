@@ -10,10 +10,18 @@
     </title>
     <meta name="GENERATOR" content="Arachnophilia 5.5" />
     <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+       canvas { background: #eee;}
+       body {
+         
+         background-color: rgb(10,200,255);
+         font-family:  VL Gothic, arial;
+         }
+       
+  </style>
   </head>
   
   <body>
-    
     
     
 <canvas id="myCanvas">
@@ -21,36 +29,96 @@
 </canvas>
 <script>
 
-window.addEventListener("click", shot);
+//JEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//AAAAAAAAAAAAAAA
+//this is what probably needs to change
+window.addEventListener("click", arrowAngle);
 
 //Canvas is the screen made on the page, it's what JS is able to doodle on.
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
 //this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded, is what you get.
-var cramw = myCanvas.width = window.innerWidth;
-var cramh = myCanvas.height = window.innerHeight;
+var cramw = myCanvas.width = 1280;
+var cramh = myCanvas.height = 600;
 
 var arrowX = [];
 var arrowY = [];
 var Gravity = [];
+var GravAngle = [];
+var mouseY = 0;
 
 var C = 0;
 
-function shot (e){
+
+function arrowAngle(e){
+
  
-    arrowX.push (e.clientX);
-    arrowY.push (e.clientY);
-    Gravity.push (2);
+ 
+ if (e.clientX > 200 && e.clientX < 400){
+   
+   //mouseY needs to be converted to something divisible.
+   //HOW DO I read the cursor Y position as an angle..?!?!?
+   //that's what GravAngle is for.. would making mouseY into radians help?
+  
+ var mouseY = e.clientY;
+  console.log((-(Math.atan((mouseY-400)/160))));
+  GravAngle = ((-(Math.atan((mouseY-400)/160)*180/Math.PI)));
+  GravRad = ((-(Math.atan((mouseY-400)/160))));
+  //there are two points, to find the distance between the two, and find the two sides of the triangle it'd make. (x1,y1) (x2,y2)
+  //it's easy, just do x1-x2 and y1-y2 or vice versa (x2-x1 and y2-y1)
+  // Sin gives the angle from opposite to hypotenuse, we need using two legs of a right triangle. 
+  //while we could find the distance using the X and Y method described above (distance = hypotenuse, use pythagorean theorem) we don't need the distance
+  //we need the angle.
+  //
+  //this is to get an actual angle. it works wonderfully.  GravAngle = ((-(Math.atan((mouseY-400)/160)*180/Math.PI)));
+  //
+  //tan=O/A  tangent = Opposite/Adjacent, the two sides we have available.
+  //opposite is Y
+  //adjacent is X
+  shot();
+  //found within the shot(); function
+  //arrowX.push (60);
+  //arrowY.push (400);
+
+  }
+
+}
+
+function shot (){
+ 
+    arrowX.push (60);
+    arrowY.push (400);
+    Gravity.push ((-0.9)+GravRad*4);
  }
 
 function background(){
     
+    //this is the background itself
     ctx.beginPath();
     ctx.fillStyle = `rgba(50,50,50,0.4)`;
     ctx.rect( 0, 0, cramw, cramh);
     ctx.fill();
     ctx.closePath();
+    //this is the yellowish click line
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(150,150,0,0.4)`;
+    ctx.rect(200, 0, 200, cramh);
+    ctx.fill();
+    ctx.closePath();
+    //this is the spot to show where the arrow launches from (and is calculated at)
+    ctx.beginPath();
+    ctx.fillStyle = `rgb(255,0,0)`;
+    ctx.rect(50, 390, 20, 20);
+    ctx.fill();
+    ctx.closePath();
+    //this is the level-shooting area.. kinda
+    ctx.beginPath();
+    ctx.fillStyle = `rgb(0,90,200)`;
+    ctx.rect(200, 380, 200, 20);
+    ctx.fill();
+    ctx.closePath();
+    
+    
   }
  
 function draw(){
@@ -62,17 +130,15 @@ function draw(){
     
     
     ctx.beginPath();
-    ctx.fillStyle = `rgb(50,50,255)`;
-    ctx.rect(arrowX[C], arrowY[C],60,35);
+    ctx.fillStyle = `rgb(0,0,0)`;
+    ctx.rect(arrowX[C], arrowY[C],18,3);
     ctx.fill();
     ctx.closePath();
     
     arrowY[C]=  arrowY[C]-Gravity[C];
+    arrowX[C] +=6;
+    
     Gravity[C] = Gravity[C]-0.02;
-    if (Gravity[C] < (-3)){
-      Gravity[C] =(-3)
-      }
-    arrowX[C] +=8;
  
     }
   };
@@ -81,5 +147,26 @@ setInterval(draw,10);
 draw();
 
     </script>    
+    <p>
+    This is a wonderful little project I'm working on. Hopefully one day you can actually do something in it. For now, though.. <br/><br/>
+    It shoots (soon to be) arrows with care to showcase gravity and Y value of clicks.
+ 
+   <ul>
+   <li>There is a red square that shows where the arrow is fired from
+   <li>the blue line shows a level shooting field
+   <li>clicking anywhere in the yellowish column shoots an arrow relative to mouse placement.</li>
+   </ul>
+  
+   <ol>
+   <li>Next up need to fix so the mouse is read from inside the canvas, not from the friggin window.. or is it reading from the client screen.. idk atm..
+   <li>I want to make it so the arrows angle.. gonna need to review translations. UGH hahahaa
+   <li>Gotta add more to the arrows.Arrow head, a tail/feather or whatev.  it'd be neat to have a trail on each/last fired arrow.
+   <li>Add X values for sure, to change arrow speed and of course allow clicking anywhere inside the canvas (not the dang window itself!)
+   <li>These are NOT currently in order, and even if they were-- 'Order subject to change' ;D </li>
+    </ol>
+    </ul>
+    
+    </p>
+  
   </body>
 </html>
