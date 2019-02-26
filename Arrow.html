@@ -32,6 +32,7 @@
 //JEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//AAAAAAAAAAAAAAA
 //this is what probably needs to change
 window.addEventListener("click", arrowAngle);
+window.addEventListener("keydown",keydown);
 
 //Canvas is the screen made on the page, it's what JS is able to doodle on.
 var canvas = document.getElementById("myCanvas");
@@ -48,6 +49,39 @@ var ArrowPower =[];
 var mouseY = 0;
 
 var C = 0;
+
+var BX = [1200,1200,1200,1200];
+var blocksY = [60, 100, 160, 340];
+
+
+function collisionDetection() {
+  
+  for (var x=0; x<arrowX.length; x++){
+    for (var y=0; y<arrowY.length; y++){
+        //literally just make the arrows an object. this should solve a lot. maybe?
+        //keeping as an array would allow to .pop or whatever as necessary, but it's still costly ain't it?
+        //but is an object truly better in this circumstance?
+        
+        //I believe you can access an object and its properties in the same (well a better) way than you can in an array.
+        //then it is settled. To look it up!
+      }
+    }
+  }
+  
+  
+  
+  /* underneath is essentially the original... gross and doesn't work. But it is a point of reference.. somehow lol
+    for(var c=0; c<arrowX; c++) {
+        for(var r=0; r<arrowY; r++) {
+            var b = arrowX[c][r];
+  
+            if() {
+                
+            }
+  
+        } 
+    }*/
+}
 
 
 function arrowAngle(e){
@@ -97,6 +131,19 @@ function shot (){
     Gravity.push ((-0.9)+GravRad*4);
  }
 
+function blocks(){
+  
+  for (var C=0; C<blocksY.length; C++){
+    
+    ctx.beginPath();
+    ctx.fillStyle = `rgb(0,180,200)`;
+    ctx.rect(BX[C], blocksY[C], 20,20);
+    ctx.fill();
+    ctx.closePath();
+  }
+  
+ }
+
 function background(){
     
     //this is the background itself
@@ -105,22 +152,11 @@ function background(){
     ctx.rect( 0, 0, cramw, cramh);
     ctx.fill();
     ctx.closePath();
-    //this is the yellowish click line
-    ctx.beginPath();
-    ctx.fillStyle = `rgba(150,150,0,0.4)`;
-    ctx.rect(200, 0, 200, cramh);
-    ctx.fill();
-    ctx.closePath();
+    
     //this is the spot to show where the arrow launches from (and is calculated at)
     ctx.beginPath();
     ctx.fillStyle = `rgb(255,0,0)`;
     ctx.rect(50, 390, 20, 20);
-    ctx.fill();
-    ctx.closePath();
-    //this is the level-shooting area.. kinda
-    ctx.beginPath();
-    ctx.fillStyle = `rgb(0,90,200)`;
-    ctx.rect(200, 380, 200, 20);
     ctx.fill();
     ctx.closePath();
     
@@ -131,7 +167,7 @@ function draw(){
   
     ctx.clearRect(0,0,cramw,cramh);
     background();
-  
+    blocks();
     for ( var C=0; C < arrowX.length; C++){
     
     
@@ -141,12 +177,16 @@ function draw(){
     ctx.fill();
     ctx.closePath();
     
+  
+
     arrowY[C] =  arrowY[C]-Gravity[C];
     arrowX[C] = arrowX[C]+ArrowPower[C];
     
     Gravity[C] = Gravity[C]-0.02;
  
     }
+    
+collisionDetection();
   };
 
 setInterval(draw,10);
@@ -155,7 +195,9 @@ draw();
     </script>    
     <p>
     This is a wonderful little project I'm working on. Hopefully one day you can actually do something in it. For now, though.. <br/><br/>
-    It shoots (soon to be) arrows with care to showcase gravity, and  (X,Y) values of clicks.
+    It shoots (soon to be) arrows with care to showcase gravity, and (X,Y) values of clicks.
+    FOR ME
+    go here <a href="https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection">https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection</a>
     </p>
  
    <ul>
@@ -168,7 +210,7 @@ draw();
    <li>Next up need to fix so the mouse is read from inside the canvas, not from the friggin window.. or is it reading from the client screen.. idk atm..
    <li>I want to make it so the arrows angle.. gonna need to review translations. UGH hahahaa
    <li>Gotta add more to the arrows.Arrow head, a tail/feather or whatev.  it'd be neat to have a trail on each/last fired arrow.
-   <s><li>Add X values for sure, to change arrow speed and of course allow clicking anywhere inside the canvas (not the dang window itself!)</s>
+   <li><s>Add X values for sure, to change arrow speed and of course allow clicking anywhere inside the canvas (not the dang window itself!)</s>
    <li>These are NOT currently in order, and even if they were-- 'Order subject to change' ;D </li>
     </ol>
         
