@@ -30,9 +30,12 @@
 <script>
 
 //JEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//AAAAAAAAAAAAAAA
+
 //this is what probably needs to change
-window.addEventListener("click", arrowAngle);
-window.addEventListener("keydown",keydown);
+document.addEventListener("click", arrowAngle);
+document.addEventListener("keydown",keydown);
+document.addEventListener("keyup", keyup);
+
 
 //Canvas is the screen made on the page, it's what JS is able to doodle on.
 var canvas = document.getElementById("myCanvas");
@@ -52,6 +55,26 @@ var C = 0;
 
 var BX = [1200,1200,1200,1200];
 var blocksY = [60, 100, 160, 340];
+
+
+function keydown (e){
+ 
+  if (e.key == "Right" || e.key == "ArrowRight") {
+    rightpressed = true;
+        }
+         else if ( e.key == "Left" || e.key == "ArrowLeft" ){
+          leftpressed = true;
+          }
+} 
+  
+function keyup (e){
+  if (e.key=="Right" || e.key=="ArrowRight"){
+    rightpressed = false;
+        }
+         else if ( e.key=="Left" || e.key=="ArrowLeft" ){
+          leftpressed = false;
+          }
+  }
 
 
 function collisionDetection() {
@@ -81,7 +104,6 @@ function collisionDetection() {
   
         } 
     }*/
-}
 
 
 function arrowAngle(e){
