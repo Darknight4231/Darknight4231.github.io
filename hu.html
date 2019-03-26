@@ -1,0 +1,89 @@
+  <!DOCTYPE html>
+
+<!-- Created on Mar 21, 2019 10:59:49 AM -->
+
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+     This is a clicky thing hopefully
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+     
+     
+     <style>
+       body {
+         margin: 0;
+         overflow: hidden;
+         }
+      </style>
+     
+         
+   </head>
+  
+  <body>
+  <canvas id="mycanvas">
+    <p>Hello!</p>
+    
+    
+    
+    
+    <script>
+    var canvasheight = mycanvas.height = screen.height;
+    var canvaswidth = mycanvas.width = screen.width;
+    
+      var canvas = document.getElementById("mycanvas");
+      var ctx = canvas.getContext("2d");
+      
+      canvas.addEventListener("click",click);
+   
+      var mouseone = [];
+      var mousetwo = [];
+      bool 'clicked' = false;
+      
+    
+      
+      
+      function click(e){
+        
+            ctx.beginPath();
+            ctx.fillStyle = `rgb(0,100,255)`;
+            ctx.rect(0,0,canvas.width,canvas.height);
+            ctx.fill();
+            ctx.closePath();  
+      
+      
+                function firstclick(){
+                    mouseone[0] = e.clientX;
+                    mouseone[1] = e.clientY;
+                };
+                
+              function secondclick(){
+                    mousetwo[0] = e.clientX;
+                    mousetwo[1] = e.clientY;
+                };
+        };
+        
+        
+        
+     
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(100,140,140,1)`;
+    ctx.rect(0,0,canvas.width,canvas.height);
+    ctx.fill();
+    ctx.closePath();
+    
+    ctx.beginPath();
+    ctx.fillStyle = `rgb(100,200,100)`;
+    ctx.rect(0,0,200,200);
+    ctx.fill();
+    ctx.closePath();
+    
+    
+    
+    
+    </script>
+    
+  </body>
+</html>
