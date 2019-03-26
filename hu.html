@@ -23,7 +23,7 @@
    </head>
   
   <body>
-  <canvas id="mycanvas">
+  <canvas id="mycanvas"></canvas>
     <p>Hello!</p>
     
     
@@ -40,29 +40,47 @@
    
       var mouseone = [];
       var mousetwo = [];
-      bool 'clicked' = false;
-      
+      var firstclick = false;
+      var secondclick = true;
     
       
       
       function click(e){
         
-            ctx.beginPath();
-            ctx.fillStyle = `rgb(0,100,255)`;
-            ctx.rect(0,0,canvas.width,canvas.height);
-            ctx.fill();
-            ctx.closePath();  
+            
       
-      
+              if (secondclick = true) {
                 function firstclick(){
                     mouseone[0] = e.clientX;
                     mouseone[1] = e.clientY;
-                };
+                    
+                    firstclick = true;
+                    secondclick = false;
+                    
+                    ctx.beginPath();
+                    ctx.fillStyle = `rgb(0,100,255)`;
+                    ctx.rect(0,0,canvas.width,canvas.height);
+                    ctx.fill();
+                    ctx.closePath();  
+                    
+                    }
+                }
                 
+                else if (firstclick = true){
               function secondclick(){
                     mousetwo[0] = e.clientX;
                     mousetwo[1] = e.clientY;
-                };
+                    
+                    firstclick = false;
+                    secondclick = true;
+                    
+                    ctx.beginPath();
+                    ctx.fillStyle = `rgb(0,255,100)`;
+                    ctx.rect(0,0,canvas.width,canvas.height);
+                    ctx.fill();
+                    ctx.closePath();  
+                    }
+                }
         };
         
         
@@ -80,8 +98,13 @@
     ctx.fill();
     ctx.closePath();
     
-    
-    
+    function draw(){
+      
+      click();
+      
+      };
+    setInterval(draw,10);
+    draw();
     
     </script>
     
