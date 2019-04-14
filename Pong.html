@@ -46,6 +46,8 @@ document.addEventListener("keyup", keyup);
     var Player2moveup = false;
     var Player2movedown = false;
     
+    //yes, all the gameover values are backwards. but they work.
+    var gameover = true;
  
     
 function keydown(e){
@@ -53,6 +55,12 @@ function keydown(e){
   if (e.key == "t"){
      BallAccelW = 4;
      BallAccelH = 4;
+    }
+  if (e.key == "y"){
+    BallAccelW = 0;
+    BallAccelH = 0;
+    ballpos =[(canvas.width/2),(canvas.height/2)];
+    gameover = true;
     }
   
   if (e.key == "w" || e.key == "W") {
@@ -129,6 +137,17 @@ function keydown(e){
       ctx.fill();
       ctx.closePath();
       
+      
+        if (gameover){
+          if (ballpos[0] > canvas.width+10){
+            alert("Player 1 has Won!!!")
+            gameover=false;
+            }
+           if (ballpos[0] < 0-10){
+             alert("Player 2 has Won!!!")
+             gameover=false;
+           }
+         }
       };
       
       function Background(){
@@ -195,6 +214,8 @@ function keydown(e){
           2:59 a.m. I think I've got it down pretty good, only thing left really is tweaking the speeds of stuff and visual bits, but it works pretty well I'd say. Fixed the shitty dakka movement to a smoother piece--copied a little (more like learned) from "To copy from mozilla.html".
           3:01 Edited a little bit on the background. it's just grey now. I like it the way it is. Neato. Should I try to make the 'pong' into an actual ball?.. nah I'd rather make a waiting function so both players can be ready
      -->
-    
+  Hello! <br/>
+Player 1(left side paddle) Moves with "W" and "S". Player 2 (right side paddle) Moves with Arrow Keys--Up and Down.<br/>Press "Y" to restart the game.Press "T" when you're both ready to play.  
   </body>
+  
 </html>

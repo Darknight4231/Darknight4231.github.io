@@ -21,8 +21,8 @@ var ArrowPower =[];
 var mouseY = 0;
 
 var playerblock = [50,390];
-var playermoveX = 0;
-var playermoveY = 0;
+//var playermoveX = 0;
+//var playermoveY = 0;
 var slow = 0.2;
 var C = 0;
 
@@ -40,17 +40,13 @@ function keydown (e){
   
   if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
     rightPressed = true;
-      playermoveX += 2;
   }
   if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
    leftPressed = true;
-    playermoveX -=2;
-   }
+  }
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
    upPressed = true;
-   
-   playermoveY -=6;
-   }
+  }
    
   if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
    downPressed = true;
@@ -63,64 +59,40 @@ function keyup (e){
     
   
   if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
-    //rightPressed = false;
+    rightPressed = false;
     
   }
   if ( e.key=="Left" || e.key=="ArrowLeft"  || e.key == "a"){
-    //leftPressed = false;
+    leftPressed = false;
     
   }
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w" ) {
-    //upPressed = false;
+    upPressed = false;
    }
   if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s") {
-    //downPressed = false;
+    downPressed = false;
    }
  };
 
 
 function PlayerGrav(){
-    playermoveY += 0.2;
+    playerblock[1] += 0.2;
 };
-
-function playerslow(){
-  
-  
-  
-              if (playermoveX > 2 && rightPressed){
-      playermoveX -=3;
-      } else if (playermoveX < -2){
-      playermoveX += 3;
-      }
-};
-
 
 function playermove(){
- playerblock[0] += playermoveX;
- playerblock[1] += playermoveY;
 
          if (playerblock[0] > canvas.width-20) { //  right boundary
-    playermoveX = 0;
     playerblock[0] = canvas.width-20;
   } else if (playerblock[0] < 0){               //left boundary
-    playermoveX = 0;
     playerblock[0] = 0;
   } else if (playerblock[1] < 0) {              //top boundary
-    playermoveY = 0;
     playerblock[1] = 0;
   } else if (playerblock[1] > canvas.height-20){//bottom boundary
-    playermoveY = 0;
     playerblock[1] = canvas.height-20;
   }
-  
-        
-        
-     PlayerGrav();
-     playerslow();
-  };
+    PlayerGrav();
+ };
 
-      
-  //slow on stop press
 
 function collisionDetection() {
   
@@ -207,12 +179,10 @@ function blocks(){
   
   for (var C=0; C<blocksY.length; C++){
     
-    ctx.beginPath();
     ctx.fillStyle = `rgb(0,180,200)`;
     ctx.rect(BX[C], blocksY[C], 20,20);
     ctx.fill();
-    ctx.closePath();
-  }
+   }
   
 }
 
@@ -224,6 +194,14 @@ function background(){
   ctx.rect( 0, 0, cramw, cramh);
   ctx.fill();
   ctx.closePath();
+};
+
+  function playerplace(){
+    
+    //fillStyle with alpha value that blankets the canvas creates a trailing effect
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.01)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  //ctx.clearRect(0,0,cramw,cramh); this clears the canvas completely
   
   //this is the spot to show where the arrow launches from (and is calculated at)
   ctx.beginPath();
@@ -231,18 +209,31 @@ function background(){
   ctx.rect(playerblock[0], playerblock[1], 20, 20);
   ctx.fill();
   ctx.closePath();
-  
-}
+  };
 
-function draw(){
-    
-    //fillStyle with alpha value that blankets the canvas creates a trailing effect
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.01)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  //ctx.clearRect(0,0,cramw,cramh); this clears the canvas completely
-  background();
-  blocks();
+
+background();
+blocks();
   
+function draw(){
+    if (leftPressed){
+   playerblock[0] -=2;
+ }
+ if (rightPressed){
+   playerblock[0] += 2;
+ }
+ if (upPressed){
+   playerblock[1] -=6;
+ }
+ if (downPressed){
+   playerblock[1] +=2;
+ }
+
+  
+ 
+  playerplace();
+
+ // playermove();
   
   for ( var C=0; C < arrowX.length; C++){
     
@@ -267,10 +258,12 @@ function draw(){
     Gravity[C] = Gravity[C]-0.02;
     
   }
-  playermove();
-  collisionDetection();
+  
+  
+  
+
+requestAnimationFrame(draw);
 };
 
-setInterval(draw,10);
 draw();
 
