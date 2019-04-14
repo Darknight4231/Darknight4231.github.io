@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<!-- Created on Apr 13, 2019 11:53:06 PM -->
+
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      Pong
+    </title>
+  </head>
+  
+  <body>
+    <canvas id="hek"><p>Hello!</p></canvas>
+   
+    <script>
+    
+  var  canvas = document.getElementById("hek");
+   var ctx= canvas.getContext("2d");
+   
+   var cramw = hek.width = 1575;
+   var cramh = hek.height = 750
+   
+   
+   
+document.addEventListener("keydown",keydown);
+document.addEventListener("keyup", keyup);
+   //canvas.addEventListener("keydown", keydown);
+   //canvas.addEventListener("keyup", keyup);
+   
+     //ball
+   
+   var ballpos =[(canvas.width/2),(canvas.height/2)];
+    
+    var BallAccel = 1.2;
+    var BallAccelW = 0;
+    var BallAccelH = 0;
+    
+    var Player1 = [20, canvas.height/2];
+    var Player2 = [canvas.width - 40, canvas.height/2];
+   
+    var Playersmove = 15;
+    
+    var Player1moveup = false;
+    var Player1movedown = false;
+    var Player2moveup = false;
+    var Player2movedown = false;
+    
+ 
+    
+function keydown(e){
+  
+  if (e.key == "t"){
+     BallAccelW = 4;
+     BallAccelH = 4;
+    }
+  
+  if (e.key == "w" || e.key == "W") {
+    Player1moveup = true;
+  }
+  if (e.key == "s" || e.key == "S"){
+    Player1movedown = true;
+  }
+  if (e.key == "Up" || e.key == "ArrowUp"){
+    Player2moveup = true;
+  }
+  if (e.key == "Down" || e.key == "ArrowDown"){
+    Player2movedown = true;
+    
+  }
+  
+  
+};
+  
+  
+  function keyup(e){
+  
+  
+  
+  
+   if (e.key == "w" || e.key == "W"){
+   Player1moveup = false;
+  }
+   if (e.key == "s" || e.key == "S"){
+    Player1movedown = false;
+  }
+  if (e.key == "Up" || e.key == "ArrowUp"){
+    Player2moveup = false;
+  }
+  if (e.key == "Down" || e.key == "ArrowDown"){
+    Player2movedown = false;
+  }
+
+};
+    
+    
+       function Start(e){
+      
+      }
+      
+      
+      
+    function players(){
+      
+      
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(0, 125, 200)`;
+      ctx.rect(Player1[0],Player1[1],20,100);
+      ctx.fill();
+      ctx.closePath();
+      
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(0, 125, 200)`;
+      ctx.rect(Player2[0],Player2[1],20,100);
+      ctx.fill();
+      ctx.closePath();
+      
+      };
+    
+    
+    function ballmove(){
+      
+      ballpos[0] += BallAccelW;
+      ballpos[1] += BallAccelH;
+      
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(0, 125, 200)`;
+      ctx.rect(ballpos[0],ballpos[1],20,20);
+      ctx.fill();
+      ctx.closePath();
+      
+      };
+      
+      function Background(){
+        ctx.clearRect(0,0,cramw,cramh);
+        
+        
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(150,150,150)`;
+      ctx.rect( 0, 0, cramw, cramh);
+      ctx.fill();
+      ctx.closePath();
+        };
+        
+        
+        
+    function draw(){
+      
+    Background();
+
+
+           if (ballpos[0] < Player2[0]+20 && ballpos[0] > Player2[0] && ballpos[1] > Player2[1] && ballpos[1] < (Player2[1]+100)){
+        BallAccelW = -(BallAccelW)*BallAccel;
+        
+   } else if ( ballpos[0] > Player1[0] && ballpos[0] < Player1[0]+20 && ballpos[1] > Player1[1] && ballpos[1] < (Player1[1]+100)) {
+       BallAccelW = -(BallAccelW)*BallAccel;
+   } 
+   
+   
+           if (ballpos[1] < 0) {
+     BallAccelH = -(BallAccelH);
+   } else if (ballpos[1] > cramh) {
+     BallAccelH = -(BallAccelH);
+   }
+   
+   if(Player1moveup){
+    Player1[1] -= Playersmove;
+     }else if (Player1movedown){
+       Player1[1] += Playersmove;
+       }
+   if (Player2moveup){
+     Player2[1] -= Playersmove;
+     }else if (Player2movedown){
+       Player2[1] += Playersmove;
+       }
+   
+   
+   
+    players();
+    ballmove();
+    requestAnimationFrame(draw);
+    };
+    
+    
+    draw();
+    
+    
+    
+    </script>
+    <!-- I started making this at 12:46 a.m. during a stormy time. Let's see how long this takes to finish.
+          1:37 a.m. I've got a ball, it bounces and follows normal things. I have variables to set it to accelerate on paddle hit, but don't have paddles yet.
+          1:47 I've got keys in, but they do nothing
+          
+          2:21 I took a little break, peed, fed the rats and cleaned the coffee out. Back to it!
+          2:59 a.m. I think I've got it down pretty good, only thing left really is tweaking the speeds of stuff and visual bits, but it works pretty well I'd say. Fixed the shitty dakka movement to a smoother piece--copied a little (more like learned) from "To copy from mozilla.html".
+          3:01 Edited a little bit on the background. it's just grey now. I like it the way it is. Neato. Should I try to make the 'pong' into an actual ball?.. nah I'd rather make a waiting function so both players can be ready
+     -->
+    
+  </body>
+</html>

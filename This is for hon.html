@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<!-- Created on Apr 4, 2019 9:36:06 PM -->
+
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>This is going to be either a shopping list or the start of a platformer.
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+  </head>
+  
+  <body>
+    
+    <canvas id="Canvas">
+      <p>Yeah this browser doesn't support JavaScript Canvas, I don't know how you found a browser that doesn't, but try a different one to see the related canvas-content.</p>
+    </canvas>
+    <p>Hello!</p>
+    This is going to be either a shopping list or the start of a platformer.
+    
+    <script>
+    
+    //Canvas is the screen made on the page, it's what JS is able to doodle on.
+var canvas = document.getElementById("Canvas");
+var ctx = canvas.getContext("2d");
+
+canvas.addEventListener('mousedown', click);
+
+
+
+//this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded, is what you get.
+var cramw = Canvas.width = 600;
+var cramh = Canvas.height = 400;
+
+var clicked = false;
+
+
+
+var clickLoc = [0,0];
+
+
+
+
+function click(e){
+
+     clickLoc[0] = e.mouseX;
+     clickLoc[1] = e.mouseY;
+     clicked = true;
+       
+        
+  };
+
+    function draw(){
+      
+          ctx.clearRect(0,0,cramw,cramh);
+          
+          ctx.beginPath();
+          ctx.fillStyle=`red`;
+          ctx.rect(0,0,200,100);
+          ctx.fill();
+          ctx.closePath();
+      
+      wait;
+       (clicked){
+        ctx.beginPath();
+        ctx.fillStyle=`blue`;
+        ctx.rect(clickLoc[0],clickLoc[1],100,100);
+        ctx.fill();
+        ctx.closePath();
+        clicked = false;
+    
+      }
+      
+    }
+    
+    setInterval(draw,10);
+    
+    </script>
+  </body>
+</html>

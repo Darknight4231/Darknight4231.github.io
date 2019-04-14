@@ -21,39 +21,38 @@ var ArrowPower =[];
 var mouseY = 0;
 
 var playerblock = [50,390];
-var playermoveX = 0;
-var playermoveY = 0;
+
+var rightmove = 1;
+var leftmove  = 1;
+var upmove = 1;
+var downmove = 1;
+
 var slow = 0.2;
+
 var C = 0;
 
 var BX = [1200,1200,1200,1200];
 var blocksY = [60, 100, 160, 340];
-
 
 var rightPressed = false;
 var leftPressed  = false;
 var upPressed    = false;
 var downPressed  = false;
 
-
 function keydown (e){
   
-  if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
+  if (e.key == "Right" || e.key == "ArrowRight") {
     rightPressed = true;
-      playermoveX += 2;
   }
-  if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
-   leftPressed = true;
-    playermoveX -=2;
+  if ( e.key == "Left" || e.key == "ArrowLeft" ){
+    leftPressed = true;
    }
-  if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
-   upPressed = true;
-   
-   playermoveY -=6;
+  if ( e.key == "Up" || e.key == "ArrowUp" ) {
+    upPressed = true;
    }
    
-  if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
-   downPressed = true;
+  if ( e.key == "Down" || e.key == "ArrowDown" ) {
+    downPressed = true;
    }
 }
 
@@ -62,61 +61,78 @@ function keyup (e){
   
     
   
-  if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
-    //rightPressed = false;
-    
+  if (e.key=="Right" || e.key=="ArrowRight"){
+    rightPressed = false;
   }
-  if ( e.key=="Left" || e.key=="ArrowLeft"  || e.key == "a"){
-    //leftPressed = false;
-    
+  if ( e.key=="Left" || e.key=="ArrowLeft" ){
+    leftPressed = false;
   }
-  if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w" ) {
-    //upPressed = false;
+   if ( e.key == "Up" || e.key == "ArrowUp" ) {
+    upPressed = false;
    }
-  if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s") {
-    //downPressed = false;
+   if ( e.key == "Down" || e.key == "ArrowDown" ) {
+    downPressed = false;
    }
  };
 
-
-function PlayerGrav(){
-    playermoveY += 0.2;
-};
-
 function playerslow(){
+    
+    //first check if moving too slow, then stop if so.
+    //stop X value Left + Right
+    if (playermoveX < 0.5 && playermoveX > (-0.5)){
+      playermoveX=0;
+  } 
+  
+    //first check if moving too slow, then stop if so.
+    //stop Y value Up and Down
+   else if (playermoveY < 0.5 && playermoveY > (-0.5)){
+     playermoveY=0; 
+  }
   
   
-  
-              if (playermoveX > 2 && rightPressed){
-      playermoveX -=3;
-      } else if (playermoveX < -2){
-      playermoveX += 3;
-      }
+    if (rightPressed = false) {
+       rightmove=0;
+  }
+    if (leftPressed = false){
+       leftmove=0;
+  }
+    if(upPressed = false){
+       upmove=0;
+  }
+    if(downPressed = false){
+       downmove=0;
+  }
 };
+
 
 
 function playermove(){
- playerblock[0] += playermoveX;
- playerblock[1] += playermoveY;
-
-         if (playerblock[0] > canvas.width-20) { //  right boundary
+ 
+ if (rightPressed){
+     playerblock[0] += rightmove;
+ } else if (leftPressed){
+     playerblock[0] -= leftmove;
+ } else if (upPressed){
+     playerblock[1] -= upmove;
+ } else if (downPressed){
+     playerblock[1] += downmove; 
+ }
+ 
+  
+   if (playerblock[0] > canvas.width-20) {      /*right boundary*/
     playermoveX = 0;
     playerblock[0] = canvas.width-20;
-  } else if (playerblock[0] < 0){               //left boundary
+  } else if (playerblock[0] < 0){               /*left boundary*/
     playermoveX = 0;
     playerblock[0] = 0;
-  } else if (playerblock[1] < 0) {              //top boundary
+  } else if (playerblock[1] < 0) {              /*top boundary*/
     playermoveY = 0;
     playerblock[1] = 0;
-  } else if (playerblock[1] > canvas.height-20){//bottom boundary
+  } else if (playerblock[1] > canvas.height-20){/*bottom boundary*/
     playermoveY = 0;
     playerblock[1] = canvas.height-20;
   }
-  
-        
-        
-     PlayerGrav();
-     playerslow();
+
   };
 
       

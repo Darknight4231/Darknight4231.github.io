@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<!-- Created on Apr 13, 2019 11:53:06 PM -->
+
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      Pong
+    </title>
+  </head>
+  
+  <body>
+    <canvas id="hek"><p>Hello!</p></canvas>
+   
+    <script>
+    
+  var  canvas = document.getElementById("hek");
+   var ctx= canvas.getContext("2d");
+   
+   var cramw = hek.width = 1575;
+   var cramh = hek.height = 750
+   
+   hek.addEventListener('keydown', keydown);
+   hek.addEventListener('keyup', keyup);
+   
+     //ball
+   
+   var ballpos =[(canvas.width/2),(canvas.height/2)];
+    
+    var BallAccel = 1.5;
+    var BallAccelW = 6;
+    var BallAccelH = 6;
+    
+    var Player1 = [20, canvas.height/2];
+    var Player2 = [canvas.width - 40, canvas.height/2];
+ 
+<a name="ArachTempDocPos"></a>      
+function keydown(e){
+  
+  if (e.key == "w"){
+    Player1[1] += 2;
+    BallAccelW = (BallAccelW)*2;
+  }
+  if (e.key == "s"){
+    
+  }
+  if (e.key == "Up" || e.key == "ArrowUp"){
+    
+  }
+  if (e.key == "Down" || e.key == "ArrowDown"){
+    
+  }
+  
+  
+};
+  
+  
+  function keyup(e){
+  
+  
+   if (e.key == "w"){
+   
+  }
+  if (e.key == "s"){
+    
+  }
+  if (e.key == "Up" || e.key == "ArrowUp"){
+    
+  }
+  if (e.key == "Down" || e.key == "ArrowDown"){
+    
+  }
+
+};
+    
+    
+    
+    function players(){
+      
+      
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(0, 125, 200)`;
+      ctx.rect(Player1[0],Player1[1],20,100);
+      ctx.fill();
+      ctx.closePath();
+      
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(0, 125, 200)`;
+      ctx.rect(Player2[0],Player2[1],20,100);
+      ctx.fill();
+      ctx.closePath();
+      
+      };
+    
+    
+    function ballmove(){
+      ballpos[0] += BallAccelW;
+      ballpos[1] += BallAccelH;
+      
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(0, 125, 200)`;
+      ctx.rect(ballpos[0],ballpos[1],20,20);
+      ctx.fill();
+      ctx.closePath();
+      
+      };
+      
+      function Background(){
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(150,150,150)`;
+      ctx.rect( 0, 0, cramw, cramh);
+      ctx.fill();
+      ctx.closePath();
+        };
+        
+        
+        
+    function draw(){
+      
+    Background();
+      
+      
+      
+
+      
+      
+           if ( ballpos[0] > cramw){
+        BallAccelW = -(BallAccelW);
+   } else if ( ballpos[0] + 20 < 0 ) {
+       BallAccelW = -(BallAccelW);
+   } else if (ballpos[1] < 0) {
+     BallAccelH = -(BallAccelH);
+   } else if (ballpos[1] > cramh) {
+     BallAccelH = -(BallAccelH);
+   }
+   
+    players();
+    ballmove();
+    
+    };
+    
+    
+    draw();
+    
+    setInterval(draw,10);
+    
+    
+    </script>
+    <!-- I started making this at 12:46 a.m. during a stormy time. Let's see how long this takes to finish.
+          1:37 a.m. I've got a ball, it bounces and follows normal things. I have variables to set it to accelerate on paddle hit, but don't have paddles yet.
+          1:47 I've got keys in, but they do nothing
+     -->
+    
+  </body>
+</html>

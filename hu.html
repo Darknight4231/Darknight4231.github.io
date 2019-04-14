@@ -36,21 +36,37 @@
       var canvas = document.getElementById("mycanvas");
       var ctx = canvas.getContext("2d");
       
+      
       canvas.addEventListener("click",click);
    
-      var mouseone = [];
+      var mouseone = [200,200];
       var mousetwo = [];
-      var firstclick = false;
-      var secondclick = true;
+       firstclick = false;
+       secondclick = true;
+       
+       
+       
     
-      
+    
+         
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(100,140,140,1)`;
+    ctx.rect(0,0,canvas.width,canvas.height);
+    ctx.fill();
+    ctx.closePath();
+    
+    ctx.beginPath();
+    ctx.fillStyle = `rgb(100,200,100)`;
+    ctx.rect(0,0,200,200);
+    ctx.fill();
+    ctx.closePath();
       
       function click(e){
         
             
       
-              if (secondclick = true) {
-                function firstclick(){
+              if (secondclick) {
+                  function firsttimeclicked(e){
                     mouseone[0] = e.clientX;
                     mouseone[1] = e.clientY;
                     
@@ -63,11 +79,12 @@
                     ctx.fill();
                     ctx.closePath();  
                     
-                    }
+                    };
+       
                 }
                 
-                else if (firstclick = true){
-              function secondclick(){
+                else if (firstclick){
+                   function secondtimeclicked(e){
                     mousetwo[0] = e.clientX;
                     mousetwo[1] = e.clientY;
                     
@@ -79,28 +96,22 @@
                     ctx.rect(0,0,canvas.width,canvas.height);
                     ctx.fill();
                     ctx.closePath();  
-                    }
+                    };
                 }
         };
         
         
         
-     
-    ctx.beginPath();
-    ctx.fillStyle = `rgba(100,140,140,1)`;
-    ctx.rect(0,0,canvas.width,canvas.height);
-    ctx.fill();
-    ctx.closePath();
-    
-    ctx.beginPath();
-    ctx.fillStyle = `rgb(100,200,100)`;
-    ctx.rect(0,0,200,200);
-    ctx.fill();
-    ctx.closePath();
+  
     
     function draw(){
       
       click();
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(100,100,255)`;
+      ctx.rect(mouseone[0],200,20,20);
+      ctx.fill();
+      ctx.closePath();
       
       };
     setInterval(draw,10);
