@@ -39,15 +39,14 @@ document.addEventListener("keyup", keyup);
     var Player1 = [20, canvas.height/2];
     var Player2 = [canvas.width - 40, canvas.height/2];
    
-    var Playersmove = 15;
+    var Playersmove = 10;
     
     var Player1moveup = false;
     var Player1movedown = false;
     var Player2moveup = false;
     var Player2movedown = false;
     
-    //yes, all the gameover values are backwards. but they work.
-    var gameover = true;
+    var score = [0,0];
  
     
 function keydown(e){
@@ -60,7 +59,7 @@ function keydown(e){
     BallAccelW = 0;
     BallAccelH = 0;
     ballpos =[(canvas.width/2),(canvas.height/2)];
-    gameover = true;
+    score = [0,0];
     }
   
   if (e.key == "w" || e.key == "W") {
@@ -100,17 +99,20 @@ function keydown(e){
   }
 
 };
-    
-    
-       function Start(e){
-      
-      }
-      
-      
-      
+/*
+function getRandom(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+};
+*/
+function getRandom(min,max) {
+  return Math.random()* (max - min) + min;
+}
+
     function players(){
-      
-      
+
+
       ctx.beginPath();
       ctx.fillStyle = `rgb(0, 125, 200)`;
       ctx.rect(Player1[0],Player1[1],20,100);
@@ -137,25 +139,27 @@ function keydown(e){
       ctx.fill();
       ctx.closePath();
       
-      
-        if (gameover){
           if (ballpos[0] > canvas.width+10){
-            alert("Player 1 has Won!!!")
-            gameover=false;
+            score[0] +=1;
+            alert("Player 1 (left side) has Won!!! This makes Left's " + score[0] + " to Right " + score[1])
+              BallAccelW = 0;
+              BallAccelH = 0;
+              ballpos =[(canvas.width/2),(canvas.height/2)];
             }
            if (ballpos[0] < 0-10){
-             alert("Player 2 has Won!!!")
-             gameover=false;
-           }
-         }
-      };
+             score[1] +=1;
+             alert("Player 2 (right side) has Won!!! This makes Left "+ score[0] + " to Right's " + score[1])
+              BallAccelW = 0;
+              BallAccelH = 0;
+              ballpos =[(canvas.width/2),(canvas.height/2)];
+            }
+           };
       
       function Background(){
-        ctx.clearRect(0,0,cramw,cramh);
         
         
       ctx.beginPath();
-      ctx.fillStyle = `rgb(150,150,150)`;
+      ctx.fillStyle = `rgba(150,150,150,0.6)`;
       ctx.rect( 0, 0, cramw, cramh);
       ctx.fill();
       ctx.closePath();
@@ -168,11 +172,11 @@ function keydown(e){
     Background();
 
 
-           if (ballpos[0] < Player2[0]+20 && ballpos[0] > Player2[0] && ballpos[1] > Player2[1] && ballpos[1] < (Player2[1]+100)){
-        BallAccelW = -(BallAccelW)*BallAccel;
+           if (ballpos[0] < Player2[0]+20 && ballpos[0] > Player2[0] -10 && ballpos[1] > Player2[1] && ballpos[1] < (Player2[1]+100)){
+        BallAccelW = -(BallAccelW)*(getRandom(1.01,1.2));
         
    } else if ( ballpos[0] > Player1[0] && ballpos[0] < Player1[0]+20 && ballpos[1] > Player1[1] && ballpos[1] < (Player1[1]+100)) {
-       BallAccelW = -(BallAccelW)*BallAccel;
+       BallAccelW = -(BallAccelW)*(getRandom(1.01,1.2));
    } 
    
    
@@ -182,14 +186,14 @@ function keydown(e){
      BallAccelH = -(BallAccelH);
    }
    
-   if(Player1moveup){
+   if(Player1moveup && Player1[1] > 0){
     Player1[1] -= Playersmove;
-     }else if (Player1movedown){
+     }else if (Player1movedown && Player1[1] < cramh-100){
        Player1[1] += Playersmove;
        }
-   if (Player2moveup){
+   if (Player2moveup && Player2[1] > 0){
      Player2[1] -= Playersmove;
-     }else if (Player2movedown){
+     }else if (Player2movedown && Player2[1] < cramh-100){
        Player2[1] += Playersmove;
        }
    
@@ -211,11 +215,12 @@ function keydown(e){
           1:47 I've got keys in, but they do nothing
           
           2:21 I took a little break, peed, fed the rats and cleaned the coffee out. Back to it!
-          2:59 a.m. I think I've got it down pretty good, only thing left really is tweaking the speeds of stuff and visual bits, but it works pretty well I'd say. Fixed the shitty dakka movement to a smoother piece--copied a little (more like learned) from "To copy from mozilla.html".
+          2:59 a.m. I think I've got it down pretty good, only thing left really is tweaking the speeds of stuff and visual bits, but it works pretty well I'd say. Fixed the shitty dakka movement to a smoother piece - - copied a little (more like learned) from "To copy from mozilla.html".
           3:01 Edited a little bit on the background. it's just grey now. I like it the way it is. Neato. Should I try to make the 'pong' into an actual ball?.. nah I'd rather make a waiting function so both players can be ready
+          4:48 I've just been playing it by myself mostly. I woke Hillary up and got her to give some input, which was nice. Been tweaking things here and there, made a wait and restart key, as well as adding in an alert on the webpage for who wins.
      -->
   Hello! <br/>
-Player 1(left side paddle) Moves with "W" and "S". Player 2 (right side paddle) Moves with Arrow Keys--Up and Down.<br/>Press "Y" to restart the game.Press "T" when you're both ready to play.  
+Player 1(left side paddle) Moves with "W" and "S". Player 2 (right side paddle) Moves with Arrow Keys--Up and Down.<br/>Press "Y" to restart the game+score. Press "T" when you're both ready to play.  
   </body>
   
 </html>

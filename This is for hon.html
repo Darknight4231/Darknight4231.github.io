@@ -25,7 +25,7 @@
 var canvas = document.getElementById("Canvas");
 var ctx = canvas.getContext("2d");
 
-canvas.addEventListener('mousedown', click);
+canvas.addEventListener('click', click);
 
 
 
@@ -33,48 +33,71 @@ canvas.addEventListener('mousedown', click);
 var cramw = Canvas.width = 600;
 var cramh = Canvas.height = 400;
 
-var clicked = false;
+var clicked = 0;
 
 
 
-var clickLoc = [0,0];
+var clickLoc = [];
 
 
 
 
 function click(e){
 
-     clickLoc[0] = e.mouseX;
-     clickLoc[1] = e.mouseY;
-     clicked = true;
+    clickLoc[0] = e.clientX;
+    clickLoc[1] = e.clientY;
+    
+    console.log("click");
+
+
+ 
+
+  if (clicked == 0){
+     
+        clicked = 1;
+        ctx.beginPath();
+        ctx.fillStyle=`green`;
+        ctx.rect(clickLoc[0],clickLoc[1],10,10);
+        ctx.fill();
+        ctx.closePath();
+       console.log("you clicked the FIRST time")
+     
+     }
+     
+     if(clicked == 1){
        
-        
-  };
+        ctx.beginPath();
+        ctx.fillStyle=`blue`;
+        ctx.rect(clickLoc[0]+20,clickLoc[1]+60,10,10);
+        ctx.fill();
+        ctx.closePath();
+        clicked = 0;
+        console.log("you clicked the second time");
+        }
+      
+   };
+  
+  
 
     function draw(){
       
-          ctx.clearRect(0,0,cramw,cramh);
+        //  ctx.clearRect(0,0,cramw,cramh);
+          
+
           
           ctx.beginPath();
           ctx.fillStyle=`red`;
-          ctx.rect(0,0,200,100);
+          ctx.rect(0,0,cramw,cramh);
           ctx.fill();
           ctx.closePath();
       
-      wait;
-       (clicked){
-        ctx.beginPath();
-        ctx.fillStyle=`blue`;
-        ctx.rect(clickLoc[0],clickLoc[1],100,100);
-        ctx.fill();
-        ctx.closePath();
-        clicked = false;
-    
-      }
       
-    }
     
-    setInterval(draw,10);
+      
+      
+    };
+draw();
+    //requestAnimationFrame(draw);
     
     </script>
   </body>

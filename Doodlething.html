@@ -7,7 +7,13 @@
     <meta charset=utf-8 />
     <title>
       Enter a title here
-    </title>
+    </title> <style>
+* { padding: 0; margin: 0; }
+canvas { background: #eee; display: block; margin: 0 auto; }
+body{
+background-color: rgb(50,50,50);
+}
+</style>
     <meta name="GENERATOR" content="Arachnophilia 5.5" />
     <meta name="FORMATTER" content="Arachnophilia 5.5" />
   </head>
@@ -24,18 +30,52 @@
 var canvas = document.getElementById("mycanvas");
 var ctx = canvas.getContext("2d");
 
+var cramw = canvas.width = window.innerWidth;
+var cramh = canvas.height = window.innerHeight;
+
+
 
 canvas.addEventListener("mousedown", brushdown);
 canvas.addEventListener("click", clicked);
+canvas.addEventListener("mouseup", brushup);
+
+
+
+var r = 50;
+var g = 80;
+var b = 200;
+
+var brushW = 10;
+
+var brushisUp = false;
+var brushisDown = false;
 
 function brushdown(e){
-  
+  //${(r)}, ${(g)}, ${(b)}
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(50.80,200)`;
+      ctx.rect(e.clientX,e.clientY, brushW, brushW);
+      ctx.fill();
+      ctx.closePath();
   };
   
 function clicked(e){
-  
+
+  ctx.beginPath();
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(20,20,50,50);
+  ctx.closePath();
   };
 
+function brushup(e){
+   brushisUp =true;
+  };
+  
+  function draw(){
+    
+     requestAnimationFrame(draw);
+    };
+    draw();
     </script>
   </body>
 </html>

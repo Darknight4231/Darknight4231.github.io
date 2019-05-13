@@ -1,22 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Raindrop beauty</title>
-    <style>
-* { padding: 0; margin: 0; }
-canvas { background: #eee; display: block; margin: 0 auto; }
-body{
-  background-color: rgb(50,50,50);
-  }
-</style>
-</head>
-<body>
 
-<canvas id="myCanvas">
-<p>This message is for those who can't have a canvas element running in their browser. Try a different browser to see what's on the page.</p>
-</canvas>
-<script>
+// Created on Apr 19, 2019 4:28:42 PM
+
 
 //Canvas is the screen made on the page, it's what JS is able to doodle on.
 var canvas = document.getElementById("myCanvas");
@@ -35,9 +19,10 @@ var RainDropB = [255];
 var RainDropG = [200];
 var RainDropR = [0];
 
-var RainDropw = cramw/100
-var RainDroph = cramh/100
+var RainDropw = cramw/100;
+var RainDroph = cramh/100;
 
+var drops = 160;
 //global constant to be used in the for loop in the draw(); function.
 // It would be best to find another way to define this, since it seems as though defining it inside the
 // "for loop" doesn't work. Or maybe I'm just doing it all wrong ;D
@@ -49,7 +34,9 @@ var C = 0;
 //parts I'm referring to are inside the parenthesese --> ( )
 
 
-window.addEventListener("click", click);
+//window.addEventListener("click", click);
+
+
 //function that grabs a random value. I only need one.
 function getRandom(min, max) {
   min = Math.ceil(min);
@@ -58,11 +45,12 @@ function getRandom(min, max) {
 }
 
 //what to do when mouse is clicked
-function click(e){  
+for ( var C = 0; C < 160; C++) {
+
   
   //add a raindrop to the Raindrop# Array where the mouse is clicked.
-  RainDropx.push (e.clientX);
-  RainDropy.push (e.clientY);
+  RainDropx.push (getRandom(0, cramw));
+  RainDropy.push (getRandom(0, cramh));
   //also get colors on those raindrops, but these are random between the (min,max) values defined
   RainDropR.push (getRandom(0, 50));
   RainDropG.push (getRandom(0, 200));
@@ -91,7 +79,7 @@ function raindrop(C) {
   var b = RainDropB[C];
   
   ctx.beginPath();
-  ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
+  ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;;
   
   
   //void ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle [, anticlockwise]);
@@ -119,18 +107,7 @@ function raindrop(C) {
   ctx.stroke();
   ctx.closePath();
   }
-  function raindroptop(C){
 
-  var r = RainDropR[C];
-  var g = RainDropG[C];
-  var b = RainDropB[C];
-  
-  ctx.beginPath();
-  ctx.strokeStyle =`rgb(255,0,0)`;
-  ctx.lineWidth = 5;
-  ctx.stroke();
-  ctx.closePath();
-}
 
 //This draws things, as the name suggests.
 function draw() {
@@ -156,7 +133,3 @@ function draw() {
   requestAnimationFrame(draw);
 };
 draw();
-
-</script>
-</body>
-</html>

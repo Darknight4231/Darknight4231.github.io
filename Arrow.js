@@ -21,14 +21,15 @@ var ArrowPower =[];
 var mouseY = 0;
 
 var playerblock = [50,390];
-//var playermoveX = 0;
-//var playermoveY = 0;
 var slow = 0.2;
 var C = 0;
+var grav = 0.6;
 
-var BX = [1200,1200,1200,1200];
-var blocksY = [60, 100, 160, 340];
 
+var BX = [800,200,400,1200];
+var blocksY = [60, 100, 360, 440];
+var blocksize = 40;
+var blockfall = [0,0,0,0];
 
 var rightPressed = false;
 var leftPressed  = false;
@@ -51,12 +52,10 @@ function keydown (e){
   if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
    downPressed = true;
    }
-}
+};
 
 
 function keyup (e){
-  
-    
   
   if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
     rightPressed = false;
@@ -76,55 +75,34 @@ function keyup (e){
 
 
 function PlayerGrav(){
-    playerblock[1] += 0.2;
+    playerblock[1] += grav;
 };
 
-function playermove(){
-
-         if (playerblock[0] > canvas.width-20) { //  right boundary
-    playerblock[0] = canvas.width-20;
-  } else if (playerblock[0] < 0){               //left boundary
-    playerblock[0] = 0;
-  } else if (playerblock[1] < 0) {              //top boundary
-    playerblock[1] = 0;
-  } else if (playerblock[1] > canvas.height-20){//bottom boundary
-    playerblock[1] = canvas.height-20;
-  }
-    PlayerGrav();
- };
 
 
-function collisionDetection() {
-  
-  for (var x=0; x<arrowX.length; x++){
-    for (var y=0; y<arrowY.length; y++){
-      //literally just make the arrows an object. this should solve a lot. maybe?
-      //keeping as an array would allow to .pop or whatever as necessary, but it's still costly ain't it?
-      //but is an object truly better in this circumstance?
-      
-      //I believe you can access an object and its properties in the same (well a better) way than you can in an array.
-      //then it is settled. To look it up!
-    }
-  }
-}
-
-
-
-/* underneath is essentially the original... gross and doesn't work. But it is a point of reference.. somehow lol
-for(var c=0; c<arrowX; c++) {
-for(var r=0; r<arrowY; r++) {
-  var b = arrowX[c][r];
-
-if() {
-  
-}
-
-}
- }*/
+function Xboundary(x){
+    
+           if (x > canvas.width-21) { //  right boundary
+          return canvas.width-20;
+      } else if (x < 0){               //left boundary
+       return  1;
+      } else return x;
+    
+     };
+ 
+function Yboundary(y){
+     
+             if (y < 0) {              //top boundary
+        return  0;
+      } else if (y > canvas.height-20){//bottom boundary
+        return canvas.height-20;
+      } else return y;
+         
+    };
 
 
 function arrowAngle(e){
-  
+  //It seems as though I've forgotten some trig properties. You can't shoot up or down..
   
   
   //mouseY needs to be converted to something divisible.
@@ -161,11 +139,8 @@ function arrowAngle(e){
   console.log(pwr/100);
   
   shot();
-  //found within the shot(); function
-  //arrowX.push (60)
-  //arrowY.push (400);
   
-}
+};
 
 function shot (){
   
@@ -173,35 +148,58 @@ function shot (){
   arrowY.push (playerblock[1]);
   ArrowPower.push(pwr/100);
   Gravity.push ((-0.9)+GravRad*4);
-}
+};
 
 function blocks(){
   
+  ctx.beginPath();
   for (var C=0; C<blocksY.length; C++){
     
     ctx.fillStyle = `rgb(0,180,200)`;
-    ctx.rect(BX[C], blocksY[C], 20,20);
+    ctx.rect(BX[C], blocksY[C], blocksize,blocksize);
     ctx.fill();
+    
+    
+    BX[C] = Xboundary(BX[C]);
+    blocksY[C] =Yboundary(blocksY[C]);
+    
+    
+              blocksY[C] = blocksY[C] - blockfall[C];
+              if(blockfall[C] > 0){
+              blockfall[C] = blockfall[C]-0.6;
    }
+  }
+  ctx.closePath();
+};
+
+
+function collisionDetection(C) {
   
-}
+      for (var B=0; B<BX.length; B++){
+       
+    //use x for both arrowX and arrowY to keep it on the same arrow at all times. Easy. Really easy actually.
+    //B goes through every block before moving to check the next arrow, or x.
+    
+    if ( BX[B]-3 < arrowX[C] && arrowX[C] < BX[B]+blocksize  && blocksY[B] < arrowY[C] && arrowY[C] < blocksY[B]+blocksize ){
+      BX[B] += ArrowPower[C];
+      blockfall[B] = Gravity[C];
+
+      }
+    }
+};
+
 
 function background(){
   
   //this is the background itself
   ctx.beginPath();
-  ctx.fillStyle = `rgb(150,150,150)`;
+  ctx.fillStyle = `rgba(150,150,150,0.1)`;
   ctx.rect( 0, 0, cramw, cramh);
   ctx.fill();
   ctx.closePath();
 };
 
   function playerplace(){
-    
-    //fillStyle with alpha value that blankets the canvas creates a trailing effect
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.01)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  //ctx.clearRect(0,0,cramw,cramh); this clears the canvas completely
   
   //this is the spot to show where the arrow launches from (and is calculated at)
   ctx.beginPath();
@@ -212,30 +210,43 @@ function background(){
   };
 
 
-background();
-blocks();
+
+function player(){
+
+      playerplace();
+      playerblock[0] = Xboundary(playerblock[0]);
+      playerblock[1] = Yboundary(playerblock[1]);
+      PlayerGrav();
+};
+
+
   
 function draw(){
+      background();
+  
     if (leftPressed){
-   playerblock[0] -=2;
+   playerblock[0] -=6;
  }
  if (rightPressed){
-   playerblock[0] += 2;
+   playerblock[0] += 6;
  }
  if (upPressed){
    playerblock[1] -=6;
  }
  if (downPressed){
-   playerblock[1] +=2;
+   playerblock[1] +=6;
  }
 
+  ctx.clearRect(0,0,cramw,cramh); //this clears the canvas completely
   
  
-  playerplace();
-
- // playermove();
+blocks();
+player();
+  
   
   for ( var C=0; C < arrowX.length; C++){
+    
+    collisionDetection(C);
     
     
     ctx.beginPath();
@@ -257,10 +268,8 @@ function draw(){
     
     Gravity[C] = Gravity[C]-0.02;
     
+
   }
-  
-  
-  
 
 requestAnimationFrame(draw);
 };
