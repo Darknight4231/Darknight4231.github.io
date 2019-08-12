@@ -27,6 +27,8 @@ var grav = 0.6;
 
 
 var BX = [800,200,400,1200];
+var BDX = [0,0,0,0];
+var BDY = [0,0,0,0];
 var blocksY = [60, 100, 360, 440];
 var blocksize = 40;
 var blockfall = [0,0,0,0];
@@ -38,7 +40,7 @@ var downPressed  = false;
 
 
 function keydown (e){
-  
+
   if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
     rightPressed = true;
   }
@@ -48,7 +50,7 @@ function keydown (e){
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
    upPressed = true;
   }
-   
+
   if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
    downPressed = true;
    }
@@ -56,14 +58,14 @@ function keydown (e){
 
 
 function keyup (e){
-  
+
   if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
     rightPressed = false;
-    
+
   }
   if ( e.key=="Left" || e.key=="ArrowLeft"  || e.key == "a"){
     leftPressed = false;
-    
+
   }
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w" ) {
     upPressed = false;
@@ -81,38 +83,38 @@ function PlayerGrav(){
 
 
 function Xboundary(x){
-    
+
            if (x > canvas.width-21) { //  right boundary
           return canvas.width-20;
       } else if (x < 0){               //left boundary
        return  1;
       } else return x;
-    
+
      };
- 
+
 function Yboundary(y){
-     
+
              if (y < 0) {              //top boundary
         return  0;
       } else if (y > canvas.height-20){//bottom boundary
         return canvas.height-20;
       } else return y;
-         
+
     };
 
 
 function arrowAngle(e){
   //It seems as though I've forgotten some trig properties. You can't shoot up or down..
-  
-  
+
+
   //mouseY needs to be converted to something divisible.
   //HOW DO I read the cursor Y position as an angle..?!?!?
   //that's what GravAngle is for.. would making mouseY into radians help?
-  
+
   var mouseY = e.clientY;
   //this shows the radians
   //console.log((-(Math.atan((mouseY-400)/160))));
-  
+
   GravAngle = ((-(Math.atan((mouseY-playerblock[1])/160)*180/Math.PI)));//same as grav rad, but in human terms--degrees instead of radians. Make understanding easier, though will obviously output a different valued. mainly for understanding the angle simply.
   GravRad = ((-(Math.atan((mouseY-playerblock[1])/160))));
   //there are two points, to find the distance between the two, and find the two sides of the triangle it'd make. (x1,y1) (x2,y2)
@@ -126,7 +128,7 @@ function arrowAngle(e){
   //tan=O/A  tangent = Opposite/Adjacent, the two sides we have available.
   //opposite is Y
   //adjacent is X
-  
+
   mouseX = e.clientX;
   //find the distance between the two points, (60, 400) and (e.clientX, e.clientY)
   //then add that (with some kinda multiplier ofc to scale it down) to arrowX[C]
@@ -135,15 +137,15 @@ function arrowAngle(e){
   } else if (mouseX < playerblock[0]){
     pwr = (-(Math.pow( Math.pow(mouseX-playerblock[0], 2) + Math.pow(mouseY-playerblock[1], 2)  , 0.5)));
   }
-  
+
   console.log(pwr/100);
-  
+
   shot();
-  
+
 };
 
 function shot (){
-  
+
   arrowX.push (playerblock[0]);
   arrowY.push (playerblock[1]);
   ArrowPower.push(pwr/100);
@@ -151,46 +153,45 @@ function shot (){
 };
 
 function blocks(){
-  
+
   ctx.beginPath();
   for (var C=0; C<blocksY.length; C++){
-    
+
     ctx.fillStyle = `rgb(0,180,200)`;
     ctx.rect(BX[C], blocksY[C], blocksize,blocksize);
     ctx.fill();
-    
-    
+
+
     BX[C] = Xboundary(BX[C]);
     blocksY[C] =Yboundary(blocksY[C]);
-    
-    
+
+
               blocksY[C] = blocksY[C] - blockfall[C];
-              if(blockfall[C] > 0){
-              blockfall[C] = blockfall[C]-0.6;
-   }
+              //if(blockfall[C] /= 0){
+              //blockfall[C] = blockfall[C]-grav;
+   //}
   }
   ctx.closePath();
 };
 
 
 function collisionDetection(C) {
-  
+
       for (var B=0; B<BX.length; B++){
-       
+
     //use x for both arrowX and arrowY to keep it on the same arrow at all times. Easy. Really easy actually.
     //B goes through every block before moving to check the next arrow, or x.
-    
-    if ( BX[B]-3 < arrowX[C] && arrowX[C] < BX[B]+blocksize  && blocksY[B] < arrowY[C] && arrowY[C] < blocksY[B]+blocksize ){
-      BX[B] += ArrowPower[C];
-      blockfall[B] = Gravity[C];
 
-      }
+    if ( BX[B]-3 < arrowX[C] && arrowX[C] < BX[B]+blocksize  && blocksY[B] < arrowY[C] && arrowY[C] < blocksY[B]+blocksize ){
+      BX[B] += 0.8*ArrowPower[C];
+      blockfall[B] =- Gravity[C];
+    }
     }
 };
 
 
 function background(){
-  
+
   //this is the background itself
   ctx.beginPath();
   ctx.fillStyle = `rgba(150,150,150,0.1)`;
@@ -200,7 +201,7 @@ function background(){
 };
 
   function playerplace(){
-  
+
   //this is the spot to show where the arrow launches from (and is calculated at)
   ctx.beginPath();
   ctx.fillStyle = `rgb(255,0,0)`;
@@ -220,10 +221,10 @@ function player(){
 };
 
 
-  
+
 function draw(){
       background();
-  
+
     if (leftPressed){
    playerblock[0] -=6;
  }
@@ -238,36 +239,36 @@ function draw(){
  }
 
   ctx.clearRect(0,0,cramw,cramh); //this clears the canvas completely
-  
- 
-blocks();
-player();
-  
-  
+
+
+  blocks();
+  player();
+
+
   for ( var C=0; C < arrowX.length; C++){
-    
+
     collisionDetection(C);
-    
-    
+
+
     ctx.beginPath();
     ctx.fillStyle = `rgb(0,0,0)`;
     ctx.rect(arrowX[C], arrowY[C],18,3);
     ctx.fill();
     ctx.closePath();
-    
+
     ctx.beginPath();
     ctx.fillStyle = `rgb(0,0,200)`;
     ctx.rect(arrowX[C]+17,arrowY[C]-3,10,8);
     ctx.fill();
     ctx.closePath();
-    
-    
-    
+
+
+
     arrowY[C] =  arrowY[C]-Gravity[C];
     arrowX[C] = arrowX[C]+ArrowPower[C];
-    
+
     Gravity[C] = Gravity[C]-0.02;
-    
+
 
   }
 
@@ -275,4 +276,3 @@ requestAnimationFrame(draw);
 };
 
 draw();
-

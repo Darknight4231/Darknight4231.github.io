@@ -3,11 +3,44 @@ canvas { background: #eee; display: block; margin: 0 auto; padding: 0; margin: 0
 
 body{
   background-color: rgb(50,100,50);
-  font-family: VL Gothic, serif, cursive; 
+  font-family: VL Gothic, serif, cursive;
   text-align: center;
   padding: 0; margin: 0;
+  display: block;
+  width: 80%;
+  position: relative;
   }
-  
+
   a {
-    color: rgb(150,150,255);
-    }
+    color: rgb(150, 150, 255);
+  }
+
+  nav > ul a {
+    text-decoration: none;
+  }
+
+  nav > ul a:hover {
+    outline: solid 5px red;
+  }
+
+  nav {
+    width: 10%;
+    display: block;
+    position: relative;
+  }
+
+  .leftCol {
+    width: 20% content-box;
+    float: left;
+    clear: left;
+    display: block;
+  }
+
+  .navimg {
+    width: 100%;
+    height: 100%;
+  }
+
+
+/*So > just means filter through the list, first element first, keep goin till you
+  get to the element and then class name or id you're going for. */

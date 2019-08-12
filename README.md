@@ -16,3 +16,7 @@ Resizing keeps the screen size, you'd need to reload the page.
 
 Hoping to remake my favorite game--Fishy. You play as a fish who eats other fish. Fish bigger than you eat you. you get bigger based off of the size of the fish you eat.
 There are levels, you only have so many fish you are allowed to eat before all fish get bigger--if you keep eating small stuff you'll stay small.
+
+Second hope to remake of a game, I have been inspired by Y3K defender, and also Dead Tree Defender from long ago.
+Y3K is a tower defense
+Dead Tree Defender is a point and shoot defender, I don't think there's an actual defensive part, just living in the tree vs the enemies shooting back at you

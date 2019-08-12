@@ -2,77 +2,160 @@
 
 <!-- Created on Feb 23, 2019 3:27:37 AM -->
 
+
+<!--
+This comment section was copied from https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event
+and used to learn.
+
+
+
+ <input placeholder="Enter some text" name="name"/>
+<p id="values"></p>
+
+
+JavaScript
+Section
+const input = document.querySelector('input');
+const log = document.getElementById('values');
+
+input.addEventListener('input', updateValue);
+
+function updateValue(e) {
+  log.textContent = e.srcElement.value;
+}
+-->
+
+
+
 <html lang="en">
   <head>
     <meta charset=utf-8 />
     <title>
-      Enter a title here
-    </title> <style>
+      Doodle bit
+    </title>
+
+<style>
 * { padding: 0; margin: 0; }
-canvas { background: #eee; display: block; margin: 0 auto; }
+canvas { background: #eee; display: block; margin: 0 auto; overflow-x:hidden; }
 body{
-background-color: rgb(50,50,50);
+background-color: rgb(150,150,150);
+}
+.ColorRangeWrapper{
+  padding:inherit;
+  width: auto;
+  height: auto;
+}
+.ColorRangeWrapper input{
+
+margin: auto;
+transform-origin: 75px 75px;
+transform: rotate(-90deg);
 }
 </style>
+
     <meta name="GENERATOR" content="Arachnophilia 5.5" />
     <meta name="FORMATTER" content="Arachnophilia 5.5" />
-  </head>
-  
+</head>
+
   <body>
     <canvas id="mycanvas">
     <p> If you can't see this, you won't be able to use basically anything else on this site. </p>
     </canvas>
-    
-    
+
+    <div class = "ColorRangeWrapper" id = "colors">
+    <p>Color Values:</p>
+      <input type="range" id="Red" name="Red"
+             min="0" max="255" value="255" step="1">
+      <label for="Red" id="Color_Red_value">Red</label>
+    <br/>
+
+      <input type="range" id="Green" name="Green"
+             min="0" max="255" value="90" step="1">
+      <label for="Green" id="Color_Green_value">Green</label>
+    <br/>
+
+      <input type="range" id="Blue" name="Blue"
+             min="0" max="255" value="90" step="1">
+      <label for="Blue" id="Color_Blue_value">Blue</label>
+    <br/>
+  </div>
+
+<canvas id = "colorcanvas" width="20" height = "20"><p>This won't show either, use a different browser that supports the canvas element</P>
+</canvas>
     <script>
-    
-//this is something I do not have down yet. It's odd so I tend to copy paste it. I'll be writing it manually from now on to have it better memorized and therefore understood.    
+
+//this is something I do not have down yet. It's odd so I tend to copy paste it. I'll be writing it manually from now on to have it better memorized and therefore understood.
 var canvas = document.getElementById("mycanvas");
 var ctx = canvas.getContext("2d");
+
+var color = document.getElementById("colorcanvas");
+var colorcanv = color.getContext("2d");
 
 var cramw = canvas.width = window.innerWidth;
 var cramh = canvas.height = window.innerHeight;
 
-
-
 canvas.addEventListener("mousedown", brushdown);
-canvas.addEventListener("click", clicked);
 canvas.addEventListener("mouseup", brushup);
 
+var red = document.getElementById("Red");
+var green = document.getElementById("Green");
+var blue = document.getElementById("Blue");
 
 
-var r = 50;
-var g = 80;
-var b = 200;
+colors.addEventListener("change",colorboardupdate)
+
+function colorboardupdate(e){
+
+
+};
 
 var brushW = 10;
 
-var brushisUp = false;
-var brushisDown = false;
-
 function brushdown(e){
-  //${(r)}, ${(g)}, ${(b)}
-      ctx.beginPath();
-      ctx.fillStyle = `rgb(50.80,200)`;
-      ctx.rect(e.clientX,e.clientY, brushW, brushW);
-      ctx.fill();
-      ctx.closePath();
-  };
-  
-function clicked(e){
 
-  ctx.beginPath();
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(20,20,50,50);
-  ctx.closePath();
+      if(e.clientX> canvas.width-40 && e.clientX <canvas.width && e.clientY> canvas.height-40 && e.clientY < canvas.height){
+        ctx.beginPath();
+        ctx.fillStyle = 'blue';
+        ctx.rect(50,50,50,50);
+        ctx.fill();
+        ctx.closePath();
+        ctx.save();
+        return;
+      }
+
+      if(e.clientX> canvas.width-80 && e.clientX <canvas.width-40 && e.clientY> canvas.height-80 && e.clientY < canvas.height-40){
+        ctx.beginPath();
+        ctx.fillStyle = 'green';
+        ctx.rect(150,150,50,50);
+        ctx.fill();
+        ctx.closePath();
+        ctx.restore();
+        return;
+      }
+
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(${(red.value)}, ${(green.value)}, ${(blue.value)})`;
+      ctx.rect(canvas.width-40,canvas.height-40,40,40);
+      ctx.rect(canvas.width-80,canvas.height-80,40,40);
+      ctx.rect(e.clientX-0.5*brushW,e.clientY-0.5*brushW, brushW, brushW);
+      ctx.fill();
   };
 
 function brushup(e){
-   brushisUp =true;
+
+     ctx.closePath();
   };
-  
+
+
   function draw(){
-    
+
+    document.getElementById("Color_Red_value").textContent = "Red "+red.value;
+    document.getElementById("Color_Green_value").textContent = "Green " +green.value;
+    document.getElementById("Color_Blue_value").textContent = "Blue "+blue.value;
+
+    colorboardupdate();
+
+
      requestAnimationFrame(draw);
     };
     draw();

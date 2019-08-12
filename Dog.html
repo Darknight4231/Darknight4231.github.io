@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<head>
+
+
+  <title>Dog</title>
+
+  <style>
+    body {
+      background-color: green;
+      overflow: hidden;
+    }
+    canvas {
+      outline: solid 2px red;
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+
+<canvas id="canvas"> </canvas>
+<script>
+
+
+
+
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth- 1/10*window.innerWidth;
+canvas.height = window.innerHeight-1/10*window.innerHeight;
+
+canvas.addEventListener("mousedown", doglook);
+canvas.addEventListener("mouseup", dognolook);
+
+
+speed = {
+  x:8,
+  y:2
+}
+
+//this is supposed to be an object called dog.
+dog = {
+  x: canvas.width/2,
+  y: canvas.height/2,
+  width: 20,
+  height: 20
+};
+
+function Updatedog () {
+
+  dog.x=dog.x+speed.x;
+  dog.y=dog.y+speed.y;
+
+  if(dog.x>canvas.width-dog.width) {
+    speed.x = -speed.x;
+  }
+  if(dog.x<0) {
+    speed.x = -speed.x;
+  }
+  if (dog.y>canvas.height-dog.height){
+    speed.y = -speed.y;
+  }
+  if(dog.y<0) {
+    speed.y = -speed.y;
+  }
+};
+
+
+function doglook(e){
+
+  var mouseX = e.clientX;
+  var mouseY = e.clientY;
+
+  dog.x=mouseX-dog.width/2;
+  dog.y=mouseY-dog.height/2;
+
+//SET A TEMPORARY SPEED HOLDER, WAIT A FEW SECONDS AND THEN RESTART FROM WHERE WAS
+//LAST CLICKED
+// OR MAKE IT FOR DURING MOUSEDOWN DOG JUST DOESN'T MOVE, MOUSEUP IT MOVES
+
+
+//DO BOTH FOR FUN
+};
+
+function dognolook(e){
+
+};
+
+function draw () {
+
+  ctx.beginPath();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.rect(dog.x, dog.y, dog.width, dog.height);
+  ctx.fillStyle =`rgb(0,100,255)`;
+  ctx.fill();
+  ctx.closePath();
+
+  Updatedog();
+
+
+  requestAnimationFrame(draw);
+};
+draw();
+
+</script>
+</body>

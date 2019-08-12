@@ -4,20 +4,49 @@
   <title>This is the title!!</title>
    <meta charset="utf-8" />
    <link href="Stylesheet.css" rel="stylesheet" type="text/css" />
+   <!-- <link rel="stylesheet" href="audio_controls.css" type="text/css" /> -->
 
 </head>
 
 
 <body>
+<script src="audio_controls.js"></script>
+
+  <nav class="leftCol">
+    <ul>
+      <li class="leftCol">
+        <a href="https://darknight4231.github.io/Arrow"><img class="navimg" src="Arrow.PNG"/>Arrow-^</a>
+      </li>
+      <li class="leftCol">
+        <a href="https://darknight4231.github.io/Pong"><img class="navimg" src="Pong.PNG"/>Pong-^</a>
+      </li>
+      <li class="leftCol">
+      </li>
+      <li class="leftCol">
+      </li>
+    </ul>
+  </nav>
+  <!--
+     autoplay loop are good for auto looping background noises, how to make a track? need a list tbh
+      also note that by removing 'controls' you can customize the controls through JS and CSS-->
+<audio id="audiofiles" preload="metadata" src="oof.mp3">
+      <source src="hoouh.MP3" type="mp3">
+      <source src="oof.MP3"   type="mp3">
+    <p>Your current browser is having difficulty playing MP3 files, try a different browser.
+    Fallback content.</p>
+  </audio>
+
+  <button id="playpausebutton">Play</button>
+  <input type="range" id="volume" min="0" max="100" value="50" step="1" label="Volume">
 
   <h1>This is the Header!!</h1>
-  
+<p>A440 is widely used as concert pitch in the United Kingdom and the United States. In continental Europe the frequency of A4 commonly varies between 440 Hz and 444 Hz. In the period instrument movement, a consensus has arisen around a modern baroque pitch of 415 Hz (with 440 Hz corresponding to A♯), a 'baroque' pitch for some special church music (in particular, some German church music, e.g. the Pre-Leipzig period cantatas of Bach) known as (Chorton pitch) at 466 Hz (with 440 Hz corresponding to A♭), and classical pitch at 430 Hz.</p><br/>
   This works?!??!
-  
+
   How do you make a link..
   <hr/>
 
-  hr in the arrows gives a horizontal line<br/>
+  &lt;hr/&gt; gives a horizontal line<br/>
   Space Engineers!<br/>
   <img src="se.PNG" width="301" height="131"/>
   <br/>
@@ -28,7 +57,7 @@
 	And <a href="https://validator.w3.org/">this</a> checks HTML to make sure everything is where it's supposed to be--it also tells what's wrong and where.<br/>
  </p><br/>
  This is another link, one that I've been using much more frequently. <a href="https://developer.mozilla.org/en-US/">Developer.mozilla</a>
- 
+
     <br/><br/><br/>
     Here is the raindrop bit. <a href="https://darknight4231.github.io/Finally got the drops">This thing here.</a><br/>
 
@@ -44,8 +73,8 @@ Link <a href="https://darknight4231.github.io/Arrow">HERE</a>!
 
     The link below is one to a colleague of mine. Hopefully He'll start making some games and things too!
     <a href="https://calebhk98.github.io"> YOOHOO!!!</a>
-    
-    <br/> 
+
+    <br/>
    Hey guys<a href="https://www.allaboutcircuits.com/"> this </a>is a pretty good site if anyone wants to know more about circuitry. <a href = "https://www.allaboutcircuits.com/textbook/direct-current/"> Here's</a> a HL to chapter one. Direct Current.
     <br/><br/>
     Aand here's this thing too.
@@ -53,7 +82,7 @@ Link <a href="https://darknight4231.github.io/Arrow">HERE</a>!
 <br/>
 Aand here's a full list of the Canvas element in JS.
 <a href ="https://html.spec.whatwg.org/multipage/canvas.html"> Here.</a>
-  
+
   <canvas id="myCanvas">
 <p>This message is for those who can't have a canvas element running in their browser. Try a different browser to see what's on the page.</p>
 </canvas>

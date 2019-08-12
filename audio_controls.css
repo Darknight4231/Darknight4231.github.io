@@ -1,0 +1,6 @@
+ #playpausebutton {
+  color: green;
+  background-color: red;
+  display: block;
+  outline: solid 2px white;
+}
