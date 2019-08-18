@@ -20,55 +20,62 @@ body{
 
 <body>
     <canvas id="Canvas"><p>You can't use Canvas element in this browser, try another, like Edge, Chrome, or Firefox.</p></canvas>
-    
+
   <script>
   var canvas = document.getElementById("Canvas");
   var ctx    = canvas.getContext("2d");
-  
+
   var cramw  = canvas.width = window.innerWidth;
   var cramh = canvas.height = window.innerHeight;
-  
+
   var UpPressed    = false;
   var DownPressed  = false;
   var LeftPressed  = false;
   var RightPressed = false;
-  
+
   //that's X, Y, R (ratio)
-  var Player  = [cramw/2,cramh/2 , 1];
+  var Player = {
+    x : cramw/2,
+    y : cramh/2,
+    width : 1,
+    height : 1,
+  }
+  var Playersize = Player.width*Player.height;
+
   var playerSpd = 3;
   var FishEat = 0;
-  
+
   var score = [20]
   var playercolor = [200,100, 60];
-  
+
   var numFish = 10;
   var Fish = [0];
   var fishcol = [0];
   var fishmove = [0];
   var fishSize = [0];
   var FishPasses = [0];
-  
+
   var fishSizeInc = 1.15;
-  
+
   var LevelIncrement = 1.2;
   var level = 1;
   var C = 1;
-  
+
   document.addEventListener("keydown", keydown);
   document.addEventListener("keyup"  , keyup);
- 
- 
+
+
   function getRandom(min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
     };
-  
-  
-  
+
+
+
   function keydown(e){
-    
-      
+
+
   if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
     RightPressed = true;
   }
@@ -78,22 +85,22 @@ body{
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
    UpPressed = true;
   }
-   
+
   if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
    DownPressed = true;
    }
   };
-    
-    
+
+
   function keyup(e){
-    
+
     if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
     RightPressed = false;
-    
+
   }
   if ( e.key=="Left" || e.key=="ArrowLeft"  || e.key == "a"){
     LeftPressed = false;
-    
+
   }
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w" ) {
     UpPressed = false;
@@ -102,160 +109,162 @@ body{
     DownPressed = false;
    }
   };
-    
-    
+
+
     function NewLevel(level){
-      
+
     for ( var C = 1; C < Math.ceil((numFish*(level*LevelIncrement))); C++) {
     Fish.push(getRandom(0,20));
     Fish.push(getRandom(10,cramh-20));
-    
+
     fishcol.push(getRandom(0,100));
     fishcol.push(getRandom(0,150));
     fishcol.push(getRandom(0,200));
-    
+
     fishmove.push(getRandom(2,8));
     fishmove.push(getRandom(2,8));
-    
+
     FishPasses.push(0);
-    
+
     fishSize.push(getRandom(1,(1.2*level*(fishSizeInc))));
     }
   };
-  
-  
+
+
   function Fishcollide(C){
-    
+
     //this is great... for the top left corner of the player cube.. Nothing else.
-    if(Fish[C] <= Player[0] && Player[0] <= Fish[C]+fishSize[C]*20*level && 
-       Fish[C+1] <= Player[1] && Player[1] <= Fish[C+1]+fishSize[C]*20*level){
-        if(Player[2]*30 < fishSize[C]*20*level){
+    if(Fish[C] <= Player.x && Player.x <= Fish[C]+fishSize[C]*20*level &&
+       Fish[C+1] <= Player.y && Player.y <= Fish[C+1]+fishSize[C]*20*level){
+        if(Playersize < fishSize[C]*20*level){
           alert("game over dude");
           } else {
-            Player[2] = Player[2]+ fishSize[C]/5;
+            Player.width = Player.width + fishSize[C]/4;
+            Player.height = Player.height + fishSize[C]/4;
             fishSize[C] = 0;
             FishEat++;
         }
       }
     };
-  
+
   function fishScore(){
-    
+
     for( var I=0; I<score.length; I++){
       ctx.font = '48px serif';
       ctx.fillText('Fish eaten '+ FishEat,40,60);
       ctx.fillText('Level '+level, 40, 120);
     }
-    
-    
+
+
     if ((FishEat) > (level)){
         level ++;
         FishEat = 0;
         NewLevel(level);
         }
-    
+
     };
-  
-  
+
+
   function drawfish(){
-    
-    
-    
-   
-    
+
+
+
+
+
     for ( var C = 1; C < Math.ceil((numFish*(level*LevelIncrement))); C = C+2) {
-      
+
           var r = fishcol[C];
           var g = fishcol[C+1];
           var b = fishcol[C+2];
-          
+
           ctx.beginPath();
           ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
           ctx.rect(Fish[C],Fish[C+1], fishSize[C]*20*level,fishSize[C]*20*level);
           ctx.fill();
-          ctx.closePath();   
-         
+          ctx.closePath();
+
           Fishcollide(C);
-           
+
           Fish[C] +=fishmove[C];
-         
+
       }
-      
+
     };
-  
+
   function PlayerAt(){
-    
+
     var Red = playercolor[0];
     var Green = playercolor[1];
     var Blue = playercolor[2];
-    
-    
+
+
     ctx.beginPath();
     ctx.fillStyle = `rgb( ${(Red)}, ${(Green)}, ${(Blue)})`;
-    ctx.rect(Player[0],Player[1], 30*Player[2],30*Player[2]);
+    ctx.rect(Player.x,Player.y, Player.width, Player.height);
     ctx.fill();
     ctx.closePath();
-    
+
   };
-  
-  
-  
+
+
+
   NewLevel(level);
-  
-  
+
+
     function draw(){
-    
+
+      Playersize = Player.width*Player.height;
       ctx.clearRect(0,0,cramw,cramh);
-      
+
     if(UpPressed){
-      Player[1]-=playerSpd;
+      Player.y-=playerSpd;
       }
     if (DownPressed){
-      Player[1]+=playerSpd;  
+      Player.y+=playerSpd;
       }
     if(RightPressed){
-      Player[0]+=playerSpd;
+      Player.x+=playerSpd;
       }
     if(LeftPressed){
-      Player[0]-=playerSpd;
+      Player.x-=playerSpd;
       }
-      
+
       for (var C=1; C < Fish.length+1; C++){
          if(Fish[C] > cramw+20){
-           
+
             Fish[C] =(getRandom(-40,0));
             Fish[C+1] =(getRandom(10,cramh-20));
             FishPasses[C] ++;
          }
-         
+
          if ( FishPasses[C] > 3){
-           
+
             Fish[C] =(getRandom(0,20));
             Fish[C+1] =(getRandom(10,cramh-20));
-            
+
             fishcol[C] =(getRandom(0,100));
             fishcol[C+1] =(getRandom(0,150));
             fishcol[C+2] =(getRandom(0,200));
-            
+
             fishmove[C] =(getRandom(2,8));
             fishmove[C+1] =(getRandom(2,8));
-            
+
             //fishSize[C] = (getRandom(1,(1.2*level*(fishSizeInc))));
             fishSize[C] =1;
             FishPasses[C] = 0;
            }
        }
-       
-      drawfish();  
+
+      drawfish();
       PlayerAt();
 
-      
+
       fishScore();
     requestAnimationFrame(draw);
     };
     draw();
   </script>
-  
-  
+
+
 </body>
 </html>
