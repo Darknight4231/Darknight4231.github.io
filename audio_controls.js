@@ -1,13 +1,13 @@
 
 /* remember that #is for ids and .is for classes*/
 
-//var audiofiles = new AudioContext();
-//var source = audiofiles.createMediaElementSource();
+//  var audiofiles = new AudioContext();
+//  var source = audiofiles.createMediaElementSource();
 
 
 
   const audiofiles = document.getElementById('audiofiles');
-//  const track = audiofiles.createMediaElementSource('audiofiles');
+  const track = audiofiles.createMediaElementSource('audiofiles');
   var playpause = document.getElementById('playpausebutton');
   var volume = document.getElementById('volume');
 
@@ -51,8 +51,8 @@
   audiofiles.addEventListener ("ended", endfunction);
   volume.addEventListener("change", volchange);
 
-//  gainNode.connect(audioCtx.destination);
-//  source.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  source.connect(gainNode);
 
 /*So, to be able to change anything such as the volume or tracks, we need to first access
 the Web Audio API, by grabbing grabbing the audio source (audio element) and sending or piping

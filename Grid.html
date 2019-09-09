@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<head>
+  <title>
+    Grid system
+  </title>
+
+ <style>
+  body {
+    background-color: green;
+  }
+  canvas{
+    outline: solid black 2px;
+  }
+
+ </style>
+</head>
+
+<body>
+
+  <canvas id="grid"><p>Canvas doesn't work in your browser!!</p></canvas>
+  <script>
+    /* y=mx+b or y=ax+b whatever
+
+    equation is Y = ((X/20)+1)
+     Y is grid block
+     X is cursor pos
+
+     need to Math.floor to get rid of all decimal places.
+     It actually sets the value down to whatever the lower integer would be--
+     5.6 becomes just 5
+     -5.5 becomes -6
+     Ez.*/
+
+     var canvas = document.getElementById("grid");
+     var ctx = canvas.getContext("2d");
+
+     canvas.width = 200;
+     canvas.height = 200;
+
+     canvas.addEventListener("click",click);
+
+     var cursorpos = 0;
+
+     function click(e) {
+
+     var cursorpos = e.canvas;
+     gridplus(e);
+
+   };
+
+     function gridplus(e){
+       //use for adding a color to the grid system
+
+   };
+
+     function drawgrid(){
+       //enable/disable the grid
+     }
+
+     var gridpos = Math.floor((cursorpos/20)+1);
+
+     function draw(){
+
+       drawgrid();
+
+       ctx.beginPath();
+       ctx.fillStyle = 'red';
+       ctx.rect(20,20,20,20);
+       ctx.fill();
+       ctx.closePath();
+
+     };
+     draw();
+  </script>
+</body>

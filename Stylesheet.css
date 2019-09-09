@@ -8,37 +8,43 @@ body{
   padding: 0; margin: 0;
   display: block;
   width: 80%;
-  position: relative;
+  position: absolute;
+  z-index: 0;
   }
 
   a {
     color: rgb(150, 150, 255);
   }
 
-  nav > ul a {
-    text-decoration: none;
-  }
-
   nav > ul a:hover {
-    outline: solid 5px red;
+    outline: solid 2px red;
+    width: 20%;
   }
 
   nav {
-    width: 10%;
     display: block;
     position: relative;
+  }
+
+  canvas {
+  position:absolute;
+  display:block;
+  z-index: 1;
   }
 
   .leftCol {
     width: 20% content-box;
     float: left;
-    clear: left;
-    display: block;
+  }
+
+  .leftCol>a {
+    text-align: center;
+    text-decoration: none;
   }
 
   .navimg {
-    width: 100%;
-    height: 100%;
+    width: 10%;
+    height: 10%;
   }
 
 
