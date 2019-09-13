@@ -1,17 +1,37 @@
 <!DOCTYPE html>
 <head>
+  <style>
+    #wavetypes{
+
+      padding: 2em;
+      margin: 2em;
+    }
+    #wavetype {
+
+    }
+  </style>
 </head>
+
 
 <body>
   <a href="https://alligator.io/js/var-let-const">https://alligator.io/js/var-let-const</a><br/>
   <a href="https://alligator.io/js/first-steps-web-audio-api/">https://alligator.io/js/first-steps-web-audio-api/</a>
   <button type="button" id="Start">Start</button>
   <input type="range" id="Volume" value="0" min="0" max="100"> <label for="Volume">Volume</label>
-  <input type="range" id="Freq" value="2400" min="0" max="4800" step="5" label='Freq'>Frequency<br/>
-  <input type="radio" id="">
+  <input type="range" id="Freq" value="2400" min="0" max="480" step="5"><label for="Freq">Frequency</label><p>Frequency is currently <p id="freqvaltxt"></p>
+
+    <div id="wavetypes">
+        <!--In order for radio buttons to work as intended - - that is, only one selection at a time,
+        they must all have the same ' name ' -->
+      <input type="radio" name="wavetype" value="sin" checked><label for="sin">Sin Wave</label>
+      <input type="radio" name="wavetype" value="square"><label for="square">Square Wave</label>
+      <input type="radio" name="wavetype" value="triangle"><label for="triangle">Triangle Wave</label>
+    </div>
+
 
 <script>
 //from https://alligator.io/js/first-steps-web-audio-api/
+//https://ipinfo.info/html/ip_checker.php finds the real ip address, can be used for DNS server things
 //setValueAtTime(value, Time)
 //setTargetAtTime(value, Time, timeconstant (rate of change ;P) )
 
@@ -42,13 +62,14 @@ if (audioContext !== undefined) {
   const Gainvalue = document.getElementById("Volume");
   const PlayPause = document.getElementById("Start");
   const Frequ = document.getElementById("Freq");
-
+  const freqtxt = document.getElementById("freqvaltxt");
+  let WaveType = document.getElementById('wavetypes');
 
   Gainvalue.onchange = function(){
     gainchange(Gainvalue.value);
   };
   Frequ.onchange = function(){
-    Freqchange(Freq.value);
+    Freqchange(Frequ.value);
   };
 
 //audioContext.contextTime
@@ -56,11 +77,16 @@ if (audioContext !== undefined) {
   const gainNode = audioContext.createGain();
   const oscillator = audioContext.createOscillator();
 
- oscillator.type = 'square';
+WaveType.onchange = function(){
+    oscillator.type = WaveType.value;
+    console.log(WaveType.value);
+};
+
 
 
   function Freqchange(e){
    oscillator.frequency.setValueAtTime(e, audioContext.currentTime);
+   freqtxt.innerHTML = Frequ.value;
   };
 
   oscillator.connect(gainNode);
@@ -78,6 +104,7 @@ if (audioContext !== undefined) {
   };
   oscillator.start();
   gainchange(1);
+  Freqchange();
 }
 
 </script>
