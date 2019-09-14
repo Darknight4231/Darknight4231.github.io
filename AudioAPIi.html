@@ -23,9 +23,10 @@
     <div id="wavetypes">
         <!--In order for radio buttons to work as intended - - that is, only one selection at a time,
         they must all have the same ' name ' -->
-      <input type="radio" name="wavetype" value="sin" checked><label for="sin">Sin Wave</label>
-      <input type="radio" name="wavetype" value="square"><label for="square">Square Wave</label>
-      <input type="radio" name="wavetype" value="triangle"><label for="triangle">Triangle Wave</label>
+      <input type="radio" name="wavetype" id="sin" value="sin" checked><label for="sin">Sin Wave</label>
+      <input type="radio" name="wavetype" id="square" value="square"><label for="square">Square Wave</label>
+      <input type="radio" name="wavetype" id="triangle" value="triangle"><label for="triangle">Triangle Wave</label>
+      <input type="radio" name="wavetype" id="sawtooth" value="sawtooth"><label for="sawtooth">Sawtooth</label>
     </div>
 
 
@@ -63,13 +64,14 @@ if (audioContext !== undefined) {
   const PlayPause = document.getElementById("Start");
   const Frequ = document.getElementById("Freq");
   const freqtxt = document.getElementById("freqvaltxt");
-  let WaveType = document.getElementById('wavetypes');
+  const WaveType = document.getElementById('wavetypes');
+  let TrueWaveType = document.querySelectorAll('#wavetypes.input\\:checked');
 
   Gainvalue.onchange = function(){
     gainchange(Gainvalue.value);
   };
   Frequ.onchange = function(){
-    Freqchange(Frequ.value);
+    Freqchange();
   };
 
 //audioContext.contextTime
@@ -79,13 +81,13 @@ if (audioContext !== undefined) {
 
 WaveType.onchange = function(){
     oscillator.type = WaveType.value;
-    console.log(WaveType.value);
+    console.log(TrueWaveType.value);
 };
 
 
 
-  function Freqchange(e){
-   oscillator.frequency.setValueAtTime(e, audioContext.currentTime);
+  function Freqchange(){
+   oscillator.frequency.setValueAtTime(Frequ.value, audioContext.currentTime);
    freqtxt.innerHTML = Frequ.value;
   };
 
