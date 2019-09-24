@@ -1,48 +1,81 @@
 * { padding: 0; margin: 0; }
-canvas { background: #eee; display: block; margin: 0 auto; padding: 0; margin: 0;}
 
-body{
+
+body {
   background-color: rgb(50,100,50);
   font-family: VL Gothic, serif, cursive;
+  font-size: 1.1em;
   text-align: center;
   padding: 0; margin: 0;
   display: block;
   width: 80%;
-  position: absolute;
-  z-index: 0;
+  z-index: 1;
+  }
+
+  .selfnotes {
+    color: gold;
+    margin-bottom: 2em;
+  }
+
+  h4 {
+    color: red;
+  }
+
+  .PSection {
+    display: block;
+    padding: 2em;
+    margin: 1em;
+  }
+
+  .EAgame {
+    margin: 1em;
   }
 
   a {
     color: rgb(150, 150, 255);
-  }
-
-  nav > ul a:hover {
-    outline: solid 2px red;
-    width: 20%;
-  }
-
-  nav {
-    display: block;
-    position: relative;
-  }
-
-  canvas {
-  position:absolute;
-  display:block;
-  z-index: 1;
-  }
-
-  .leftCol {
-    width: 20% content-box;
-    float: left;
-  }
-
-  .leftCol>a {
-    text-align: center;
     text-decoration: none;
   }
 
+  canvas {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  opacity: 0.2;
+  display:block;
+  z-index: -1;
+  }
+
+  .GameCol {
+    position:relative;
+    margin: 0;
+    padding: 0;
+    padding-top: 0.3em;
+    float: left;
+
+    display: block;
+  }
+
+  .GameCol > ul a:hover {
+    outline: solid 2px red;
+  }
+
+/*  .leftCol {
+    left: 0;
+    top: 0;
+    width: 20% content-box;
+    position: relative;
+  }
+
+  .leftCol>ul>li>a {
+    float: left;
+    clear: left;
+    text-align: center;
+    text-decoration: none;
+  }
+*/
   .navimg {
+    position: relative;
     width: 10%;
     height: 10%;
   }

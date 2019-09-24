@@ -3,26 +3,30 @@
 
 
 //Canvas is the screen made on the page, it's what JS is able to doodle on.
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
 
 //this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded, is what you get.
-var cramw = myCanvas.width = window.innerWidth-20;
-var cramh = myCanvas.height = window.innerHeight-20;
+const cramw = myCanvas.width = window.innerWidth;
+const cramh = myCanvas.height = window.innerHeight;
+//this is a constant value due to JS programming, I'd have to update a bunch to let it be changed with resizing.
+
+
+const rainSpeed = cramh/300;
 
 //X value of raindrop--in an array.
-var RainDropx =  [100];
+let RainDropx =  [100];
 //Same but Y value
-var RainDropy =  [60];
+let RainDropy =  [60];
 
-var RainDropB = [255];
-var RainDropG = [200];
-var RainDropR = [0];
+let RainDropB = [255];
+let RainDropG = [200];
+let RainDropR = [0];
 
-var RainDropw = cramw/100;
-var RainDroph = cramh/100;
+let RainDropw = cramw/100;
+let RainDroph = cramh/100;
 
-var drops = 160;
+let drops = 160;
 //global constant to be used in the for loop in the draw(); function.
 // It would be best to find another way to define this, since it seems as though defining it inside the
 // "for loop" doesn't work. Or maybe I'm just doing it all wrong ;D
@@ -50,7 +54,7 @@ for ( var C = 0; C < 160; C++) {
 
   //add a raindrop to the Raindrop# Array where the mouse is clicked.
   RainDropx.push (getRandom(0, cramw));
-  RainDropy.push (getRandom(0, cramh));
+  RainDropy.push (getRandom(-40, cramh));
   //also get colors on those raindrops, but these are random between the (min,max) values defined
   RainDropR.push (getRandom(0, 50));
   RainDropG.push (getRandom(0, 200));
@@ -67,7 +71,7 @@ function DropDis(C) {
     RainDropR[C] = getRandom(0,20);
 
     RainDropx[C] = getRandom(0,cramw-70);
-    RainDropy[C] = getRandom(0, 60);
+    RainDropy[C] = getRandom(-50, -20);
   }
 }
 
@@ -113,7 +117,7 @@ function raindrop(C) {
 function draw() {
 
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-  ctx.fillStyle = `rgb(100,100,100)`;
+  ctx.fillStyle = `rgba(255,255,255,0)`;
   ctx.rect(0,0,myCanvas.width,myCanvas.height);
   ctx.fill();
   for ( var C = 0; C < RainDropy.length; C++) {
@@ -125,7 +129,7 @@ function draw() {
     DropDis(C);
     raindrop(C);
     //raindroptop(C);
-    RainDropy[C] += 6;
+    RainDropy[C] += rainSpeed;
 
   }
   //requestAnimationFrame is much better than setting the 'draw();' function to a set interval, this only draws what needs to be

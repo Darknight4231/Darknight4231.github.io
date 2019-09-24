@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<style>
+<head>
+
+  <style>
 label,
 textarea {
     font-size: .8rem;
@@ -17,7 +19,62 @@ label {
     display: block;
     margin-bottom: 10px;
 }
+
+  .SHE {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: black;
+    overflow: hidden;
+    padding-top: 2em;
+  }
+
+  .SHE a{
+    padding: 2em;
+    padding-bottom: 4em;
+    text-decoration: none;
+    font-size: 2em;
+    display: block;
+    color: grey;
+  }
+
+  .SHE a:hover{
+    color: white;
+  }
+
+  #CLOSENAV{
+    padding: 0.4em;
+    position: absolute;
+    top: 0;
+    right: 0.2em;
+  }
+
+  #Navthing{
+    color: lightblue;
+    background-color: darkblue;
+    width: 100%;
+    padding: 1.5em;
+    margin: 0;
+  }
+
 </style>
+</head>
+
+<body>
+  <div id="SHE" class="SHE">
+    <a id="CLOSENAV" href="#">&times;</a>
+    <a href="#">Here</a>
+    <a href="#">Here2</a>
+    <a href="#">Here3??!</a>
+    <a href="#">HERE4</a>
+  </div>
+
+  <div id="body">
+
+<button type="button" id="Navthing">Nav button</button>
 
 <label for="story">Tell me your story!</label>
 <textarea id="story" name="story"
@@ -25,3 +82,33 @@ label {
           autocapitalize=sentences>
           Story here please.
 </textarea>
+
+</div>
+<script>
+  const SHE = document.getElementById('SHE');
+  const body = document.getElementById('body');
+  let nav = 0;
+  document.getElementById('Navthing').onclick = function(){
+    if (nav == 0) {
+    if (SHE.style.width == "250px") {
+      SHE.style.width = "0px";
+      body.style.marginLeft = "0px";
+      console.log("no nav");
+      return;
+    }
+    if (SHE.style.width = "0px") {
+      SHE.style.width = "250px";
+      body.style.marginLeft = "250px";
+      console.log('nav');
+      return;
+    }
+   }
+  };
+  document.getElementById('CLOSENAV').onclick = function(){
+    document.getElementById('SHE').style.width = "0px";
+    document.getElementById('body').style.marginLeft = "0px";
+  }
+
+</script>
+
+</body>
