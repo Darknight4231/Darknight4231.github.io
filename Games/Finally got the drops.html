@@ -21,31 +21,31 @@ body{
 //Canvas is the screen made on the page, it's what JS is able to doodle on.
 
 // original
-//var canvas = document.getElementById("myCanvas");
+//const canvas = document.getElementById("myCanvas");
 
-var canvas = document.querySelector('myCanvas');
-var ctx = canvas.getContext("2d");
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext("2d");
 
 //this chooses the canvas and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded, is what you get.
-var cramw = Canvas.width = window.innerWidth;
-var cramh = Canvas.height = window.innerHeight;
+const cramw = canvas.width = window.innerWidth;
+const cramh = canvas.height = window.innerHeight;
 
 //X value of raindrop--in an array.
-var RainDropx =  [100];
+let RainDropx =  [100];
 //Same but Y value
-var RainDropy =  [60];
+let RainDropy =  [60];
 
-var RainDropB = [255];
-var RainDropG = [200];
-var RainDropR = [0];
+let RainDropB = [255];
+let RainDropG = [200];
+let RainDropR = [0];
 
-var RainDropw = cramw/100
-var RainDroph = cramh/100
+let RainDropw = cramw/100
+let RainDroph = cramh/100
 
 //global constant to be used in the for loop in the draw(); function.
 // It would be best to find another way to define this, since it seems as though defining it inside the
 // "for loop" doesn't work. Or maybe I'm just doing it all wrong ;D
-var C = 0;
+let C = 0;
 
 //adds a listener to register "click" (which is what it sounds like, any mouseclick). the second part,
 // click, is the name of the function to run when a mouse is clicked-- the second click can be named anything,
@@ -90,9 +90,9 @@ function DropDis(C) {
 
 //This is one of the main functions-- this grabs the raindrop data out of each array. X,Y position, Color.
 function raindrop(C) {
-  var r = RainDropR[C];
-  var g = RainDropG[C];
-  var b = RainDropB[C];
+  let r = RainDropR[C];
+  let g = RainDropG[C];
+  let b = RainDropB[C];
 
   ctx.beginPath();
   ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
@@ -125,9 +125,9 @@ function raindrop(C) {
   }
   function raindroptop(C){
 
-  var r = RainDropR[C];
-  var g = RainDropG[C];
-  var b = RainDropB[C];
+  let r = RainDropR[C];
+  let g = RainDropG[C];
+  let b = RainDropB[C];
 
   ctx.beginPath();
   ctx.strokeStyle =`rgb(255,0,0)`;
@@ -143,7 +143,7 @@ function draw() {
   ctx.fillStyle = `rgb(100,100,100)`;
   ctx.rect(0,0,myCanvas.width,myCanvas.height);
   ctx.fill();
-  for ( var C = 0; C < RainDropy.length; C++) {
+  for ( let C = 0; C < RainDropy.length; C++) {
 
 
 

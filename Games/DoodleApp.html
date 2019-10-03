@@ -42,9 +42,15 @@
     outline: solid 2px green;
     background-color: green;
   }
+  #Green{
+
+  }
   .Blue{
     outline: solid 2px blue;
     background-color: blue;
+  }
+  #Blue{
+    
   }
 
 
@@ -116,7 +122,9 @@
   };
 
   //Update all colors on one change.
-  document.getElementById("colors").onchange = function(){
+  document.getElementById("colors").onchange = colorchange;
+
+  function colorchange (){
     Red = document.getElementById("Red").value;
     Green = document.getElementById("Green").value;
     Blue = document.getElementById("Blue").value;
@@ -134,6 +142,7 @@
     console.log("BrushSize is now "+BrushSize);
     colorcanv.width = BrushSize;
     colorcanv.height = BrushSize;
+    colorchange();
   };
 
   function draw(){
@@ -153,6 +162,8 @@
     ctx.fill();
     ctx.closePath();
   }
+
+  colorchange();
 
 
   </script>

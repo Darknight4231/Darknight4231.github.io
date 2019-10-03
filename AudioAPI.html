@@ -50,10 +50,19 @@
     <option value="sawtooth">Sawtooth</option>
   </select>
 
+  <button type="button" id="Schumann" name="Schumann">Schumann Resonance</button>
+
 <p>Frequency Values with Triangle wavetype sound similar to old arcade games.</p>
 
 <input type="file" name="fileinput" value=""><label for="fileinput">Does nothing for now.</label>
+
 <script>
+
+
+//106.8 - 107.3 Hz
+//7.83 Hz Schumann Earth resonance
+
+
 //from https://alligator.io/js/first-steps-web-audio-api/
 //https://ipinfo.info/html/ip_checker.php finds the real ip address, can be used for DNS server things
 
@@ -119,6 +128,11 @@ if (audioContext !== undefined) {
     Freqchange();
   };
 
+
+  document.getElementById("Schumann").onclick =function(){
+   oscillator.frequency.setValueAtTime(7.83, audioContext.currentTime);
+   console.log("Schumann on");
+  };
   //Event listener for Wavetype selection changes.
   WaveVer.onchange = function(){
       oscillator.type = WaveVer.value;
@@ -149,12 +163,14 @@ if (audioContext !== undefined) {
      gainNode.gain.setValueAtTime(1, audioContext.currentTime);
      console.log("Gain on");
      StartDoc.innerHTML ="Stop";
+     return;
 
    } else if (StartDoc.innerHTML =="Stop") {
      //mute function
      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
      console.log("Gain muted");
      StartDoc.innerHTML = "Start oscillator";
+     return;
    }
   };
 

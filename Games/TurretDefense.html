@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<head>
+  <title>Turret Defense</title>
+  <style>
+    #canvas{
+      display: block;
+      outline: solid 2px black;
+    }
+  </style>
+</head>
+
+<body>
+  This might be a placement clicker--Factorio? Turret Defense?
+
+  <canvas id="canvas"><p>Welp.</p></canvas>
+<button type="button" id="GridOONOFF" onclick="GridCheck">GridON</button>
+
+<script>
+
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = 400;
+  canvas.height = 400
+  let cramw = canvas.width;
+  let cramh = canvas.height;
+  const Griddiv = 50;
+  const cramwGrid = cramw/Griddiv;
+  const cramhGrid = cramh/Griddiv;
+  let GridONOFF = true;
+  const GridElement = document.getElementById("GridONOFF");
+
+
+  function GridCheck(){
+
+      if (GridElement.innerHTML = GridON){
+        GridOONOFF = false;
+        GridElement.innerHTML = "GridOFF";
+        return;
+      }
+
+      if (GridElement.innerHTML = "GridOFF") {
+        GridOONOFF = true;
+        GridElement.innerHTML = "GridON";
+        return;
+      }
+     };
+
+
+  canvas.addEventListener("click",select);
+
+    let Producer = {
+      production : 1,
+      tooltip : "Producer",
+      hardness : 1,
+      rgb : [255,0,0],
+    };
+
+    let Mover = {
+      move : 2,
+      tooltip : "Mover",
+    };
+
+    let Loader = {
+      load : 5,
+      tooltip : "Loader",
+    };
+
+    function GridMaker(){
+      if(GridONOFF = true){
+      for (let i = 0; i <= cramhGrid; i++) {
+        for (let j = 0; j <= cramwGrid; j++) {
+          ctx.beginPath();
+          ctx.fillStyle = 'grey';
+          ctx.moveTo(j*Griddiv-Griddiv, i*Griddiv);
+          ctx.lineTo(j*Griddiv,i*Griddiv);
+          ctx.lineTo(j*Griddiv,i*Griddiv-Griddiv);
+          ctx.lineTo(j*Griddiv-Griddiv,i*Griddiv-Griddiv);
+          ctx.lineTo(j*Griddiv-Griddiv,i*Griddiv);
+          ctx.stroke();
+          ctx.fill();
+          ctx.closePath();
+        }
+       }
+     } else if (GridONOF = false) {
+       console.log("help");
+
+     }
+    };
+
+    function select (e){
+
+          console.log("Column "+Math.floor((e.clientX/Griddiv)));
+          console.log("Row "+Math.floor((e.clientY/Griddiv)));
+    //  e.clientX;
+    //  e.clientY;
+
+   };
+
+    function ConcatRGBs(e){
+    let rgbs = "".concat("`rgb("+e.rgb[0]+","+e.rgb[1]+","+e.rgb[2]+")`");
+    console.log(rgbs);
+    return(rgbs);
+  };
+
+  function draw(){
+
+      function drawProducers(){
+
+      ctx.beginPath();
+      ctx.fillStyle = ConcatRGBs(Producer);
+      ctx.rect(40,40,20,20);
+      ctx.fill();
+      ctx.closePath();
+
+    }
+//    requestAnimationFrame(draw);
+  };
+
+  draw();
+  GridMaker();
+
+</script>
+</body>
