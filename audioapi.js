@@ -1,99 +1,4 @@
-<!DOCTYPE html>
-<head>
-  <style>
-
-    .Radio {
-      outline: 2px solid black;
-      padding: 2em;
-      margin: 2em;
-    }
-    .Radio:hover{
-      background-color: grey;
-    }
-
-    .ranges{
-      clear: both;
-      float: left;
-    }
-    .ranges:hover{
-      background-color: black;
-    }
-    .rangelabel{
-      float: left;
-      position: relative;
-    }
-
-    button{
-      padding: 2em;
-      margin: 2em;
-      float:left;
-      clear: both;
-    }
-    *, !script{
-      display: grid;
-    }
-    *:disabled {
-      color: grey;
-      background-color: grey;
-    }
-    #END:disabled{
-      background-color: black;
-    }
-
-  </style>
-</head>
-
-<body>
-"A440 is widely used as concert pitch in the United Kingdom and the United States. In continental Europe the frequency of A4 commonly varies between 440 Hz and 444 Hz. In the period instrument movement, a consensus has arisen around a modern baroque pitch of 415 Hz (with 440 Hz corresponding to A♯), a 'baroque' pitch for some special church music (in particular, some German church music, e.g. the Pre-Leipzig period cantatas of Bach) known as (Chorton pitch) at 466 Hz (with 440 Hz corresponding to A♭), and classical pitch at 430 Hz."
-  <button type="button" id="Start" name="Start">Start oscillator</button>
-
-  <input type="range" class="ranges" id="Volume" value="0" min="0" max="100"> <label class="rangelabel" for="Volume">Volume</label>
-  <input type="range" class="ranges" id="Freq" value="100" min="0" max="8000" step="5"><label class="rangelabel" for="Freq">Frequency</label>
-  <input type="range" class="ranges" id="Detune" min="0" max="8000"><label for="Detune">Detune Value</label>
-
-  <p>Frequency is currently <p id="freqvaltxt">440</p><br/>
-  <p>Detune Value is at <p id="Detunetxt"></p><br/>
-
-
-  <div id="poo">
-    <input type="radio" class="Radio" name="waveAAH" id="Sin" value="sin"><label for="Sin">Sin</label>
-    <input type="radio" class="Radio" name="waveAAH" id="Square" value="square"><label for="Square">Square</label>
-    <input type="radio" class="Radio" name="waveAAH" id="Triangle" value="triangle"><label for="Triangle">Triangle</label>
-    <input type="radio" class="Radio" name="waveAAH" id="Sawtooth" value="sawtooth"><label for="Sawtooth">Sawtooth</label>
-  </div>
-
-  <button type="button" id="Schumann" name="Schumann">Schumann Resonance</button>
-
-<p>Frequency Values with Triangle wavetype sound similar to old arcade games.</p>
-
-<input type="file" name="fileinput" value=""><label for="fileinput">Does nothing for now.</label>
-
-<script>
-
-/*The inputStateChange event is executed when the state of a <input> element has changed.
-This event is used mainly for an accessibility purpose.*/
-
-//106.8 - 107.3 Hz
-//7.83 Hz Schumann Earth resonance
-
-
-//from https://alligator.io/js/first-steps-web-audio-api/
-//https://ipinfo.info/html/ip_checker.php finds the real ip address, can be used for DNS server things
-
-//setValueAtTime(value, Time)
-//setTargetAtTime(value, Time, timeconstant (rate of change ;P) )
-
-//gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0)
-
-/*let musicContext = new AudioContext({
-  latencyHint: "playback",
-  sampleRate: 48000
-});
-*/
-
-//audioContext.createMediaElementSource(mediaElement) fires from HTML media (audio/video) element
-// ^^^ https://webaudio.github.io/web-audio-api/#mediaelementaudiosourcenode
-
+/*
 let audioContext;
 
 try {
@@ -206,7 +111,7 @@ if (audioContext !== undefined) {
      StartDoc.innerHTML = "Start oscillator";
      return;
    }
-  };
+//  };
 
 /*  const Gainvalue = document.getElementById("Volume");
   const Frequ = document.getElementById("Freq");
@@ -215,5 +120,3 @@ if (audioContext !== undefined) {
 */
   console.log("Finished Setup.");
 };
-</script>
-</body>

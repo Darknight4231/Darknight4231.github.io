@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<head>
+  <style media="screen">
+    td{
+      outline:solid 2px black;
+    }
+  </style>
+</head>
+<body>
+According to the Wikipedia article about voice frequency: "The voiced speech of a typical adult male will have a fundamental frequency from 85 to 180 Hz, and that of a typical adult female from 165 to 255 Hz." That is, the frequency ranges (of the fundamental frequency) are about an octave apart, for males and females.
+<table class="standard-table">
+ <tbody>
+  <tr>
+   <th scope="row"><code>type</code></th>
+   <th scope="col">Description</th>
+   <th scope="col"><code>frequency</code></th>
+   <th scope="col"><code>Q</code></th>
+   <th scope="col"><code>gain</code></th>
+  </tr>
+  <tr>
+   <th scope="row"><code>lowpass</code></th>
+   <td>Standard second-order resonant lowpass filter with 12dB/octave rolloff. Frequencies below the cutoff pass through; frequencies above it are attenuated.</td>
+   <td>The cutoff frequency.</td>
+   <td>Indicates how peaked the frequency is around the cutoff. The greater the value is, the greater is the peak.</td>
+   <td><em>Not used</em></td>
+  </tr>
+  <tr>
+   <th scope="row"><code>highpass</code></th>
+   <td>Standard second-order resonant highpass filter with 12dB/octave rolloff. Frequencies below the cutoff are attenuated; frequencies above it pass through.</td>
+   <td>The cutoff frequency.</td>
+   <td>Indicates how peaked the frequency is around the cutoff. The greater the value, the greater the peak.</td>
+   <td><em>Not used</em></td>
+  </tr>
+  <tr>
+   <th scope="row"><code>bandpass</code></th>
+   <td>Standard second-order bandpass filter. Frequencies outside the given range of frequencies are attenuated; the frequencies inside it pass through.</td>
+   <td>The center of the range of frequencies.</td>
+   <td>Controls the width of the frequency band. The greater the <code>Q</code> value, the larger the frequency band.</td>
+   <td><em>Not used</em></td>
+  </tr>
+  <tr>
+   <th scope="row"><code>lowshelf</code></th>
+   <td>Standard second-order lowshelf filer. Frequencies lower than the frequency get a boost, or an attenuation; frequencies over it are unchanged.</td>
+   <td>The upper limit of the frequencies getting a boost or an attenuation.</td>
+   <td><em>Not used</em></td>
+   <td>The boost, in dB, to be applied; if negative, it will be an attenuation.</td>
+  </tr>
+  <tr>
+   <th scope="row"><code>highshelf</code></th>
+   <td>Standard second-order highshelf filer. Frequencies higher than the frequency get a boost or an attenuation; frequencies lower than it are unchanged.</td>
+   <td>The lower limit of the frequencies getting a boost or an attenuation.</td>
+   <td><em>Not used</em></td>
+   <td>The boost, in dB, to be applied; if negative, it will be an attenuation.</td>
+  </tr>
+  <tr>
+   <th scope="row"><code>peaking</code></th>
+   <td>Frequencies inside the range get a boost or an attenuation; frequencies outside it are unchanged.</td>
+   <td>The middle of the frequency range getting a boost or an attenuation.</td>
+   <td>Controls the width of the frequency band. The greater the <code>Q</code> value, the larger the frequency band.</td>
+   <td>The boost, in dB, to be applied; if negative, it will be an attenuation.</td>
+  </tr>
+  <tr>
+   <th scope="row"><code>notch</code></th>
+   <td>Standard <a class="external" href="http://en.wikipedia.org/wiki/Band-stop_filter" rel="noopener" title="/en-US/docs/">notch</a> filter, also called a <em>band-stop</em> or <em>band-rejection</em> filter. It is the opposite of a bandpass filter: frequencies outside the give range of frequencies pass through; frequencies inside it are attenuated.</td>
+   <td>The center of the range of frequencies.</td>
+   <td>Controls the width of the frequency band. The greater the <code>Q</code> value, the larger the frequency band.</td>
+   <td><em>Not used</em></td>
+  </tr>
+  <tr>
+   <th scope="row"><code>allpass</code></th>
+   <td>Standard second-order <a class="external" href="http://en.wikipedia.org/wiki/All-pass_filter#Digital_Implementation" rel="noopener" title="/en-US/docs/">allpass</a> filter. It Lets all frequencies through, but changes the phase-relationship between the various frequencies.</td>
+   <td>The frequency with the maximal <a class="external" href="http://en.wikipedia.org/wiki/Group_delay_and_phase_delay" rel="noopener" title="/en-US/docs/">group delay</a>, that is, the frequency where the center of the phase transition occurs.</td>
+   <td>Controls how sharp the transition is at the medium frequency. The larger this parameter is, the sharper and larger the transition will be.</td>
+   <td><em>Not used</em></td>
+  </tr>
+ </tbody>
+</table>
+</body>

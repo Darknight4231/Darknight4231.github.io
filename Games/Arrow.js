@@ -3,56 +3,75 @@
 
 
 //Canvas is the screen made on the page, it's what JS is able to doodle on.
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
 canvas.addEventListener("click", arrowAngle);
-document.addEventListener("keydown",keydown);
+document.addEventListener("keypress",keydown);
 document.addEventListener("keyup", keyup);
 
 //this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded, is what you get.
-var cramw = myCanvas.width = 1280;
-var cramh = myCanvas.height = 600;
+const cramw = myCanvas.width = 1280;
+const cramh = myCanvas.height = 600;
 
-var arrowX = [];
-var arrowY = [];
-var Gravity = [];
-var ArrowPower =[];
-var mouseY = 0;
+let arrowX = [];
+let arrowY = [];
+let Gravity = [];
+let ArrowPower =[];
+let mouseY = 0;
 
-var playerblock = [50,390];
-var slow = 0.2;
-var C = 0;
-var grav = 0.6;
+let playerblock = [50,390];
+const slow = 0.2;
+let C = 0;
+const grav = 2;
 
 
-var BX = [800,200,400,1200];
-var BDX = [0,0,0,0];
-var BDY = [0,0,0,0];
-var blocksY = [60, 100, 360, 440];
-var blocksize = 40;
-var blockfall = [0,0,0,0];
+let BX = [800,200,400,1200];
+let BDX = [0,0,0,0];
+let BDY = [0,0,0,0];
+let blocksY = [60, 100, 360, 440];
+let blocksize = 40;
+let blockfall = [0,0,0,0];
 
-var rightPressed = false;
-var leftPressed  = false;
-var upPressed    = false;
-var downPressed  = false;
-
+let rightPressed = false;
+let leftPressed  = false;
+let upPressed    = false;
+let downPressed  = false;
 
 function keydown (e){
+  /*
+      if (leftPressed){
+     playerblock[0] -=6;
+     return;
+   }
+   else if (rightPressed){
+     playerblock[0] += 6;
+     return;
+   }
+   else if (upPressed){
+     playerblock[1] -=6;
+     return;
+   }
+   else if (downPressed){
+     playerblock[1] +=6;
+
+   }*/
 
   if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
     rightPressed = true;
+    playerblock[0] += 6;
   }
   if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
    leftPressed = true;
+   playerblock[0] -=6;
   }
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
    upPressed = true;
+   playerblock[1] -=6;
   }
 
   if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
    downPressed = true;
+   playerblock[1] +=6;
    }
 };
 
@@ -111,7 +130,7 @@ function arrowAngle(e){
   //HOW DO I read the cursor Y position as an angle..?!?!?
   //that's what GravAngle is for.. would making mouseY into radians help?
 
-  var mouseY = e.clientY;
+  let mouseY = e.clientY;
   //this shows the radians
   //console.log((-(Math.atan((mouseY-400)/160))));
 
@@ -150,12 +169,13 @@ function shot (){
   arrowY.push (playerblock[1]);
   ArrowPower.push(pwr/100);
   Gravity.push ((-0.9)+GravRad*4);
+
 };
 
 function blocks(){
 
   ctx.beginPath();
-  for (var C=0; C<blocksY.length; C++){
+  for (let C=0; C<blocksY.length; C++){
 
     ctx.fillStyle = `rgb(0,180,200)`;
     ctx.rect(BX[C], blocksY[C], blocksize,blocksize);
@@ -177,7 +197,7 @@ function blocks(){
 
 function collisionDetection(C) {
 
-      for (var B=0; B<BX.length; B++){
+      for (let B=0; B<BX.length; B++){
 
     //use x for both arrowX and arrowY to keep it on the same arrow at all times. Easy. Really easy actually.
     //B goes through every block before moving to check the next arrow, or x.
@@ -225,18 +245,6 @@ function player(){
 function draw(){
       background();
 
-    if (leftPressed){
-   playerblock[0] -=6;
- }
- if (rightPressed){
-   playerblock[0] += 6;
- }
- if (upPressed){
-   playerblock[1] -=6;
- }
- if (downPressed){
-   playerblock[1] +=6;
- }
 
   ctx.clearRect(0,0,cramw,cramh); //this clears the canvas completely
 
@@ -245,7 +253,7 @@ function draw(){
   player();
 
 
-  for ( var C=0; C < arrowX.length; C++){
+  for ( let C=0; C < arrowX.length; C++){
 
     collisionDetection(C);
 

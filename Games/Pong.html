@@ -64,16 +64,19 @@ function keydown(e){
 
   if (e.key == "w" || e.key == "W") {
     Player1moveup = true;
+    return;
   }
-  if (e.key == "s" || e.key == "S"){
+  if (e.key == "s" && Player1moveup === false || e.key == "S" && Player1moveup === false){
     Player1movedown = true;
+    return;
   }
   if (e.key == "Up" || e.key == "ArrowUp"){
     Player2moveup = true;
+    return;
   }
   if (e.key == "Down" || e.key == "ArrowDown"){
     Player2movedown = true;
-
+    return;
   }
 
 

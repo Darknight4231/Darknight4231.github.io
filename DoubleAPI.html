@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+<title>DoubleAPI</title>
+</head>
+<body>
+"A440 is widely used as concert pitch in the United Kingdom and the United States. In continental Europe the frequency of A4 commonly varies between 440 Hz and 444 Hz. In the period instrument movement, a consensus has arisen around a modern baroque pitch of 415 Hz (with 440 Hz corresponding to A♯), a 'baroque' pitch for some special church music (in particular, some German church music, e.g. the Pre-Leipzig period cantatas of Bach) known as (Chorton pitch) at 466 Hz (with 440 Hz corresponding to A♭), and classical pitch at 430 Hz."
+  <button type="button" id="Start" name="Start">Start oscillator</button>
+
+  <input type="range" class="ranges" id="Volume" value="0" min="0" max="100"> <label class="rangelabel" for="Volume">Volume</label>
+  <input type="range" class="ranges" id="Freq" value="100" min="0" max="8000" step="5"><label class="rangelabel" for="Freq">Frequency</label>
+  <input type="range" class="ranges" id="Detune" min="0" max="8000"><label for="Detune">Detune Value</label>
+
+  <p>Frequency is currently <p id="freqvaltxt">440</p><br/>
+  <p>Detune Value is at <p id="Detunetxt"></p><br/>
+
+
+  <div id="poo">
+    <input type="radio" class="Radio" name="waveAAH" id="Sin" value="sin"><label for="Sin">Sin</label>
+    <input type="radio" class="Radio" name="waveAAH" id="Square" value="square"><label for="Square">Square</label>
+    <input type="radio" class="Radio" name="waveAAH" id="Triangle" value="triangle"><label for="Triangle">Triangle</label>
+    <input type="radio" class="Radio" name="waveAAH" id="Sawtooth" value="sawtooth"><label for="Sawtooth">Sawtooth</label>
+  </div>
+
+  <button type="button" id="Schumann" name="Schumann">Schumann Resonance</button>
+
+  <script src="voicemod.js"></script>
+  <script src="audioapi.js"></script>
+
+</body>

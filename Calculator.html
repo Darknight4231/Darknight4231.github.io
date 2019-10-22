@@ -9,68 +9,177 @@
     </title>
     <meta name="GENERATOR" content="Arachnophilia 5.5" />
     <meta name="FORMATTER" content="Arachnophilia 5.5" />
-    
-  </head>
-  
-  <body>
-  
-  
-<canvas id="myCanvas">
-<p>This message is for those who can't have a canvas element running in their browser. Try a different browser to see what's on the page.</p>
+    <style>
 
-</canvas>
-    <button id="1">1</button>
-    <button id="2">2</button>
-    <button id="3">3</button>
-    <button id="4">4</button>
-    <button id="5">5</button>
-    <button id="6">6</button>
-    <button id="7">7</button>
-    <button id="8">8</button>
-    <button id="9">9</button>
-    <button id="0">0</button>
-    
-    <script>
-    document.addEventListener("button1", button1);
-    document.addEventListener("button2", button);
-    document.addEventListener("button3", button);
-    document.addEventListener("button4", button);
-    document.addEventListener("button5", button);
-    document.addEventListener("button6", button);
-    document.addEventListener("button7", button);
-    document.addEventListener("button8", button);
-    document.addEventListener("button9", button);
-    document.addEventListener("button0", button);
-    //that's a lot of listeners.
-    
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d"); 
-    
-    var cramw = myCanvas.width = 300;
-    var cramh = myCanvas.height = 300;
-        function button (e){    
-      ctx.beginPath();
-      ctx.fillStyle = `rgb(200,255,0)`;
-      ctx.rect(200,200, 50, 50);
-      ctx.fill();
-      ctx.closePath();
+        #calccolors{
+          font-size: 2em;
+        }
+
+        .CalcTotal{
+          outline: 2px solid blue;
+          display: block;
+          position: absolute;
+          top:40%;
+          left:40%;
+          background: inherit;
+        }
+
+        #Screen{
+          width: 100%;
+          height:2em;
+          font-size: 2em;
+        }
+
+        .calcbuttons{
+          width: auto;
+          align:top;
+          outline: 2px solid black;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          grid-gap: 1em;
+          padding: 1em;
+          background-color: lightgrey;
+        }
+
+        .calcbuttons>button{
+          font-size: 2em;
+          outline: 2px solid blue;
+          background-color: lightblue;
+        }
+
+        .calcbuttons>button:hover{
+          background-color: teal;
+        }
+
+        .calcbuttons>button:active{
+          background-color: grey;
+        }
+
+        .operators{
+          grid-column: 4;
+        }
+
+        button.finish{
+          background-color: rgb(150,150,255);
+        }
+
+        #AC{
+          grid-column-start: 1;
+          grid-column-end: 5;
+        }
+
+    </style>
+  </head>
+
+  <body>
+
+<!--
+  Each table has to have at the least-
+  a table body, and table data (table data, or td, represents each cell. Combined with table columns and adding colspan to the table data cell, you can specify how many cells the data occupies)
+-->
+<label for="theme" id="themelabel">Change the theme of the page and calculator.</label>
+<button name="theme" id="calccolors">Dark</button>
+
+<div class="CalcTotal" id="CalcTotal">
+  <input disabled id="Screen" type="text" value="0" />
+      <div class="calcbuttons" id="calcbuttons">
+
+        <button class="numbers"></button>
+        <button class="numbers"></button>
+        <button class="numbers"></button>
+        <button class="operators" value="*">&times;</button>
+        <button class="numbers"></button>
+        <button class="numbers"></button>
+        <button class="numbers"></button>
+        <button class="operators" id="plus" value="+">+</button>
+        <button class="numbers"></button>
+        <button class="numbers"></button>
+        <button class="numbers"></button>
+        <button class="operators" value="-">&minus;</button>
+        <button value="." id="decimal">.</button>
+        <button id="Zero" value="0">0</button>
+        <button class="finish" value="=">=</button>
+        <button class="operators" value="/">&divide;</button>
+        <button class="finish" id="AC">AC</button>
+
+      </div>
+  </div>
+<script>
+  document.getElementById('AC').addEventListener('click',AllClear);
+  document.getElementById('calccolors').addEventListener('click',themecolor);
+  const themelabel = document.getElementById('themelabel');
+  const theme = document.getElementById('calcbuttons');
+  function themecolor(e){
+    if (this.innerHTML == "Dark") {
+        this.innerHTML = "Light";
+        theme.style.background = `rgb(100,100,100)`;
+        document.body.style.background = 'black';
+        themelabel.style.color = 'white';
+        return;
       }
-    
-      
-   function button1(e){
-     ctx.beginPath();
-     ctx.fillStyle = `rgb(200,255,0)`;
-     ctx.rect(300,300, 50, 50);
-     ctx.fill();
-     ctx.closePath();
-  }
-  
-  function draw(){
-      button();
-      button1();
-      requestAnimationFrame();
+    if (this.innerHTML == "Light") {
+      this.innerHTML = "Dark";
+      theme.style.background = `rgb(200,200,200)`
+      document.body.style.background = 'white';
+      themelabel.style.color = 'black';
+      return;
       }
-      draw();
+     }
+  const screen = document.getElementById("Screen");
+  const operator = document.querySelectorAll('.operators');
+
+    for (var i = 0; i < operator.length; i++) {
+      operator[i].addEventListener('click', operate);
+    }
+
+    document.getElementById('Zero').addEventListener('click', button);
+    const numbers = document.querySelectorAll('.numbers'); //This Grabs all number buttons, and assigns values 1-9. 0 is granted by above EventListener.
+    for (var i = 0; i < numbers.length; i++) {
+      numbers[i].value = i+1;
+      numbers[i].innerHTML = i+1;
+      numbers[i].addEventListener('click', button);
+    };
+      let firstnumber = 0;
+      let operand1 = null;
+      let operand2 = null;
+      let Calculation = null;
+    //changes screen to + what number is pressed.
+    function button (e){
+      if (screen.value == 0) {
+        screen.value = this.value;
+        return;
+      }
+      screen.value = screen.value + this.value;
+    };
+
+    function operate(e){
+
+        if (this.value == "+") {
+          console.log("+");
+          console.log(parseFloat(screen.value));
+          return;
+        }
+
+        if (this.value == "-") {
+          console.log("-");
+          return;
+        }
+
+        if (this.value == "*") {
+          console.log("*");
+          return;
+        }
+
+        if (this.value == "/") {
+          console.log("/");
+          return;
+        }
+      }
+
+      function AllClear(e){
+        screen.value = 0;
+      }
+
     </script>
   </body>
 </html>
