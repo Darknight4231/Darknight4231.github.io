@@ -1,3 +1,12 @@
+//***********NEWEST OF THINGS***************
+
+/*
+  Going to need a DynamicsCompressorNode on this for sound fixins
+  https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode/DynamicsCompressorNode
+
+*/
+
+
 
 // Created on Mar 20, 2019 11:34:18 PM
 

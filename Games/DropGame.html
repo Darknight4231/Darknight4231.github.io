@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<head>
+<title>Drop Game</title>
+<style media="screen">
+  canvas{
+    outline: solid 2px blue;
+    float: left;
+    clear: left;
+  }
+</style>
+</head>
+<body>
+This is going to be a game about dropping objects/an object into a goal.
+<canvas><p>CanvasAPI isn't supported by your browser, try Chrome or another browser that supports HTML5 Standards.</p></canvas>
+<button type="button" id="buildmode">buildmode</button>
+
+<script>
+
+
+  const canvas = document.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+
+  const grav = 0.2;
+
+  let box = {
+    pos: [40, 20],
+    color: `rgb(0,100,255)`,
+    size: [20,20],
+  }
+
+  let obsarray = [];
+  let size = 20;
+  let building = true;
+  let obstacles ={
+    color: `rgb(120,120,120)`,
+  };
+
+  document.getElementById("buildmode").onclick = function(){
+    if (building) {
+      building = false;
+      console.log('not building');
+      return;
+    } else {
+      building = true;
+      console.log('building');
+      return;
+    }
+  }
+
+  canvas.onclick = function(e){
+    if (building) {
+      obsarray.push(e.clientX-canvas.offsetLeft);
+      obsarray.push(e.clientY-canvas.offsetTop);
+      obsarray.push(size);
+      obsarray.push(size);
+      console.log('obstacle added');
+      }
+    if (!building) {
+      box.pos[0] = e.clientX-canvas.offsetLeft;
+      box.pos[1] = e.clientY-canvas.offsetTop;
+      console.log('gamestart');
+      }
+    };
+
+
+
+
+  function validate(tip){
+    for (var x = 0; x < obsarray.length; x=x+4) {
+      for (var y = 1; y < obsarray.length; y=y+4) {
+        for (var w = 2; w < obsarray.length; w=w+4) {
+          for (var h = 3; h < obsarray.length; h=h+4) {
+            if (obstacles[x]>box.pos[0] ) {
+
+            }
+          }
+         }
+        }
+       }
+     };
+
+  function updateboxpos(){
+
+    if (validate) {
+      box.pos[1] = box.pos[1]+grav;
+    }
+  }
+
+  function draw(){
+
+    ctx.beginPath();
+      for (c = 0; c < obsarray.length; c=c+4) {
+        ctx.fillStyle = `rgb(${c},${c},${c})`;
+        ctx.rect(obsarray[c],obsarray[c+1],obsarray[c+2],obsarray[c+3]);
+        ctx.fill();
+    }
+    ctx.closePath();
+
+      ctx.beginPath();
+
+      ctx.fillStyle = box.color;
+      ctx.rect(box.pos[0],box.pos[1],40,40);
+      ctx.fill();
+      ctx.closePath();
+
+      updateboxpos();
+      requestAnimationFrame(draw);
+
+  };
+  draw();
+
+</script>
+</body>

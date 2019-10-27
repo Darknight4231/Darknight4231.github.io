@@ -1,8 +1,8 @@
 
-  let audioContext;
+  let audioCtx;
 
   try {
-     audioContext =
+     audioCtx =
       new (window.AudioContext || window.webkitAudioContext)();
       console.log("AudioContext Defined, starting.");
   } catch (error) {
@@ -26,9 +26,8 @@ if (navigator.mediaDevices) {
       console.log('audioexists');
 
 
-            let audioCtx = new AudioContext();
+
             let source = audioCtx.createMediaStreamSource(stream);
-            let reverbNode;
             let biquadFilter = audioCtx.createBiquadFilter();
 
             biquadFilter.type = 'highpass';
@@ -48,12 +47,12 @@ function base64ToArrayBuffer(base64) {
     return bytes.buffer;
 }
 
-reverbNode = audioContext.createConvolver();
+reverbNode = audioCtx.createConvolver();
   // impulseResponse is defined in another Pen
   // It's a base64 encoded string.
   // Convert it to a binary array first
   var reverbSoundArrayBuffer = base64ToArrayBuffer(impulseResponse);
-  audioContext.decodeAudioData(reverbSoundArrayBuffer,
+  audioCtx.decodeAudioData(reverbSoundArrayBuffer,
     function(buffer) {
       reverbNode.buffer = buffer;
     },
@@ -65,6 +64,7 @@ reverbNode = audioContext.createConvolver();
 
 
             source.connect(biquadFilter);
-            biquadFilter.connect(audioCtx.destination);
+            biquadFilter.connect(gainNode);
+            //biquadFilter.connect(audioCtx.destination);
       });
     };

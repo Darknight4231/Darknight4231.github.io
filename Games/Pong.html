@@ -15,7 +15,7 @@
 
     <script>
 
-  var  canvas = document.getElementById("hek");
+   var  canvas = document.getElementById("hek");
    var ctx= canvas.getContext("2d");
 
    var cramw = hek.width = 1575;
@@ -66,7 +66,7 @@ function keydown(e){
     Player1moveup = true;
     return;
   }
-  if (e.key == "s" && Player1moveup === false || e.key == "S" && Player1moveup === false){
+  if (e.key == "s"|| e.key == "S"){
     Player1movedown = true;
     return;
   }
@@ -78,15 +78,10 @@ function keydown(e){
     Player2movedown = true;
     return;
   }
-
-
 };
 
 
   function keyup(e){
-
-
-
 
    if (e.key == "w" || e.key == "W"){
    Player1moveup = false;
@@ -112,6 +107,15 @@ function getRandom(min, max) {
 function getRandom(min,max) {
   return Math.random()* (max - min) + min;
 }
+
+  function computermove(){
+    while (ballpos[1] > Player1[1]+20) {
+      Player1[1] += Playersmove;
+  }
+    if (ballpos[0] < Player1[1]+20) {
+      Player1[1] -= Playersmove;
+  }
+ };
 
     function players(){
 
@@ -173,6 +177,7 @@ function getRandom(min,max) {
     function draw(){
 
     Background();
+    computermove();
 
 
            if (ballpos[0] < Player2[0]+20 && ballpos[0] > Player2[0] -10 && ballpos[1] > Player2[1] && ballpos[1] < (Player2[1]+100)){
@@ -189,11 +194,12 @@ function getRandom(min,max) {
      BallAccelH = -(BallAccelH);
    }
 
-   if(Player1moveup && Player1[1] > 0){
+   if(Player1moveup && Player1[1] || Player1[1] > 0){
     Player1[1] -= Playersmove;
-     }else if (Player1movedown && Player1[1] < cramh-100){
+  }else if (Player1movedown && Player1[1] || Player1[1] < cramh-100){
        Player1[1] += Playersmove;
-       }
+     }
+
    if (Player2moveup && Player2[1] > 0){
      Player2[1] -= Playersmove;
      }else if (Player2movedown && Player2[1] < cramh-100){
@@ -204,6 +210,7 @@ function getRandom(min,max) {
 
     players();
     ballmove();
+
     requestAnimationFrame(draw);
     };
 
