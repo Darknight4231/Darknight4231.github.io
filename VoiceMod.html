@@ -7,7 +7,7 @@
 
   <p id="um">VoiceModulator hopefully.</p>
 
-  <script src="impulseresponse.js"></script>
+
   <script>
 
 
@@ -59,31 +59,26 @@ function base64ToArrayBuffer(base64) {
         bytes[i] = binaryString.charCodeAt(i);
     }
     return bytes.buffer;
-}
+};
   //the 'impulseResponse' is a really long string that is somehow both Base64 and Binary.
   //What is Base64??
-
-  var reverbSoundArrayBuffer = base64ToArrayBuffer(impulseResponse);
-
+  let reverbSoundArrayBuffer = base64ToArrayBuffer(impulseResponse);
   // .decodeAudioData(ArrayBuffer, Success function, Failure function)
   audioContext.decodeAudioData(reverbSoundArrayBuffer,
     function(buffer) {
       reverbNode.buffer = buffer;
-    },
-    function(e) {
-      alert("Error when decoding audio data" + e.err);
-    }
-  );
+  },
+            alert("Error when decoding audio data" + e.err);
+          ))
   console.log(base64ToArrayBuffer(impulseResponse));
-
 
             source.connect(reverbNode);
             //reverbNode.connect(biquadFilter);
             reverbNode.connect(audioCtx.destination);
             //source.connect(biquadFilter);
             //biquadFilter.connect(audioCtx.destination);
-      });
-    };
+};
+};
 
 </script>
 </body>

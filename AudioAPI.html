@@ -3,7 +3,6 @@
   <style>
 
     .Radio {
-      outline: 2px solid black;
       padding: 2em;
       margin: 2em;
     }
@@ -22,6 +21,9 @@
       float: left;
       position: relative;
     }
+    #poo>label {
+      outline: solid 1px black;
+    }
 
     button{
       padding: 2em;
@@ -39,6 +41,9 @@
     #END:disabled{
       background-color: black;
     }
+    canvas{
+      outline: 1px solid blue;
+    }
 
   </style>
 </head>
@@ -48,30 +53,43 @@
   <button type="button" id="Start" name="Start">Start oscillator</button>
 
   <input type="range" class="ranges" id="Volume" value="0" min="0" max="100"> <label class="rangelabel" for="Volume">Volume</label>
-  <input type="range" class="ranges" id="Freq" value="100" min="0" max="8000" step="5"><label class="rangelabel" for="Freq">Frequency</label>
-  <input type="range" class="ranges" id="Detune" min="0" max="8000"><label for="Detune">Detune Value</label>
-
+  <input type="range" class="ranges" id="Freq" value="100" min="0" max="14000" step="5"><label class="rangelabel" for="Freq">Frequency</label>
   <p>Frequency is currently <p id="freqvaltxt">440</p><br/>
-  <p>Detune Value is at <p id="Detunetxt"></p><br/>
 
 
   <div id="poo">
-    <input type="radio" class="Radio" name="waveAAH" id="Sin" value="sin"><label for="Sin">Sin</label>
-    <input type="radio" class="Radio" name="waveAAH" id="Square" value="square"><label for="Square">Square</label>
-    <input type="radio" class="Radio" name="waveAAH" id="Triangle" value="triangle"><label for="Triangle">Triangle</label>
-    <input type="radio" class="Radio" name="waveAAH" id="Sawtooth" value="sawtooth"><label for="Sawtooth">Sawtooth</label>
+    <label for="Sin"><input type="radio" class="Radio" name="waveAAH" id="Sin" value="sin">Sin</label>
+    <label for="Square"><input type="radio" class="Radio" name="waveAAH" id="Square" value="square">Square</label>
+    <label for="Triangle"><input type="radio" class="Radio" name="waveAAH" id="Triangle" value="triangle">Triangle</label>
+    <label for="Sawtooth"><input type="radio" class="Radio" name="waveAAH" id="Sawtooth" value="sawtooth">Sawtooth</label>
   </div>
-
-  <button type="button" id="Schumann" name="Schumann">Schumann Resonance</button>
+  <div>
+    <label>feedForward<input type="number" id="feedForward1"></label><label>feedForward2<input type="number" id="feedForward2"></label><label>feedForward3<input type="number" id="feedForward3"></label><br/>
+    <label>feedBackward<input type="number" id="feedBackward"></label><label>feedBackward2<input type="number" id="feedBackward2"></label><label>feedBackward3<input type="number" id="feedBackward3"></label>
+  </div>
+  <button type="button" id="Schumann" name="Schumann" value="7.83">Schumann Resonance</button>
+  <button type="button" class="A" id="A0" onclick="Frequbutton(27.5)">A0</button>
+  <button type="button" class="A" id="A1" onclick="Frequbutton(55)">A1</button>
+  <button type="button" class="A" id="A2" onclick="Frequbutton(110)">A2</button>
+  <button type="button" class="A" id="A3" onclick="Frequbutton(220)">A3</button>
+  <button type="button" class="A" id="A4" onclick="Frequbutton(440)">A4</button>
+  <button type="button" class="A" id="A5" onclick="Frequbutton(880)">A5</button>
 
 <p>Frequency Values with Triangle wavetype sound similar to old arcade games.</p>
-
+<canvas id="Canvas"><p>If you're seeing this, your browser doesn't support CanvasAPI. Try Chrome, Edge, or Firefox instead.</canvas>
 <input type="file" name="fileinput" value=""><label for="fileinput">Does nothing for now.</label>
 
 <script>
 
 /*The inputStateChange event is executed when the state of a <input> element has changed.
-This event is used mainly for an accessibility purpose.*/
+This event is used mainly for an accessibility purpose.
+
+*****************
+
+MUSICALNOTE FREQUENCIES
+//https://pages.mtu.edu/~suits/notefreqs.html
+
+*****************
 
 //106.8 - 107.3 Hz
 //7.83 Hz Schumann Earth resonance
@@ -116,27 +134,28 @@ if (audioContext !== undefined) {
   const Frequ = document.getElementById("Freq");
   const freqtxt = document.getElementById("freqvaltxt");
   const WaveVer = document.getElementById("WaveVer");
-  const DetuneRange = document.getElementById("Detune");
-  const Detunetext = document.getElementById("Detunetxt");
 
-
+  let feedForward = [0.00020298, 0.0004059599, 0.00020298];
+  let feedBackward = [1.0126964558, -1.9991880801, 0.9873035442];
+  //let feedForward = [0.3, 0.04, 0.3];
+  //let feedBackward = [0.3, -0.5, 0.3];
+  //let feedForward = [0.3, 0.000000000004, 0.00000009];
+  //let feedBackward = [0.3, -0.000000005, 0.00000009];
 
   const HEY = document.querySelectorAll('.Radio');
+  const HEY2 = document.getElementById('poo');
+
   const StartDoc = document.getElementById("Start");
   StartDoc.addEventListener('click', Start);
 
   const gainNode = audioContext.createGain();
-  const gainNode2 = console.log("GainNode created");
-
   const oscillator = audioContext.createOscillator();
-  const oscillator2 = console.log("Oscillator created");
-
-  const OscConnect = oscillator.connect(gainNode);
-  const OscConnect2 = console.log("oscillator connected to GainNode");
-
-  const GainConnect = gainNode.connect(audioContext.destination);
-  const GainConnect2 = console.log("GainNode connected to audioContext.destination");
-
+  //An Infinite Impulse Response Filter (IIRF) is not what I neet.
+  //it holds and repeats (infinitely) whatever sounds were passed through it.
+  //An impulse response is supposed to be short, like an echo on a clap.
+  // this is infinitely long.
+  const iirFilter = audioContext.createIIRFilter(feedForward, feedBackward);
+  const convolver = audioContext.createConvolver();
 
   //event listener for gain rangebar changes.
   Gainvalue.onchange = function(){
@@ -146,12 +165,10 @@ if (audioContext !== undefined) {
   Frequ.onchange = function(){
     Freqchange();
   };
-  //listener for Oscillator Distortion changes.
-  DetuneRange.onchange = function() {
-    oscillator.detune = DetuneRange.value;
-    console.log(DetuneRange.value);
-    Detunetxt.innerHTML = (DetuneRange.value+" (in cents)");
-  };
+   function Frequbutton(value){
+     oscillator.frequency.setValueAtTime(value,audioContext.currentTime);
+     freqtxt.innerHTML = value;
+   }
 
   const Schumann = document.getElementById("Schumann");
   Schumann.onclick = function(){
@@ -173,9 +190,6 @@ if (audioContext !== undefined) {
       gainNode.gain.setValueAtTime(e/100, audioContext.currentTime);
     };
 
-    OscConnect;
-    OscConnect2;
-
     document.getElementById('poo').addEventListener('click', (event) => {
      for (var i = 0; i < HEY.length; i++) {
        if (HEY[i].checked) {
@@ -190,12 +204,12 @@ if (audioContext !== undefined) {
     //This first IF statement starts the oscillator if it hasn't been started already.
     if (OSCON == 0){
     oscillator.start();
-    oscillator2;
     OSCON = 1;
     console.log("oscillator Started");
    }
    if (StartDoc.innerHTML == "Start oscillator") {
      //unmute function
+     oscillator.connect(gainNode);
      gainNode.connect(audioContext.destination);
      StartDoc.innerHTML ="Stop";
      return;
@@ -212,6 +226,51 @@ if (audioContext !== undefined) {
   const Frequ = document.getElementById("Freq");
   const freqtxt = document.getElementById("freqvaltxt");
   const WaveVer = document.getElementById("WaveVer");
+
+**********************
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// Create an empty three-second stereo buffer at the sample rate of the AudioContext
+var myArrayBuffer = audioCtx.createBuffer(2, audioCtx.sampleRate * 3, audioCtx.sampleRate);
+//AudioCtx.createBuffer(Channels, Length, SampleRate/frequency)
+
+// Fill the buffer with white noise;
+// just random values between -1.0 and 1.0
+for (var channel = 0; channel < myArrayBuffer.numberOfChannels; channel++) {
+  // This gives us the actual array that contains the data
+  var nowBuffering = myArrayBuffer.getChannelData(channel);
+  for (var i = 0; i < myArrayBuffer.length; i++) {
+    // Math.random() is in [0; 1.0]
+    // audio needs to be in [-1.0; 1.0]
+    nowBuffering[i] = Math.random() * 2 - 1;
+  }
+}
+
+// Get an AudioBufferSourceNode.
+// This is the AudioNode to use when we want to play an AudioBuffer
+var source = audioCtx.createBufferSource();
+
+// set the buffer in the AudioBufferSourceNode
+source.buffer = myArrayBuffer;
+
+// connect the AudioBufferSourceNode to the
+// destination so we can hear the sound
+source.connect(audioCtx.destination);
+
+// start the source playing
+source.start();
+**********************
+  var convolverNode = new ConvolverNode(context, options)
+
+Parameters
+Inherits parameters from the AudioNodeOptions dictionary.
+
+context = A reference to an AudioContext.
+
+options are optional and as follows:
+audioBuffer: A mono, stereo, or 4-channel AudioBuffer containing
+the (possibly multichannel) *******impulse response******* used by the
+ConvolverNode to create the reverb effect.
 */
   console.log("Finished Setup.");
 };

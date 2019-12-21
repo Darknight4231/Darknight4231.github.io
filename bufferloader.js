@@ -49,7 +49,7 @@ BufferLoader.prototype.load = function() {
   for (var i = 0; i < this.urlList.length; ++i)
   this.loadBuffer(this.urlList[i], i);
 }
-
+//*****************************************EDIT URLs IN THE ARRAY BELOW TO ADD MORE SOUNDS TO LOAD. Commas to seperate.******************
 function init() {
   // Fix up prefixing
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -59,8 +59,7 @@ function init() {
     context,
     [
       'https://Darknight4231.github.io/Games/Audiofiles/Raindrop.wav',
-      '../sounds/hyper-reality/br-jam-loop.wav',
-      '../sounds/hyper-reality/laughter.wav',
+      'https://Darknight4231.github.io/Games/Audiofiles/oof.mp3',
     ],
     finishedLoading
     );
@@ -77,6 +76,7 @@ function finishedLoading(bufferList) {
 
   source1.connect(context.destination);
   source2.connect(context.destination);
-  source1.start(0);
-  source2.start(0);
+
+  source1.start(context.currentTime);
+  source2.start(context.currentTime);
 }

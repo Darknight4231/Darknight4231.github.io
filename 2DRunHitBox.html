@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<head>
+  <style>
+    canvas{
+      outline: solid 1px black;
+    };
+  </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+<button type="button" name="button" id="Spawn">Bad Guy</button>
+<script>
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const cramw = canvas. width = 1600;
+const cramh = canvas.height = 900;
+
+document.getElementById('Spawn').addEventListener('click',hostileSpawn);
+canvas.addEventListener('click', ()=>{
+  document.addEventListener('keydown', keyDownhandler);
+  document.addEventListener('keyup', keyUphandler);
+  document.addEventListener('keypress', keypress);
+});
+
+ function getRandom(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+   return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+ }
+
+let box = {
+  x:60,
+  y:cramh/3,
+  width:cramh/5,
+  height:cramh/3,
+  color: `rgb(0,0,255)`,
+  hitcolor: `rgb(255,0,0)`,
+  outline: `rgb(0,255,0)`,
+};
+
+function keypress(e){
+  console.log(e.key +" key was pressed");
+};
+
+function keyUphandler(e){
+  if (e.key=='w') {
+    box.y+=cramh/3;
+    if (box.y < 0) {
+      box.y+=cramh/3;
+    }
+  }
+  if (e.key=='s') {
+    box.y-=cramh/3;
+    if (box.y+box.height > cramh) {
+      box.y-=cramh/3;
+    }
+  }
+};
+  let Enemies = [];
+
+function keyDownhandler(e){
+  if (e.key=='w') {
+    box.y-=cramh/3;
+    if (box.y < 0) {
+      box.y+=cramh/3;
+    }
+  }
+  if (e.key=='s') {
+    box.y+=cramh/3;
+    if (box.y+box.height > cramh) {
+      box.y-=cramh/3;
+    }
+  }
+};
+
+
+function PlayerDraw(){
+  ctx.beginPath();
+  ctx.clearRect(0,0,cramw,cramh);
+  ctx.fillStyle = 'grey';
+  ctx.rect(0,0,cramw,cramh);
+  ctx.fill();
+  ctx.closePath();
+  ctx.beginPath();
+  ctx.lineWidth = 6;
+  ctx.strokeStyle = box.outline;
+  ctx.fillStyle = `${box.color}`;
+  ctx.rect(box.x,box.y,box.width,box.height);
+  ctx.stroke();
+  ctx.fill();
+  ctx.closePath();
+ };
+
+  //factory(?) enemy creator, only needs Lane and Color honestly.
+function Enemy(Lane,Color,Size,x){
+  this.Lane = Lane;
+  this.Color = Color;
+  this.Size = cramh/4;
+  this.x = cramw+80;
+}
+
+ function hostileSpawn(){
+  let enemy = Enemies.push(new Enemy(getRandom(1,3),`rgb(${getRandom(0,255)},${getRandom(0,255)},${getRandom(0,255)})`, cramh/4, cramw-20));
+  console.log('EnemySpawned');
+ }
+hostileSpawn();
+
+
+function MainUPDATE(){
+
+PlayerDraw();
+
+  for (i = 0; i < Enemies.length; i++) {
+    if (Enemies[i].x > 0) {
+      Enemies[i].x -=2;
+      ctx.beginPath();
+      ctx.rect(Enemies[i].x, Enemies[i].Lane*(cramh/3)+60, Enemies[i].Size,Enemies[i].Size)
+      ctx.fillStyle = Enemies[i].Color;
+      ctx.fill();
+      ctx.closePath();
+    }
+  };
+
+  requestAnimationFrame(MainUPDATE);
+ }
+ MainUPDATE();
+</script>
+</body>
