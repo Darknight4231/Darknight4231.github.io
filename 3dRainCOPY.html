@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<head>
+  <style>
+  * {padding: 0; margin: 0;}
+    canvas{
+      outline: solid 1px black;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<canvas id="Canvas"><p>Your browser doesn't support the Canvas API</p></canvas>
+<script>
+
+const Canv = document.getElementById("Canvas");
+const ctx = Canv.getContext("2d");
+
+const cramw = Canv.width = window.innerWidth;
+const cramh = Canv.height = window.innerHeight;
+const DropW = ((cramw+cramh)/2)/100;
+
+let Drops = [];
+window.addEventListener("click", click);
+
+for (var i = 0; i < 100; i++) {
+Drops[Drops.length] = new Array ((getRandomInt(0, cramw)), (getRandomInt(-40, cramh)),  (getRandom(0.001, 1)), (getRandomInt(0, 50)), (getRandomInt(0, 200)), (getRandomInt(50, 255)));
+}
+//function that grabs a random value.
+function getRandom(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return (Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+}
+
+//function that grabs a random Integer value.
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+}
+
+function compareNumbers(a, b) {
+  return a[2] - b[2];
+}
+
+function click(e){
+
+  Drops[Drops.length] = new Array (e.clientX, e.clientY,  (getRandom(0.001, 1)), (getRandomInt(0, 50)), (getRandomInt(0, 200)), (getRandomInt(50, 255)));
+
+  //console.log(Drops.z.sort(compareNumbers));
+  //void ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle [, anticlockwise]);
+
+};
+  function DrawDrops(){
+
+    for (var i = 0; i < Drops.length; i++) {
+      ctx.beginPath();
+      ctx.fillStyle = `rgb( ${Drops[i][3]}, ${Drops[i][4]}, ${Drops[i][5]})`;
+      ctx.ellipse(Drops[i][0], Drops[i][1], Drops[i][2]*DropW, Drops[i][2]*DropW, 0, 0, 2*Math.PI);
+
+      ctx.ellipse(Drops[i][0]-(Drops[i][2]*DropW)/3, Drops[i][1], Drops[i][2]*DropW, Drops[i][2]*DropW, 0, 270, 420, 1 );
+
+      ctx.moveTo(Drops[i][0]+(Drops[i][2]*DropW),Drops[i][1]);
+      ctx.arcTo(Drops[i][0], Drops[i][1], Drops[i][0], Drops[i][1]-(Drops[i][2]*DropW)*2.5, DropW*Drops[i][2]);
+      ctx.lineTo(Drops[i][0],Drops[i][1]-(Drops[i][2]*DropW)*2.5);
+      ctx.fill();
+
+      ctx.moveTo(Drops[i][0]-(Drops[i][2]*DropW),Drops[i][1]);
+      ctx.arcTo(Drops[i][0], Drops[i][1], Drops[i][0], Drops[i][1]-(Drops[i][2]*DropW)*2.5, DropW*Drops[i][2]);
+      ctx.lineTo(Drops[i][0],Drops[i][1]-(Drops[i][2]*DropW)*2.5);
+    //  ctx.ellipse((Drops[i][0]+(Drops[i][2]*DropW)/Drops[i][0]), (Drops[i][1]/(Drops[i][1]-(Drops[i][2]*DropW)*2.5)), DropW*Drops[i][2], DropW*Drops[i][2], 0, 270, 420, 1);
+      ctx.fill();
+      ctx.closePath();
+
+      Drops[i][1] +=2*Drops[i][2];
+      if (Drops[i][1] > cramh+20) {
+        Drops[i][1] = getRandomInt(-20,0);
+        Drops[i][0] = getRandomInt(0,cramw);
+        Drops[i][2] = getRandom(0.01,1.2);
+        Drops[i][3] = (getRandomInt(0, 50));
+        Drops[i][4] = (getRandomInt(0, 200));
+        Drops[i][5] = (getRandomInt(50, 255));
+
+      }
+    };
+  };
+
+function Draw(){
+
+  ctx.beginPath();
+  ctx.fillStyle = `rgb(160,160,225)`;
+  ctx.rect(0,0,cramw,cramh);
+  ctx.fill();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.moveTo(cramw/6,cramh);
+  ctx.lineTo(cramw/2,cramh/2);
+  ctx.moveTo(cramw-cramw/6, cramh);
+  ctx.lineTo(cramw/2,cramh/2);
+  ctx.stroke();
+  ctx.closePath();
+
+  DrawDrops();
+
+
+  Drops.sort(compareNumbers);
+  requestAnimationFrame(Draw);
+
+};
+
+Draw();
+
+</script>
+</body>

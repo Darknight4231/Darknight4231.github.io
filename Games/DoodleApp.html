@@ -2,7 +2,6 @@
 <head>
   <title>Drawing Application</title>
   <style>
-
   body{
     font-family: sans-serif;
   }
@@ -24,7 +23,6 @@
     padding: 1em;
   }
 
-
   #colors>input, label{
     margin-top: 2em;
     padding: 1em;
@@ -42,17 +40,20 @@
     outline: solid 2px green;
     background-color: green;
   }
-  #Green{
-
-  }
   .Blue{
     outline: solid 2px blue;
     background-color: blue;
   }
-  #Blue{
-    
-  }
 
+  #Screen_Sizes{
+    display: none;
+    float: left;
+    position: relative;
+  }
+  #canvasnum{
+    float: left;
+    position: relative;
+  }
 
   </style>
 </head>
@@ -61,25 +62,46 @@
 <canvas id="canvas1"><p>Your browser doesn't support canvas API, use a browser that supports HTML5 standards.</p></canvas>
 <canvas id="colorcanv"><p>Same as above, use a browser that supports canvas API and HTML5 standards.</p></canvas>
 
+<input type="number" class="canvasnum" id="CanvasX" value="800">
+<input type="number" class="canvasnum" id="CanvasY" value="600">
+<button type="button" id="CanvasResizeButton">Resize Canvas</button>
+<label id="Screen_Sizes_Header"><h4>Click to show/hide some common screen sizes.</h4></label>
+<p id="Screen_Sizes">640X480--800X60--960X720--1028X640--1024X768--1280X960--1366X768--1400X1050--1440X1080--1600X1200--1856X1392--1920X14140--2048X1536</p>
+
   <div id="colors">
     <input type="range" id="Red" class="Red" name="Red" min="0" max="255"><label class="Red" for="Red">Red color</label>
     <input type="range" id="Green" class="Green" name="Green" min="0" max="255"><label class="Green" for="Green">Green color</label>
     <input type="range" id="Blue" class="Blue" name="Blue" min="0" max="255"><label class="Blue" for="Blue">Blue color</label>
+    <input type="range" id="Alpha" name="Alpha" value="1" step="0.01" min="0" max="1"><label for="Alpha">Alpha</label>
   </div>
 
     <input type="range" id="BrushSize" name="BrushSize"><label for="BrushSize">BrushSize</label>
+    <label for= 'SqOrCirc'>Change to <button type="button" id="SqOrCirc" onclick="SquareOrCircle()">Square</button></label>
     <p>This box shows the size and color with the current brush settings. <i>Minus the outline of course</i></p>
     <button type="button" id="Clearbutton" name="button">Clear Canvas</button>
 
   <script>
+
+  const ScreenSizeHeader = document.getElementById("Screen_Sizes_Header");
+
+  ScreenSizeHeader.onclick = function(){
+    if (Screen_Sizes.style.display =='block') {
+      Screen_Sizes.style.display='none';
+      return;
+    }
+    if (Screen_Sizes.style.display ='none') {
+      Screen_Sizes.style.display='block';
+      return;
+    }
+  };
 
   //BrushSize.
   let BrushSize = document.getElementById("BrushSize").value;
 
   const canvas = document.getElementById("canvas1");
   const ctx = canvas.getContext("2d");
-  let cramw = canvas.width = 800;
-  let cramh = canvas.height = 600;
+  let cramw = canvas.width = document.getElementById("CanvasX").value;
+  let cramh = canvas.height = document.getElementById("CanvasY").value;
 
   const colorcanv = document.getElementById("colorcanv");
   const ctxcol = colorcanv.getContext("2d");
@@ -90,6 +112,7 @@
   let Red = document.getElementById("Red").value;
   let Green = document.getElementById("Green").value;
   let Blue = document.getElementById("Blue").value;
+  let Alpha = document.getElementById("Alpha").value;
 
 
   //array to store X and Y value of pointer.
@@ -97,14 +120,24 @@
   let mousedown = false;
   let moved = false;
 
+  const SqCircbutton = document.getElementById('SqOrCirc');
+
   canvas.addEventListener("mousedown",click);
   canvas.addEventListener("mousemove", move);
   canvas.addEventListener("mouseup",unclick);
+
+  document.getElementById("CanvasResizeButton").addEventListener("click",Resize);
+
+    function Resize(e){
+    canvas.width = document.getElementById("CanvasX").value;
+    canvas.height = document.getElementById("CanvasY").value;
+    }
+
+
   //update mouse pointer on click
   function click(e){
     ClickLoc[0] = e.clientX-canvas.offsetLeft-BrushSize/2;
     ClickLoc[1] = e.clientY-canvas.offsetTop-BrushSize/2;
-    console.log("clicked");
     mousedown = true;
     draw();
   };
@@ -112,7 +145,6 @@
     if (mousedown){
     ClickLoc[0] = e.clientX-canvas.offsetLeft-BrushSize/2;
     ClickLoc[1] = e.clientY-canvas.offsetTop-BrushSize/2;
-    console.log('Mousemoved');
     draw();
    }
   };
@@ -121,6 +153,17 @@
     moved = false;
   };
 
+  function SquareOrCircle(){
+    if (SqCircbutton.innerHTML == 'Square') {
+      SqCircbutton.innerHTML = 'Circle';
+      return;
+    }
+    if (SqCircbutton.innerHTML == 'Circle') {
+      SqCircbutton.innerHTML = 'Square';
+      return;
+    }
+  }
+
   //Update all colors on one change.
   document.getElementById("colors").onchange = colorchange;
 
@@ -128,12 +171,17 @@
     Red = document.getElementById("Red").value;
     Green = document.getElementById("Green").value;
     Blue = document.getElementById("Blue").value;
+    Alpha = document.getElementById("Alpha").value;
     ctxcol.beginPath();
-    ctxcol.fillStyle = `rgb(${Red},${Green},${Blue})`;
-    ctxcol.rect(0,0,BrushSize,BrushSize);
+    ctxcol.clearRect(0,0,BrushSize,BrushSize);
+    ctxcol.fillStyle = `rgba(${Red},${Green},${Blue},${Alpha})`;
+    if (SqCircbutton.innerHTML == 'Circle') {
+      ctxcol.rect(0,0,BrushSize,BrushSize);
+    } else if (SqCircbutton.innerHTML == 'Square') {
+      ctxcol.arc(BrushSize/2,BrushSize/2, BrushSize/4, degToRad(0), degToRad(360), false);
+    }
     ctxcol.fill();
     ctxcol.closePath();
-    console.log("RGB values respectively. "+Red+" "+Green+" "+Blue);
   };
 
   //Update BrushSize on change.
@@ -145,26 +193,33 @@
     colorchange();
   };
 
+  document.getElementById("Clearbutton").onclick = function(){
+    ctx.beginPath();
+    ctx.clearRect(0,0,cramw,cramh);
+    ctx.closePath();
+  }
+
+  // covert degrees to radians
+  function degToRad(degrees) {
+    return degrees * Math.PI / 180;
+  };
+
+  colorchange();
+
   function draw(){
+
     if (mousedown || mousedown && moved) {
     ctx.beginPath();
-    ctx.fillStyle = `rgb(${Red},${Green},${Blue})`;
-    ctx.rect(ClickLoc[0],ClickLoc[1],BrushSize,BrushSize);
+    ctx.fillStyle = `rgba(${Red},${Green},${Blue},${Alpha})`;
+    if (SqCircbutton.innerHTML == 'Circle') {
+      ctx.rect(ClickLoc[0],ClickLoc[1],BrushSize,BrushSize);
+    } else if (SqCircbutton.innerHTML == 'Square') {
+      ctx.arc(ClickLoc[0],ClickLoc[1], BrushSize/2, degToRad(0), degToRad(360), false);
+    }
     ctx.fill();
     ctx.closePath();
     moved = false;}
   };
-
-  document.getElementById("Clearbutton").onclick = function(){
-    ctx.beginPath();
-    ctx.fillStyle = 'white';
-    ctx.rect(0,0,cramw,cramh);
-    ctx.fill();
-    ctx.closePath();
-  }
-
-  colorchange();
-
 
   </script>
 </body>

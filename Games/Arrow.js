@@ -75,7 +75,7 @@ function keydown (e){
   }
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
    upPressed = true;
-   playerblock[1] -=6;
+   playerblock[1] -=12;
   }
 
   if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
@@ -130,56 +130,55 @@ function Yboundary(y){
 
     };
 
+  function GravRad(X,Y) {
+
+    if (Y-playerblock[1]>0) {
+
+      console.log("Below");
+      return -(Math.abs(Y-playerblock[1]/X));
+
+
+    } else if (Y-playerblock[1] <0) {
+
+      console.log("Above");
+      return (Math.abs(Y-playerblock[1]/X));
+
+    }
+  };
+
 
 function arrowAngle(e){
-  //It seems as though I've forgotten some trig properties. You can't shoot up or down..
+
+  let mouseY = e.clientY-canvas.offsetTop;
+  let mouseX = e.clientX-canvas.offsetLeft;
+  let mouseYminus = mouseY-playerblock[1];
+  let mouseXminus = mouseX-playerblock[0];
+  GravAngle = ((-(Math.atan((mouseY-playerblock[1])/160)*180/Math.PI)));
 
 
-  //mouseY needs to be converted to something divisible.
-  //HOW DO I read the cursor Y position as an angle..?!?!?
-  //that's what GravAngle is for.. would making mouseY into radians help?
+  /*
+  RISE OVER RUN
+    Y2-Y1
+    _____
+    X2-X1
+  */
 
-  let mouseY = e.clientY;
-  //this shows the radians
-  //console.log((-(Math.atan((mouseY-400)/160))));
-
-  GravAngle = ((-(Math.atan((mouseY-playerblock[1])/160)*180/Math.PI)));//same as grav rad, but in human terms--degrees instead of radians. Make understanding easier, though will obviously output a different valued. mainly for understanding the angle simply.
-  GravRad = ((-(Math.atan((mouseY-playerblock[1])/160))));
-  //there are two points, to find the distance between the two, and find the two sides of the triangle it'd make. (x1,y1) (x2,y2)
-  //it's easy, just do x1-x2 and y1-y2 or vice versa (x2-x1 and y2-y1)
-  // Sin gives the angle from opposite to hypotenuse, we need using two legs of a right triangle.
-  //while we could find the distance using the X and Y method described above (distance = hypotenuse, use pythagorean theorem) we don't need the distance
-  //we need the angle.
-  //
-  //this is to get an actual angle. it works wonderfully.  GravAngle = ((-(Math.atan((mouseY-400)/160)*180/Math.PI)));
-  //a
-  //tan=O/A  tangent = Opposite/Adjacent, the two sides we have available.
-  //opposite is Y
-  //adjacent is X
-
-  mouseX = e.clientX;
   //find the distance between the two points, (60, 400) and (e.clientX, e.clientY)
   //then add that (with some kinda multiplier ofc to scale it down) to arrowX[C]
   if (mouseX > playerblock[0]) {
-  pwr = (Math.pow( Math.pow(mouseX-playerblock[0], 2) + Math.pow(mouseY-playerblock[1], 2)  , 0.5));
-  } else if (mouseX < playerblock[0]){
-    pwr = (-(Math.pow( Math.pow(mouseX-playerblock[0], 2) + Math.pow(mouseY-playerblock[1], 2)  , 0.5)));
+  pwr = (Math.pow( Math.pow(mouseXminus, 2) + Math.pow(mouseYminus, 2)  , 0.5));
+} else if (mouseX < playerblock[0]){
+    pwr = (-(Math.pow( Math.pow(mouseXminus, 2) + Math.pow(mouseYminus, 2)  , 0.5)));
   }
 
-  console.log(pwr/100);
-
-  shot();
-
-};
-
-function shot (){
-
+//  console.log(pwr/100);
   arrowX.push (playerblock[0]);
   arrowY.push (playerblock[1]);
   ArrowPower.push(pwr/100);
-  Gravity.push ((-0.9)+GravRad*4);
+  Gravity.push ((-0.9)+GravRad(mouseXminus,mouseY)/100);
 
 };
+
 
 function blocks(){
 
@@ -246,7 +245,7 @@ function player(){
       playerplace();
       playerblock[0] = Xboundary(playerblock[0]);
       playerblock[1] = Yboundary(playerblock[1]);
-      PlayerGrav();
+    //  PlayerGrav();
 };
 
 

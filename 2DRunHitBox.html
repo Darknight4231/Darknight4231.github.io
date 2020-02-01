@@ -3,26 +3,41 @@
   <style>
     canvas{
       outline: solid 1px black;
-    };
+    }
   </style>
 </head>
 <body>
 
 <canvas id="canvas"></canvas>
-<button type="button" name="button" id="Spawn">Bad Guy</button>
+<button type="button" name="button" id="Spawn" disabled>Bad Guy</button>
+<button type="button" name="button" class="Difficulty" value="1">Easy</button>
+<button type="button" name="button" class="Difficulty" value="3">Intermediate</button>
+<button type="button" name="button" class="Difficulty" value="5">Hard</button>
+
+
 <script>
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const cramw = canvas. width = 1600;
+const cramw = canvas.width = 1600;
 const cramh = canvas.height = 900;
 
-document.getElementById('Spawn').addEventListener('click',hostileSpawn);
+document.getElementById('Spawn').addEventListener('click',Hostile);
+
 canvas.addEventListener('click', ()=>{
   document.addEventListener('keydown', keyDownhandler);
   document.addEventListener('keyup', keyUphandler);
   document.addEventListener('keypress', keypress);
+
+  const Difficulties = document.querySelectorAll('.Difficulty');
+  console.log('Difficulty Const added');
+  console.log(Difficulties);
+  console.log(Difficulties[1]);
+  console.log(Difficulties[1].value);
+  for (let i = 0; i < Difficulties.length; i++) {
+  Difficulties[i].addEventListener('click',Difficulty);
+  }
 });
 
  function getRandom(min, max) {
@@ -44,7 +59,6 @@ let box = {
 function keypress(e){
   console.log(e.key +" key was pressed");
 };
-
 function keyUphandler(e){
   if (e.key=='w') {
     box.y+=cramh/3;
@@ -59,8 +73,6 @@ function keyUphandler(e){
     }
   }
 };
-  let Enemies = [];
-
 function keyDownhandler(e){
   if (e.key=='w') {
     box.y-=cramh/3;
@@ -75,7 +87,6 @@ function keyDownhandler(e){
     }
   }
 };
-
 
 function PlayerDraw(){
   ctx.beginPath();
@@ -95,37 +106,54 @@ function PlayerDraw(){
  };
 
   //factory(?) enemy creator, only needs Lane and Color honestly.
-function Enemy(Lane,Color,Size,x){
+
+let Enemies = [];
+
+function Enemy(Lane,Color,Size,x,speed){
   this.Lane = Lane;
   this.Color = Color;
-  this.Size = cramh/4;
-  this.x = cramw+80;
-}
+  this.Size = Size;
+  this.x = x;
+  this.speed = speed;
+};
 
- function hostileSpawn(){
-  let enemy = Enemies.push(new Enemy(getRandom(1,3),`rgb(${getRandom(0,255)},${getRandom(0,255)},${getRandom(0,255)})`, cramh/4, cramw-20));
-  console.log('EnemySpawned');
- }
-hostileSpawn();
-
-
-function MainUPDATE(){
-
-PlayerDraw();
+function EnemyUpdate(){
 
   for (i = 0; i < Enemies.length; i++) {
     if (Enemies[i].x > 0) {
-      Enemies[i].x -=2;
+      Enemies[i].x -=Enemies[i].speed;
       ctx.beginPath();
       ctx.rect(Enemies[i].x, Enemies[i].Lane*(cramh/3)+60, Enemies[i].Size,Enemies[i].Size)
       ctx.fillStyle = Enemies[i].Color;
       ctx.fill();
       ctx.closePath();
+    } else if (Enemies[i].x <= 0 && Enemies[i].x > -100){
+      Enemies[i].Lane = getRandom(0,2);
+      Enemies[i].x = cramw-20;
+      Enemies[i].speed = getRandom(10,35);
+    }
+  };
+};
+
+ function Hostile(){
+  let enemy = Enemies.push(new Enemy(getRandom(0,2),`rgb(${getRandom(0,255)},${getRandom(0,255)},${getRandom(0,255)})`, cramh/4, cramw-20, getRandom(10,35)));
+  console.log('Enemy '+Enemies.length+' Spawned');
+};
+
+  function Difficulty(e){
+    console.log(this.value +' Enemies Spawned');
+    for (i = 0; i < this.value; i++) {
+      Hostile();
     }
   };
 
+function MainUPDATE(){
+
+  PlayerDraw();
+  EnemyUpdate();
   requestAnimationFrame(MainUPDATE);
  }
  MainUPDATE();
+
 </script>
 </body>

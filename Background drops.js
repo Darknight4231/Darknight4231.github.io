@@ -83,7 +83,7 @@ function raindrop(C) {
   var b = RainDropB[C];
 
   ctx.beginPath();
-  ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;;
+  ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
 
 
   //void ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle [, anticlockwise]);
@@ -93,7 +93,7 @@ function raindrop(C) {
   ctx.fill();
   ctx.lineWidth = 6;
 
-  ctx.strokeStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`
+  ctx.strokeStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
 
 
   //Left to right arc
