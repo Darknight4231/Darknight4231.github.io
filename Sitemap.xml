@@ -1,13 +1,7 @@
-<!--> Character Escape Code
+<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.darknight4231.github.io/Sitemap">
+<?xml-stylesheet type="text/xsl" href="http://www.darknight4231.github.io/Sitemap.xsl"?>
 
-Ampersand - & - &amp;
-Single Quote - ' - &apos;
-Double Quote - " - &quot;
-Greater Than - > - &gt;
-Less Than - < - &lt;
-<!-->
 
-<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://www.darknight4231.github.io /</loc>
     <lastmod>2020-2-1</lastmod>
