@@ -73,7 +73,7 @@ function click(e){
       ctx.closePath();
 
       Drops[i][1] +=2*Drops[i][2];
-      if (Drops[i][1] > cramh+20) {
+      if (Drops[i][1] > cramh+DropW*2.5) {
         Drops[i][1] = getRandomInt(-20,0);
         Drops[i][0] = getRandomInt(0,cramw);
         Drops[i][2] = getRandom(0.01,1.2);

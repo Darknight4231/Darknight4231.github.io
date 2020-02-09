@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<head>
+  <style>
+  * {padding: 0; margin: 0;}
+    canvas{
+      outline: solid 1px black;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<canvas id="Canvas"><p>Your browser doesn't support the Canvas API</p></canvas>
+<script>
+
+const Canv = document.getElementById("Canvas");
+const ctx = Canv.getContext("2d");
+
+const cramw = Canv.width = window.innerWidth;
+const cramh = Canv.height = window.innerHeight;
+const HeartW = ((cramw+cramh)/2/25);
+
+let frames = 0;
+
+let Hearts = [];
+window.addEventListener("click", click);
+
+for (var i = 0; i < 300; i++) {
+Hearts[Hearts.length] = new Array ((getRandomInt(0, cramw)), (getRandomInt(-40, cramh)),  (getRandom(0.001, 1)), (getRandomInt(140, 220)), (getRandomInt(0, 20)), (getRandomInt(50, 100)));
+}
+//function that grabs a random value.
+function getRandom(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return (Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+}
+
+//function that grabs a random Integer value.
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+}
+
+function compareNumbers(a, b) {
+  return a[2] - b[2];
+}
+
+function click(e){
+
+  Hearts[Hearts.length] = new Array (e.clientX, e.clientY,  (getRandom(0.001, 1)), (getRandomInt(140, 220)), (getRandomInt(0, 20)), (getRandomInt(50, 100)));
+
+  //console.log(Hearts.z.sort(compareNumbers));
+  //void ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle [, anticlockwise]);
+};
+
+  function DrawHearts(){
+
+    for (var i = 0; i < Hearts.length; i++) {
+
+      ctx.beginPath();
+      ctx.fillStyle = `rgb( ${Hearts[i][3]}, ${Hearts[i][4]}, ${Hearts[i][5]})`;
+
+      ctx.moveTo(Hearts[i][0],Hearts[i][1]-0.75*HeartW);
+      ctx.lineTo(Hearts[i][0]+0.5*HeartW,Hearts[i][1]-1.5*HeartW);
+      ctx.arcTo(Hearts[i][0]+0.75*HeartW,Hearts[i][1]-2.5*HeartW, Hearts[i][0],Hearts[i][1]-2*HeartW, HeartW/2.7);
+      ctx.fill();
+
+      ctx.moveTo(Hearts[i][0],Hearts[i][1]-0.75*HeartW);
+      ctx.lineTo(Hearts[i][0]-0.5*HeartW,Hearts[i][1]-1.5*HeartW);
+      ctx.arcTo(Hearts[i][0]-0.75*HeartW,Hearts[i][1]-2.5*HeartW, Hearts[i][0],Hearts[i][1]-2*HeartW, HeartW/2.7);
+      ctx.fill();
+
+      ctx.strokeStyle = `rgba(0,0,0,0.2)`;
+      ctx.stroke();
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.strokeStyle = `rgb(${Hearts[i][3]}, ${Hearts[i][4]}, ${Hearts[i][5]})`;
+      ctx.lineWidth = HeartW/28;
+      ctx.moveTo(Hearts[i][0],Hearts[i][1]-0.85*HeartW);
+      ctx.lineTo(Hearts[i][0],Hearts[i][1]-1.9*HeartW);
+      ctx.stroke();
+      ctx.closePath();
+
+      Hearts[i][1] +=2*Hearts[i][2];
+      if (Hearts[i][1] > cramh+HeartW*2.5) {
+        Hearts[i][1] = getRandomInt(-(HeartW*6),0);
+        Hearts[i][0] = getRandomInt(0,cramw);
+        Hearts[i][2] = getRandom(0.01,1.2);
+        Hearts[i][3] = (getRandomInt(140, 220));
+        Hearts[i][4] = (getRandomInt(0, 20));
+        Hearts[i][5] = (getRandomInt(50, 100));
+      }
+    };
+  };
+function Draw(){
+
+  ctx.beginPath();
+  ctx.fillStyle = `rgb(180,60,140)`;
+  ctx.rect(0,0,cramw,cramh);
+  ctx.fill();
+  ctx.closePath();
+
+  DrawHearts();
+
+  Hearts.sort(compareNumbers);
+  requestAnimationFrame(Draw);
+
+  if (frames > 60) {
+    frames = 0;
+    Hearts[Hearts.length] = new Array ((getRandomInt(0, cramw)), (getRandomInt(-60, 0)),  (getRandom(0.001, 1)), (getRandomInt(140, 220)), (getRandomInt(0, 20)), (getRandomInt(50, 100)));
+  }
+
+  frames ++;
+
+};
+
+Draw();
+
+</script>
+</body>

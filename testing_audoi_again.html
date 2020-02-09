@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+<title>VoiceModder</title>
+
+<style>
+  body{
+    background-color: grey;
+  }
+</style>
+</head>
+<body>
+
+  <audio src="Games/Audiofiles/Raindrop.mp3" id="Raindropsound" preload="metadata" controls>
+  </audio>
+<script>
+
+let Audio = document.getElementById('Raindropsound');
+
+window.addEventListener('click',playsound);
+//source = audioCtx.createMediaStreamSource(stream);
+//if you want to get microphone data
+
+
+function playsound(){
+
+  Audio.play();
+    console.log('soundplayed');
+}
+/*
+try {
+   audioContext =
+    new (window.AudioContext || window.webkitAudioContext)();
+    console.log("AudioContext Defined, starting.");
+} catch (error) {
+  console.log("AudioContext startup unsuccessful");
+  window.alert(
+    `Sorry, but your browser doesn't support the Web Audio API!`
+  );
+}
+if (navigator.mediaDevices) {
+  console.log('navigator exists');
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function (stream) {
+      console.log('audioexists or was allowed');
+
+
+
+
+  })
+  .catch(function(err){
+    console.log('User denied Audio request');
+  })
+};
+
+*/
+</script>
+</body>
