@@ -37,17 +37,12 @@ body{
     const image = new Image(60, 45);
     image.onload = drawImageActualSize;
     image.src = 'https://darknight4231.github.io/Images/Fishy.png';
-
+    
 function drawImageActualSize() {
-
-  // Use the intrinsic size of image in CSS pixels for the canvas element
-  canvas.width = this.naturalWidth;
-  canvas.height = this.naturalHeight;
-
   // To use the custom size we'll have to specify the scale parameters
   // using the element's width and height properties - lets draw one
   // on top in the corner:
-  ctx.drawImage(this, 0, 0, this.width, this.height);
+  ctx.drawImage(this, 0, 0, cramw, cramh);
 }
 
     let Player = {
