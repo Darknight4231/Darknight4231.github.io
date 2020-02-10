@@ -37,8 +37,8 @@ body{
   var Player = {
     x : cramw/2,
     y : cramh/2,
-    width : 1,
-    height : 1,
+    width : 10,
+    height : 10,
   }
   var Playersize = Player.width*Player.height;
 
@@ -120,13 +120,20 @@ body{
     fishcol.push(getRandom(0,100));
     fishcol.push(getRandom(0,150));
     fishcol.push(getRandom(0,200));
+/*
+    fishmove.push(getRandom(2,8));
+    fishmove.push(getRandom(2,8));
+*/
+  fishmove.push(0);
+  fishmove.push(0);
 
-    fishmove.push(getRandom(2,8));
-    fishmove.push(getRandom(2,8));
+  //TESTING ABOVE ***************************************
+
+
 
     FishPasses.push(0);
 
-    fishSize.push(getRandom(1,(1.2*level*(fishSizeInc))));
+    fishSize.push(getRandom(0.9,(1.4*level*(fishSizeInc))));
     }
   };
 
@@ -134,13 +141,13 @@ body{
   function Fishcollide(C){
 
     //this is great... for the top left corner of the player cube.. Nothing else.
-    if(Fish[C] <= Player.x && Player.x <= Fish[C]+fishSize[C]*20*level &&
+    if(Fish[C] <= Player.x+Player.width && Player.x <= Fish[C]+fishSize[C]*20*level &&
        Fish[C+1] <= Player.y && Player.y <= Fish[C+1]+fishSize[C]*20*level){
-        if(Playersize < fishSize[C]*20*level){
+        if(Playersize < (fishSize[C]^2)*20*level){
           alert("game over dude");
           } else {
-            Player.width = Player.width + fishSize[C]/4;
-            Player.height = Player.height + fishSize[C]/4;
+            Player.width = Player.width + (fishSize[C]/4);
+            Player.height = Player.height + (fishSize[C]/4);
             fishSize[C] = 0;
             FishEat++;
         }
@@ -150,6 +157,8 @@ body{
   function fishScore(){
 
     for( var I=0; I<score.length; I++){
+
+      ctx.fillStyle = 'black';
       ctx.font = '48px serif';
       ctx.fillText('Fish eaten '+ FishEat,40,60);
       ctx.fillText('Level '+level, 40, 120);

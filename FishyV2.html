@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<!-- Created on Apr 14, 2019 5:02:41 AM -->
+
+<html lang="en">
+<head>
+  <meta charset=utf-8 />
+  <title>
+    Fishy fella Version 0.2a
+  </title>
+   <style>
+* { padding: 0; margin: 0; }
+canvas { background: #eee; display: block; margin: 0 auto; }
+body{
+  background-color: rgb(50,50,50);
+  }
+</style>
+  <meta name="GENERATOR" content="Arachnophilia 5.5" />
+  <meta name="FORMATTER" content="Arachnophilia 5.5" />
+</head>
+
+<body>
+    <canvas id="Canvas"><p>You can't use Canvas element in this browser, try another, like Edge, Chrome, or Firefox.</p></canvas>
+
+  <script>
+
+    let canvas = document.getElementById("Canvas");
+    let ctx    = canvas.getContext("2d");
+
+    let cramw  = canvas.width = window.innerWidth;
+    let cramh = canvas.height = window.innerHeight;
+
+    let UpPressed    = false;
+    let DownPressed  = false;
+    let LeftPressed  = false;
+    let RightPressed = false;
+
+    const image = new Image(60, 45);
+    image.onload = drawImageActualSize;
+    image.src = 'https://darknight4231.github.io/Images/Fishy.png';
+
+function drawImageActualSize() {
+
+  // Use the intrinsic size of image in CSS pixels for the canvas element
+  canvas.width = this.naturalWidth;
+  canvas.height = this.naturalHeight;
+
+  // To use the custom size we'll have to specify the scale parameters
+  // using the element's width and height properties - lets draw one
+  // on top in the corner:
+  ctx.drawImage(this, 0, 0, this.width, this.height);
+}
+
+    let Player = {
+      x : cramw/2, y : cramh/2,
+      width : 10,  height : 10,
+      size : this.width*this.height,
+      color : [200,100, 60],
+      speed : 4,
+      FishEaten : 0,
+    }
+
+    let score = [20];
+    let numFish = 20;
+
+    //let Fish = {
+
+    //}
+
+    let Fish = [0];
+    let FishExists = [true];
+    let fishcol = [0];
+    let fishmove = [0];
+    let fishSize = [0];
+    let FishPasses = [0];
+
+    let fishSizeInc = 1.5;
+
+    let LevelIncrement = 0.75;
+    let level = 1;
+    let C = 1;
+
+    document.addEventListener("keydown", keydown);
+    document.addEventListener("keyup"  , keyup);
+
+
+    function getRandom(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+      };
+
+
+
+  function keydown(e){
+
+    if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
+      RightPressed = true;
+    }
+    if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
+     LeftPressed = true;
+    }
+    if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
+     UpPressed = true;
+    }
+    if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
+     DownPressed = true;
+     }
+    };
+
+
+    function keyup(e){
+
+      if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
+      RightPressed = false;
+    }
+    if ( e.key=="Left" || e.key=="ArrowLeft"  || e.key == "a"){
+      LeftPressed = false;
+    }
+    if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w" ) {
+      UpPressed = false;
+     }
+    if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s") {
+      DownPressed = false;
+     }
+    };
+
+
+      function NewLevel(level){
+
+      for ( let C = 1; C < Math.ceil((numFish*(level*LevelIncrement))); C++) {
+      Fish.push(getRandom(0,20));
+      Fish.push(getRandom(10,cramh-20));
+
+      fishcol.push(getRandom(0,100));
+      fishcol.push(getRandom(0,150));
+      fishcol.push(getRandom(0,200));
+
+      fishmove.push(getRandom(2,8));
+      fishmove.push(getRandom(2,8));
+      FishExists.push(true);
+
+
+      FishPasses.push(0);
+
+      fishSize.push(getRandom(1*level*(fishSizeInc),(20*level*(fishSizeInc))));
+      }
+    };
+
+
+    function Fishcollide(C){
+
+      if(FishExists[C] &&
+        Fish[C] <= Player.x+Player.width && Player.x <= Fish[C]+fishSize[C] &&
+         Fish[C+1] <= Player.y+Player.height && Player.y <= Fish[C+1]+fishSize[C]){
+          if(Player.size < Math.pow(fishSize[C],2)){
+            alert("game over dude");
+            } else {
+              Player.width = Player.width + (fishSize[C]/10);
+              Player.height = Player.height + (fishSize[C]/10);
+              fishSize[C] = 0;
+              FishExists[C] = false;
+              Player.FishEaten++;
+          }
+        }
+      };
+
+    function fishScore(){
+
+      for( let I=0; I<score.length; I++){
+
+        ctx.fillStyle = 'black';
+        ctx.font = '48px serif';
+        ctx.fillText('Fish eaten '+ Player.FishEaten,40,60);
+        ctx.fillText('Level '+level, 40, 120);
+      }
+
+
+      if ((Player.FishEaten) > (level)){
+          level ++;
+          Player.FishEaten = 0;
+          NewLevel(level);
+          }
+
+      };
+
+
+    function drawfish(){
+
+
+
+
+
+      for ( let C = 1; C < Math.ceil((numFish*(level*LevelIncrement))); C = C+2) {
+
+            let r = fishcol[C];
+            let g = fishcol[C+1];
+            let b = fishcol[C+2];
+
+            ctx.beginPath();
+            ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
+            ctx.rect(Fish[C],Fish[C+1], fishSize[C],fishSize[C]);
+            ctx.fill();
+            ctx.closePath();
+
+            Fishcollide(C);
+
+            Fish[C] +=fishmove[C];
+
+        }
+
+      };
+
+    function PlayerAt(){
+
+      let Red = Player.color[0];
+      let Green = Player.color[1];
+      let Blue = Player.color[2];
+
+
+      ctx.beginPath();
+      ctx.fillStyle = `rgb( ${(Red)}, ${(Green)}, ${(Blue)})`;
+      ctx.rect(Player.x,Player.y, Player.width, Player.height);
+      ctx.fill();
+      ctx.closePath();
+
+    };
+
+
+
+    NewLevel(level);
+
+
+      function draw(){
+
+        Player.size = Player.width*Player.height;
+        ctx.clearRect(0,0,cramw,cramh);
+
+      if(UpPressed){
+        Player.y-=Player.speed;
+        }
+      if (DownPressed){
+        Player.y+=Player.speed;
+        }
+      if(RightPressed){
+        Player.x+=Player.speed;
+        }
+      if(LeftPressed){
+        Player.x-=Player.speed;
+        }
+
+        for (let C=1; C < Fish.length+1; C++){
+           if(Fish[C] > cramw+20){
+
+              Fish[C] =(getRandom(-40,0));
+              Fish[C+1] =(getRandom(10,cramh-20));
+              FishPasses[C] ++;
+           }
+
+           if ( FishPasses[C] > 3){
+
+              Fish[C] =(getRandom(0,20));
+              Fish[C+1] =(getRandom(10,cramh-20));
+
+              fishcol[C] =(getRandom(0,100));
+              fishcol[C+1] =(getRandom(0,200));
+              fishcol[C+2] =(getRandom(0,255));
+
+              fishmove[C] =(getRandom(2,8));
+              fishmove[C+1] =(getRandom(2,8));
+
+              fishSize[C] = (getRandom(1,(1.2*level*(fishSizeInc))));
+
+              if (FishExists[C] == false) {
+                FishExists[C] == true;
+              }
+
+              FishPasses[C] = 0;
+           }
+         }
+
+        drawfish();
+        PlayerAt();
+
+
+        fishScore();
+      requestAnimationFrame(draw);
+      };
+      draw();
+    </script>
+
+
+  </body>
+  </html>
