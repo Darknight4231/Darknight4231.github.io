@@ -33,21 +33,22 @@ body{
     let DownPressed  = false;
     let LeftPressed  = false;
     let RightPressed = false;
-
-    const image = new Image(60, 45);
+/*
+    const image = new Image();
     image.onload = drawImageActualSize;
-    image.src = 'https://darknight4231.github.io/Images/Fishy.png';
-    
+
+    //image.src = 'https://darknight4231.github.io/Images/Fishy.png';
+
 function drawImageActualSize() {
   // To use the custom size we'll have to specify the scale parameters
   // using the element's width and height properties - lets draw one
   // on top in the corner:
   ctx.drawImage(this, 0, 0, cramw, cramh);
 }
-
+*/
     let Player = {
       x : cramw/2, y : cramh/2,
-      width : 10,  height : 10,
+      width : 20,  height : 20,
       size : this.width*this.height,
       color : [200,100, 60],
       speed : 4,
@@ -130,8 +131,8 @@ function drawImageActualSize() {
       fishcol.push(getRandom(0,150));
       fishcol.push(getRandom(0,200));
 
-      fishmove.push(getRandom(2,8));
-      fishmove.push(getRandom(2,8));
+      fishmove.push(getRandom(2,6));
+      fishmove.push(getRandom(2,6));
       FishExists.push(true);
 
 
@@ -228,7 +229,11 @@ function drawImageActualSize() {
       function draw(){
 
         Player.size = Player.width*Player.height;
-        ctx.clearRect(0,0,cramw,cramh);
+        ctx.beginPath();
+        ctx.fillStyle = `rgb(20,255,200)`;
+        ctx.rect(0,0,cramw,cramh);
+        ctx.fill();
+        ctx.closePath();
 
       if(UpPressed){
         Player.y-=Player.speed;
@@ -272,7 +277,7 @@ function drawImageActualSize() {
               FishPasses[C] = 0;
            }
          }
-
+      //drawImageActualSize();
         drawfish();
         PlayerAt();
 

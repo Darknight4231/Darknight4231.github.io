@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset=utf-8 />
+  <title>
+    LoadingBar
+  </title>
+   <style>
+* { padding: 0; margin: 0; }
+canvas { background: #eee; display: block; margin: 0 auto; }
+body{
+  background-color: rgb(50,50,50);
+  }
+</style>
+  <meta name="GENERATOR" content="Arachnophilia 5.5" />
+  <meta name="FORMATTER" content="Arachnophilia 5.5" />
+</head>
+
+<body>
+    <canvas id="Canvas"><p>You can't use Canvas element in this browser, try another, like Edge, Chrome, or Firefox.</p></canvas>
+
+<script>
+
+const canvas = document.getElementById("Canvas");
+const ctx = canvas.getContext("2d");
+
+let cramw  = canvas.width = window.innerWidth;
+let cramh  = canvas.height = window.innerHeight;
+
+let bartimesten = cramw/10;
+
+for (var i = 0; i < 10; i++) {
+
+  setTimeout(() => {
+  ctx.beginPath();
+  ctx.fillStyle = `rgb(255,200,100)`;
+  ctx.rect(0,0,bartimesten*i,cramh);
+  ctx.fill();
+  ctx.closePath();
+}, 1000);
+
+};
+
+</script>
+</body>

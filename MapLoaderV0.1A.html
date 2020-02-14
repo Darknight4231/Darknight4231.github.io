@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset=utf-8 />
+  <title>
+    Map Loader V0.1A
+  </title>
+   <style>
+* { padding: 0; margin: 0; }
+canvas { background: #eee; display: block; margin: 0 auto; }
+body{
+  background-color: rgb(50,50,50);
+  }
+</style>
+  <meta name="GENERATOR" content="Arachnophilia 5.5" />
+  <meta name="FORMATTER" content="Arachnophilia 5.5" />
+</head>
+
+<body>
+    <canvas id="Canvas"><p>You can't use Canvas element in this browser, try another, like Edge, Chrome, or Firefox.</p></canvas>
+
+  <script>
+
+  /****************DESIRED NUMBER OF MAPS*******************/
+    const MapsSquared = 10;
+  /****************Number of terrain gen'd per chunk*******/
+    const terrainMin = 10;
+    const terrainMax = 30;
+
+
+
+
+      const canvas = document.getElementById("Canvas");
+      const ctx = canvas.getContext("2d");
+
+      let cramw  = canvas.width = window.innerWidth;
+      let cramh  = canvas.height = window.innerHeight;
+
+      window.addEventListener('keydown', PlayerMove);
+
+      function getRandomInt(min, max) {
+          min = Math.ceil(min);
+          max = Math.floor(max);
+          return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+        };
+
+      function PlayerMove(e){
+        if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
+          console.log("RightPressed");
+          Player.x =Player.x+Player.speed;
+        }
+        if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
+          console.log("LeftPressed");
+          Player.x = Player.x-Player.speed;
+        }
+        if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
+          console.log("UpPressed");
+          Player.y = Player.y-Player.speed;
+        }
+        if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
+          console.log("DownPressed");
+          Player.y = Player.y+Player.speed;
+         }
+        };
+
+      let Player = {
+        x: (cramw/2),
+        y: (cramh/2),
+        w: 10,
+        h: 20,
+        speed: 10,
+        color: {
+          red: 150,
+          green: 160,
+          blue: 255,
+        },
+
+      };
+
+      Player.speed = Math.pow(Math.pow(cramh,2)+Math.pow(cramw,2),0.2);
+
+let Wholemap = [];
+
+      function WholeMapGen(){
+
+          //I tried really hard to get a working loading bar. Everything regarding setTimeout can be scrapped
+            return new Promise(resolve => {
+
+          //this underneath generates chunks
+          for (var i = 0; i < Math.pow(MapsSquared, 2); i++) {
+            Wholemap[i] = new Array();
+            let terr = getRandomInt(terrainMin, terrainMax);
+            //this underneath loop generates single terrain data in selected generating map chunk
+              for (var c = 0; c < terr; c++) {
+                Wholemap[i][c] = new Array(getRandomInt(0,cramw/3),getRandomInt(0,cramh/3),getRandomInt(0,cramw/20),getRandomInt(0,cramh/20),getRandomInt(0,255),getRandomInt(0,255),getRandomInt(0,255));
+              }
+          }
+        });
+          console.log(Wholemap);
+          ctx.closePath();
+
+          resolve('resolved');
+
+    };
+
+      function MapInnards(x,y,w,h,r,g,b){
+        ctx.beginPath();
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.rect(x,y,w,h);
+        ctx.fill();
+        ctx.closePath();
+      };
+
+async function Generation(){
+  console.log('Map Generating');
+  const result = await WholeMapGen();
+  console.log(result);
+};
+
+
+      function DrawPlayer(){
+        ctx.fillStyle = `rgb(${Player.color.red},${Player.color.green},${Player.color.blue})`;
+        ctx.rect(Player.x, Player.y, Player.w, Player.h);
+        ctx.fill();
+      }
+
+
+    function Draw(){
+
+      ctx.beginPath();
+      ctx.fillStyle = `rgb(50,50,50)`;
+      ctx.rect(0,0,cramw,cramh);
+      ctx.fill();
+      ctx.closePath();
+
+      ctx.beginPath();
+      DrawPlayer();
+      ctx.closePath();
+
+      requestAnimationFrame(Draw);
+    };
+
+    Generation();
+    Draw();
+  </script>
+</body>
