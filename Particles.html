@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset=utf-8 />
+  <title>
+  Particle effects Training
+  </title>
+   <style>
+* { padding: 0; margin: 0; }
+canvas { background: #eee; display: block; margin: 0 auto; }
+body{
+  background-color: rgb(50,50,50);
+  }
+</style>
+  <meta name="GENERATOR" content="Arachnophilia 5.5" />
+  <meta name="FORMATTER" content="Arachnophilia 5.5" />
+</head>
+
+<body>
+    <canvas id="Canvas"><p>You can't use Canvas element in this browser, try another, like Edge, Chrome, or Firefox.</p></canvas>
+
+<script>
+
+const canvas = document.getElementById("Canvas");
+const ctx = canvas.getContext("2d");
+
+let cramw  = canvas.width = window.innerWidth;
+let cramh  = canvas.height = window.innerHeight;
+
+let particles = [[0,0,0,255,150,0,1,0,0]];
+let mousedown = false;
+let particleLife = 200;
+let ParticleSize = 40;
+
+document.addEventListener("mousedown", mousedownhandler);
+document.addEventListener("mousemove", mousemovehandler);
+document.addEventListener("mouseup", mouseuphandler);
+
+
+function mousedownhandler(e){
+    particles.unshift(new Array(e.clientX-canvas.offsetLeft-(ParticleSize/2), e.clientY-canvas.offsetTop-(ParticleSize/2), particleLife,255,150,0,1));
+
+    console.log(particles);
+    mousedown = true;
+}
+
+function mousemovehandler(e){
+  if (mousedown) {
+    particles.unshift(new Array(e.clientX-canvas.offsetLeft-(ParticleSize/2), e.clientY-canvas.offsetTop-(ParticleSize/2), particleLife,255,150,0,1,getRandom(-3,3),getRandomInt(0,4)));
+  }
+}
+
+function mouseuphandler(e){
+  mousedown = false;
+}
+function getRandom(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return (Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+}
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+};
+
+
+function particleDeath(i){
+  if (particles[i][6] < 0.01) {
+    particles.pop();
+  }
+}
+
+//particles[i][]
+//3 for red
+function particleHandler (){
+
+  for (var i = 0; i < particles.length; i++) {
+    particles[i][2] -= 1;
+
+      if (particles[i][4] > 0) {
+        particles[i][4] -=3;
+      } else if (particles[i][4] < 60) {
+        particles[i][3] -=3;
+        particles[i][6] -= 0.01;
+      }
+          //particleDeath(i);
+  }
+}
+
+
+function compareNumbers(a, b) {
+  return a[2] - b[2];
+}
+
+
+function ParticlesDraw(){
+
+  for (var i = 0; i < particles.length; i++) {
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(${particles[i][3]},${particles[i][4]},${particles[i][5]},${particles[i][6]})`;
+    ctx.rect(particles[i][0],particles[i][1],ParticleSize,ParticleSize);
+    ctx.fill();
+    ctx.closePath();
+
+    if (particles[i][3]<80) {
+      particles[i][1] = ((80-particles[i][3])/10)+particles[i][1];
+    } else {
+      particles[i][1]-=particles[i][8];
+      particles[i][0]-=particles[i][7];
+    }
+  }
+}
+
+function Draw(){
+  ctx.beginPath();
+  ctx.clearRect(0,0,cramw,cramh);
+  ctx.closePath();
+
+  particles.sort(compareNumbers);
+  ParticlesDraw();
+  particleHandler();
+  requestAnimationFrame(Draw);
+}
+
+Draw();
+
+</script>
+</body>
