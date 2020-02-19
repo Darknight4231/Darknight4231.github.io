@@ -95,6 +95,7 @@ function PlayerDraw(){
   ctx.rect(0,0,cramw,cramh);
   ctx.fill();
   ctx.closePath();
+
   ctx.beginPath();
   ctx.lineWidth = 6;
   ctx.strokeStyle = box.outline;
@@ -104,8 +105,6 @@ function PlayerDraw(){
   ctx.fill();
   ctx.closePath();
  };
-
-  //factory(?) enemy creator, only needs Lane and Color honestly.
 
 let Enemies = [];
 
@@ -132,8 +131,18 @@ function EnemyUpdate(){
       Enemies[i].x = cramw-20;
       Enemies[i].speed = getRandom(10,35);
     }
+    EnemyCollide(i);
   };
 };
+
+function EnemyCollide(i){
+//Fish[C+1] <= Player.y && Player.y <= Fish[C+1]+fishSize[C]*20*level){ Enemies[i].Lane*(cramh/3)+60
+
+  if(Enemies[i].x <= box.x+box.width && box.x <= Enemies[i].x+Enemies[i].Size &&
+   Enemies[i].Lane*(cramh/3) == box.y){
+        alert("game over dude");
+      }
+    };
 
  function Hostile(){
   let enemy = Enemies.push(new Enemy(getRandom(0,2),`rgb(${getRandom(0,255)},${getRandom(0,255)},${getRandom(0,255)})`, cramh/4, cramw-20, getRandom(10,35)));

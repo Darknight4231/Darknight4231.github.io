@@ -120,12 +120,10 @@ body{
     fishcol.push(getRandom(0,100));
     fishcol.push(getRandom(0,150));
     fishcol.push(getRandom(0,200));
-/*
+
     fishmove.push(getRandom(2,8));
     fishmove.push(getRandom(2,8));
-*/
-  fishmove.push(0);
-  fishmove.push(0);
+
 
   //TESTING ABOVE ***************************************
 
@@ -143,7 +141,7 @@ body{
     //this is great... for the top left corner of the player cube.. Nothing else.
     if(Fish[C] <= Player.x+Player.width && Player.x <= Fish[C]+fishSize[C]*20*level &&
        Fish[C+1] <= Player.y && Player.y <= Fish[C+1]+fishSize[C]*20*level){
-        if(Playersize < (fishSize[C]^2)*20*level){
+        if(Playersize < ((fishSize[C]^2)*20*level)){
           alert("game over dude");
           } else {
             Player.width = Player.width + (fishSize[C]/4);
@@ -176,10 +174,6 @@ body{
 
   function drawfish(){
 
-
-
-
-
     for ( var C = 1; C < Math.ceil((numFish*(level*LevelIncrement))); C = C+2) {
 
           var r = fishcol[C];
@@ -195,7 +189,6 @@ body{
           Fishcollide(C);
 
           Fish[C] +=fishmove[C];
-
       }
 
     };
@@ -205,7 +198,6 @@ body{
     var Red = playercolor[0];
     var Green = playercolor[1];
     var Blue = playercolor[2];
-
 
     ctx.beginPath();
     ctx.fillStyle = `rgb( ${(Red)}, ${(Green)}, ${(Blue)})`;
@@ -218,7 +210,6 @@ body{
 
 
   NewLevel(level);
-
 
     function draw(){
 

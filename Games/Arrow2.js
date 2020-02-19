@@ -22,24 +22,31 @@ document.addEventListener("keyup", keyup);
 const cramw = canvas.width = 1280;
 const cramh = canvas.height = 600;
 
-let arrowX = [];
-let arrowY = [];
-let Gravity = [];
-let ArrowPower =[];
-let mouseY = 0;
+let Arrow = {
+  x: [],
+  y: [],
+  Gravity: [],
+  Power: [],
+}
 
-let playerblock = [50,390];
+let Player = {
+  size: 20,
+  x: cramw/8,
+  y: cramh,
+}
+
 const slow = 0.2;
-let C = 0;
+//let C = 0;
 const grav = 2;
 
-
-let BX = [800,200,400,1200];
-let BDX = [0,0,0,0];
-let BDY = [0,0,0,0];
-let blocksY = [60, 100, 360, 440];
-let blocksize = 40;
-let blockfall = [0,0,0,0];
+ let Blocks = {
+    x: [800,200,400,1200],
+    y: [60, 100, 360, 440],
+    dx: [0,0,0,0],
+    dy: [0,0,0,0],
+    size: 40,
+    fall: [0,0,0,0],
+}
 
 let rightPressed = false;
 let leftPressed  = false;
@@ -49,44 +56,37 @@ let downPressed  = false;
 function keydown (e){
   if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
     rightPressed = true;
-    playerblock[0] += 6;
   }
   if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
    leftPressed = true;
-   playerblock[0] -=6;
   }
   if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
-   upPressed = true;
-   playerblock[1] -=12;
+    upPressed = true;
   }
   if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
    downPressed = true;
-   playerblock[1] +=6;
-   }
+  }
 };
-
 
 function keyup (e){
-  if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
+  if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
     rightPressed = false;
   }
-  if ( e.key=="Left" || e.key=="ArrowLeft"  || e.key == "a"){
+  if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
     leftPressed = false;
   }
-  if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w" ) {
+  if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
     upPressed = false;
-   }
-  if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s") {
-    downPressed = false;
-   }
+  }
+  if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
+   downPressed = false;
+  }
+  console.log(e.key);
  };
 
-
 function PlayerGrav(){
-    playerblock[1] += grav;
+    Player.y += grav;
 };
-
-
 
 function Xboundary(x){
 
@@ -95,8 +95,7 @@ function Xboundary(x){
       } else if (x < 0){               //left boundary
        return  1;
       } else return x;
-
-     };
+  };
 
 function Yboundary(y){
 
@@ -105,22 +104,19 @@ function Yboundary(y){
       } else if (y > canvas.height-20){//bottom boundary
         return canvas.height-20;
       } else return y;
+  };
 
-    };
 
   function GravRad(X,Y) {
-
-    if (Y-playerblock[1]>0) {
+    if (Y-Player.y>0) {
 
       console.log("Below");
-      return -(Math.abs(Y-playerblock[1]/X));
+      return -(Math.abs(Y-Player.y/X));
 
-
-    } else if (Y-playerblock[1] <0) {
+    } else if (Y-Player.y <0) {
 
       console.log("Above");
-      return (Math.abs(Y-playerblock[1]/X));
-
+      return (Math.abs(Y-Player.y/X));
     }
   };
 
@@ -129,53 +125,42 @@ function arrowAngle(e){
 
   let mouseY = e.clientY-canvas.offsetTop;
   let mouseX = e.clientX-canvas.offsetLeft;
-  let mouseYminus = mouseY-playerblock[1];
-  let mouseXminus = mouseX-playerblock[0];
-  GravAngle = ((-(Math.atan((mouseY-playerblock[1])/160)*180/Math.PI)));
+  let mouseYminus = mouseY-Player.y;
+  let mouseXminus = mouseX-Player.x;
+  GravAngle = ((-(Math.atan((mouseY-Player.y)/160)*180/Math.PI)));
 
-
-  /*
-  RISE OVER RUN
-    Y2-Y1
-    _____
-    X2-X1
-  */
 
   //find the distance between the two points, (60, 400) and (e.clientX, e.clientY)
-  //then add that (with some kinda multiplier ofc to scale it down) to arrowX[C]
-  if (mouseX > playerblock[0]) {
+  //then add that (with some kinda multiplier ofc to scale it down) to Arrow.x[C]
+  if (mouseX > Player.x) {
   pwr = (Math.pow( Math.pow(mouseXminus, 2) + Math.pow(mouseYminus, 2)  , 0.5));
-} else if (mouseX < playerblock[0]){
+} else if (mouseX < Player.x){
     pwr = (-(Math.pow( Math.pow(mouseXminus, 2) + Math.pow(mouseYminus, 2)  , 0.5)));
   }
 
-//  console.log(pwr/100);
-  arrowX.push (playerblock[0]);
-  arrowY.push (playerblock[1]);
-  ArrowPower.push(pwr/100);
-  Gravity.push ((-0.9)+GravRad(mouseXminus,mouseY)/100);
+  Arrow.x.push (Player.x+(Player.size/2));
+  Arrow.y.push (Player.y+(Player.size/2));
+  Arrow.Power.push(pwr/100);
+  Arrow.Gravity.push ((-0.9)+GravRad(mouseXminus,mouseYminus)/100);
 
 };
 
 
-function blocks(){
+function DrawBlocks(){
 
   ctx.beginPath();
-  for (let C=0; C<blocksY.length; C++){
+  for (let C=0; C<Blocks.y.length; C++){
 
     ctx.fillStyle = `rgb(0,180,200)`;
-    ctx.rect(BX[C], blocksY[C], blocksize,blocksize);
+    ctx.rect(Blocks.x[C], Blocks.y[C], Blocks.size,Blocks.size);
     ctx.fill();
 
 
-    BX[C] = Xboundary(BX[C]);
-    blocksY[C] =Yboundary(blocksY[C]);
+    Blocks.x[C] = Xboundary(Blocks.x[C]);
+    Blocks.y[C] = Yboundary(Blocks.y[C]);
 
 
-              blocksY[C] = blocksY[C] - blockfall[C];
-              //if(blockfall[C] /= 0){
-              //blockfall[C] = blockfall[C]-grav;
-   //}
+              Blocks.y[C] = Blocks.y[C] - Blocks.fall[C];
   }
   ctx.closePath();
 };
@@ -183,16 +168,16 @@ function blocks(){
 
 function collisionDetection(C) {
 
-      for (let B=0; B<BX.length; B++){
+      for (let B=0; B<Blocks.x.length; B++){
 
-    //use x for both arrowX and arrowY to keep it on the same arrow at all times. Easy. Really easy actually.
+    //use x for both Arrow.x and Arrow.y to keep it on the same arrow at all times. Easy. Really easy actually.
     //B goes through every block before moving to check the next arrow, or x.
 
-    if ( BX[B]-3 < arrowX[C] && arrowX[C] < BX[B]+blocksize  && blocksY[B] < arrowY[C] && arrowY[C] < blocksY[B]+blocksize ){
-      BX[B] += 0.8*ArrowPower[C];
-      blockfall[B] =- Gravity[C];
+    if ( Blocks.x[B]-3 < Arrow.x[C] && Arrow.x[C] < Blocks.x[B]+Blocks.size  && Blocks.y[B] < Arrow.y[C] && Arrow.y[C] < Blocks.y[B]+Blocks.size ){
+      Blocks.x[B] += 0.8*Arrow.Power[C];
+      Blocks.fall[B] =- Arrow.Gravity[C];
     }
-    }
+  }
 };
 
 
@@ -211,19 +196,32 @@ function background(){
   //this is the spot to show where the arrow launches from (and is calculated at)
   ctx.beginPath();
   ctx.fillStyle = `rgb(255,0,0)`;
-  ctx.rect(playerblock[0], playerblock[1], 20, 20);
+  ctx.rect(Player.x, Player.y, Player.size, Player.size);
   ctx.fill();
   ctx.closePath();
-  };
+
+  if (rightPressed) {
+    Player.x += 6;
+  }
+  if (leftPressed) {
+    Player.x -=6;
+  }
+  if (upPressed) {
+    Player.y -=12;
+  }
+  if (downPressed) {
+    Player.y +=6;
+  }
+};
 
 
 
-function player(){
+function PlayerUpdate(){
 
       playerplace();
-      playerblock[0] = Xboundary(playerblock[0]);
-      playerblock[1] = Yboundary(playerblock[1]);
-    //  PlayerGrav();
+      Player.x = Xboundary(Player.x);
+      Player.y = Yboundary(Player.y);
+      PlayerGrav();
 };
 
 
@@ -231,37 +229,39 @@ function player(){
 function draw(){
       background();
 
+  ctx.beginPath();
+  ctx.fillStyle = 'grey';
+  ctx.rect(0,0,cramw,cramh);
+  ctx.fill();
+  ctx.closePath();
 
-  ctx.clearRect(0,0,cramw,cramh); //this clears the canvas completely
+  DrawBlocks();
+  PlayerUpdate();
 
 
-  blocks();
-  player();
-
-
-  for ( let C=0; C < arrowX.length; C++){
+  for ( let C=0; C < Arrow.x.length; C++){
 
     collisionDetection(C);
 
 
     ctx.beginPath();
     ctx.fillStyle = `rgb(0,0,0)`;
-    ctx.rect(arrowX[C], arrowY[C],18,3);
+    ctx.rect(Arrow.x[C], Arrow.y[C],18,3);
     ctx.fill();
     ctx.closePath();
 
     ctx.beginPath();
     ctx.fillStyle = `rgb(0,0,200)`;
-    ctx.rect(arrowX[C]+17,arrowY[C]-3,10,8);
+    ctx.rect(Arrow.x[C]+17,Arrow.y[C]-3,10,8);
     ctx.fill();
     ctx.closePath();
 
 
 
-    arrowY[C] =  arrowY[C]-Gravity[C];
-    arrowX[C] = arrowX[C]+ArrowPower[C];
+    Arrow.y[C] =  Arrow.y[C]-Arrow.Gravity[C];
+    Arrow.x[C] = Arrow.x[C]+Arrow.Power[C];
 
-    Gravity[C] = Gravity[C]-0.02;
+    Arrow.Gravity[C] = Arrow.Gravity[C]-0.02;
 
 
   }

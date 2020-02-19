@@ -28,6 +28,9 @@ const ctx = canvas.getContext("2d");
 let cramw  = canvas.width = window.innerWidth;
 let cramh  = canvas.height = window.innerHeight;
 
+let mouseX = 0;
+let mouseY = 0;
+
 let particles = [[0,0,0,255,150,0,1,0,0]];
 let mousedown = false;
 let particleLife = 200;
@@ -46,14 +49,14 @@ function mousedownhandler(e){
 }
 
 function mousemovehandler(e){
-  if (mousedown) {
-    particles.unshift(new Array(e.clientX-canvas.offsetLeft-(ParticleSize/2), e.clientY-canvas.offsetTop-(ParticleSize/2), particleLife,255,150,0,1,getRandom(-3,3),getRandomInt(0,4)));
-  }
+  mouseX = e.clientX;
+  mouseY = e.clientY;
 }
 
 function mouseuphandler(e){
   mousedown = false;
 }
+
 function getRandom(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -118,6 +121,9 @@ function Draw(){
   ctx.clearRect(0,0,cramw,cramh);
   ctx.closePath();
 
+  if (mousedown) {
+    particles.unshift(new Array(mouseX-canvas.offsetLeft-(ParticleSize/2), mouseY-canvas.offsetTop-(ParticleSize/2), particleLife,255,150,0,1,getRandom(-3,3),getRandomInt(0,4)));
+  }
   particles.sort(compareNumbers);
   ParticlesDraw();
   particleHandler();
