@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+body {
+  margin: 0;
+  overflow: hidden;
+  }
+
+</style>
+</head>
+
+<body>
+  <canvas id="canvas"><p>Canvas API isn't supported in your current browser, try a different one.</p></canvas>
+<script>
+
+  const canv = document.getElementById('canvas');
+  const cramw =  canv.width = window.innerWidth; const cramh = canv.height = window.innerHeight;
+  const ctx = canv.getContext('2d');
+
+    ctx.beginPath();
+    ctx.fillStyle = 'black';
+    ctx.font = '48px serif';
+    ctx.fillText('Loading Sprite',200,200);
+    ctx.closePath();
+
+  let Sprite = {
+    Col: 0,
+    Row: 0,
+  }
+
+    let SpriteImg = new Image();
+    SpriteImg.src = 'TestSpriteStick.png';
+    SpriteImg.onload = Startup();
+
+    function SpriteUpdate(){
+      if (Sprite.Row  === 7) {
+        Sprite.Row = 0;
+      } else {
+        Sprite.Row ++;
+      }
+    };
+
+
+  function Startup(){
+
+    setInterval(SpriteUpdate, 100);
+    Draw();
+  };
+
+  function Draw(){
+
+    ctx.beginPath();
+    ctx.fillStyle = `rgb(0,100,200)`;
+    ctx.rect(0,0,cramw,cramh);
+    ctx.fill();
+    ctx.closePath();
+
+    //drawImage(image,    sx,       sy,   sWidth,  sHeight,    dx,     dy, dWidth,dHeight)
+    ctx.beginPath();
+    ctx.drawImage(SpriteImg, (Sprite.Col*32), (Sprite.Row*32), 32, 32, cramw/2, cramh/2, 128, 128);
+    ctx.closePath();
+
+
+    requestAnimationFrame(Draw);
+  };
+</script>
+</body>

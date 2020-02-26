@@ -124,14 +124,9 @@ body{
     fishmove.push(getRandom(2,8));
     fishmove.push(getRandom(2,8));
 
-
-  //TESTING ABOVE ***************************************
-
-
-
     FishPasses.push(0);
 
-    fishSize.push(getRandom(0.9,(1.4*level*(fishSizeInc))));
+    fishSize.push(getRandom(0.8*level*(fishSizeInc),(1.2*level*(fishSizeInc))));
     }
   };
 
@@ -144,8 +139,8 @@ body{
         if(Playersize < ((fishSize[C]^2)*20*level)){
           alert("game over dude");
           } else {
-            Player.width = Player.width + (fishSize[C]/4);
-            Player.height = Player.height + (fishSize[C]/4);
+            Player.width +=(fishSize[C]/4);
+            Player.height += (fishSize[C]/4);
             fishSize[C] = 0;
             FishEat++;
         }
