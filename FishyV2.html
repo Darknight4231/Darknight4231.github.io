@@ -57,17 +57,21 @@ function drawImageActualSize() {
 
     let score = [20];
     let numFish = 20;
+    let FirstLevel = true;
 
-    //let Fish = {
+    let PlayerDead = false;
 
-    //}
+    let FishArray = [];
 
-    let Fish = [0];
-    let FishExists = [true];
-    let fishcol = [0];
-    let fishmove = [0];
-    let fishSize = [0];
-    let FishPasses = [0];
+    function Fish(x,y,size,speed,Color) {
+     this.x = x;
+     this.y = y;
+     this.alive = true;
+     this.size = size;
+     this.speed = speed;
+     this.passes = 0;
+     this.Color = Color;
+   };
 
     let fishSizeInc = 1.5;
 
@@ -80,130 +84,90 @@ function drawImageActualSize() {
 
 
     function getRandom(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
-      };
-
-
-
-  function keydown(e){
-
-    if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
-      RightPressed = true;
-    }
-    if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
-     LeftPressed = true;
-    }
-    if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
-     UpPressed = true;
-    }
-    if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
-     DownPressed = true;
-     }
+        min=Math.ceil(min);max=Math.floor(max);return Math.floor(Math.random()*(max-min+1))+min;
     };
 
+    function keydown(e){
+    if(e.key=="Right"||e.key=="ArrowRight"||e.key=="d"){RightPressed=true;}
+    if(e.key=="Left"||e.key=="ArrowLeft"||e.key=="a"){LeftPressed = true;}
+    if(e.key=="Up"||e.key=="ArrowUp"||e.key=="w"){UpPressed=true;}
+    if(e.key=="Down"||e.key=="ArrowDown"||e.key=="s"){DownPressed=true;}
+    };
 
     function keyup(e){
-
-      if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
-      RightPressed = false;
-    }
-    if ( e.key=="Left" || e.key=="ArrowLeft"  || e.key == "a"){
-      LeftPressed = false;
-    }
-    if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w" ) {
-      UpPressed = false;
-     }
-    if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s") {
-      DownPressed = false;
-     }
+    if(e.key=="Right"||e.key=="ArrowRight"||e.key=="d"){RightPressed=false;}
+    if(e.key=="Left"||e.key=="ArrowLeft"||e.key=="a"){LeftPressed=false;}
+    if(e.key=="Up"||e.key=="ArrowUp"||e.key=="w"){UpPressed = false;}
+    if(e.key=="Down"||e.key=="ArrowDown"||e.key=="s"){DownPressed=false;}
     };
 
+      function FishSpawn(){
+        FishArray[C].x=getRandom(0-1.2*FishArray[C].size,0-FishArray[C].size);
+        FishArray[C].y=getRandom(10,cramh-20);
+        FishArray[C].size=getRandom(1*level*(fishSizeInc),20*level*(fishSizeInc));
+        FishArray[C].speed=getRandom(1,5);
+        FishArray[C].Color=[getRandom(0,200),getRandom(100,255),getRandom(50,255)];
+        FishArray[C].passes=0;
+      };
 
       function NewLevel(level){
-
-      for ( let C = 1; C < Math.ceil((numFish*(level*LevelIncrement))); C++) {
-      Fish.push(getRandom(0,20));
-      Fish.push(getRandom(10,cramh-20));
-
-      fishcol.push(getRandom(0,100));
-      fishcol.push(getRandom(0,150));
-      fishcol.push(getRandom(0,200));
-
-      fishmove.push(getRandom(2,6));
-      fishmove.push(getRandom(2,6));
-      FishExists.push(true);
-
-
-      FishPasses.push(0);
-
-      fishSize.push(getRandom(1*level*(fishSizeInc),(20*level*(fishSizeInc))));
+      if (FirstLevel) {
+        for ( let C = 0; C < Math.ceil(numFish*(level*LevelIncrement)); C++) {
+          FishArray.push(new Fish(getRandom(-40,0),getRandom(10,cramh-20),getRandom(1*level*(fishSizeInc),20*level*(fishSizeInc)),(getRandom(1,5)),[getRandom(0,200),getRandom(100,255),getRandom(50,255)]));
+        }
+        FirstLevel = false;
+      } else {
+        for ( let C = 0; C < level; C++) {
+          FishArray.push(new Fish(getRandom(-40,0),getRandom(10,cramh-20),getRandom(1*level*(fishSizeInc),20*level*(fishSizeInc)),(getRandom(1,5)),[getRandom(0,200),getRandom(100,255),getRandom(50,255)]));
+        }
       }
     };
 
-
     function Fishcollide(C){
 
-      if(FishExists[C] &&
-        Fish[C] <= Player.x+Player.width && Player.x <= Fish[C]+fishSize[C] &&
-         Fish[C+1] <= Player.y+Player.height && Player.y <= Fish[C+1]+fishSize[C]){
-          if(Player.size < Math.pow(fishSize[C],2)){
-            alert("game over dude");
+      if(FishArray[C].alive) {
+        if(FishArray[C].x <= Player.x+Player.width && Player.x <= FishArray[C].x+FishArray[C].size &&
+         FishArray[C].y <= Player.y+Player.height && Player.y <= FishArray[C].y+FishArray[C].size){
+          if(Player.size < Math.pow(FishArray[C].size,2)){
+            PlayerDead = true;
             } else {
-              Player.width = Player.width + (fishSize[C]/10);
-              Player.height = Player.height + (fishSize[C]/10);
-              fishSize[C] = 0;
-              FishExists[C] = false;
+              Player.width = Player.width + (FishArray[C].size/10);
+              Player.height = Player.height + (FishArray[C].size/10);
+              FishArray[C].size = 0;
+              FishArray[C].alive = false;
               Player.FishEaten++;
           }
         }
-      };
+      }
+    };
 
     function fishScore(){
 
-      for( let I=0; I<score.length; I++){
-
+      for(let I=0; I<score.length; I++){
         ctx.fillStyle = 'black';
         ctx.font = '48px serif';
         ctx.fillText('Fish eaten '+ Player.FishEaten,40,60);
         ctx.fillText('Level '+level, 40, 120);
       }
 
-
-      if ((Player.FishEaten) > (level)){
+      if ((Player.FishEaten)>(level)){
           level ++;
-          Player.FishEaten = 0;
+          Player.FishEaten=0;
           NewLevel(level);
-          }
-
+        }
       };
 
-
     function drawfish(){
-
-
-
-
-
-      for ( let C = 1; C < Math.ceil((numFish*(level*LevelIncrement))); C = C+2) {
-
-            let r = fishcol[C];
-            let g = fishcol[C+1];
-            let b = fishcol[C+2];
-
+      for ( let C = 0; C < FishArray.length; C ++) {
             ctx.beginPath();
-            ctx.fillStyle = `rgb( ${(r)}, ${(g)}, ${(b)})`;
-            ctx.rect(Fish[C],Fish[C+1], fishSize[C],fishSize[C]);
+            ctx.fillStyle = `rgb(${(FishArray[C].Color[0])},${(FishArray[C].Color[1])},${(FishArray[C].Color[2])})`;
+            ctx.rect(FishArray[C].x,FishArray[C].y,FishArray[C].size,FishArray[C].size);
             ctx.fill();
             ctx.closePath();
 
+            FishArray[C].x +=FishArray[C].speed;
             Fishcollide(C);
-
-            Fish[C] +=fishmove[C];
-
         }
-
       };
 
     function PlayerAt(){
@@ -212,13 +176,11 @@ function drawImageActualSize() {
       let Green = Player.color[1];
       let Blue = Player.color[2];
 
-
       ctx.beginPath();
       ctx.fillStyle = `rgb( ${(Red)}, ${(Green)}, ${(Blue)})`;
       ctx.rect(Player.x,Player.y, Player.width, Player.height);
       ctx.fill();
       ctx.closePath();
-
     };
 
 
@@ -228,6 +190,8 @@ function drawImageActualSize() {
 
       function draw(){
 
+        if(PlayerDead){location.reload();alert("game over dude");}
+
         Player.size = Player.width*Player.height;
         ctx.beginPath();
         ctx.fillStyle = `rgb(20,255,200)`;
@@ -235,46 +199,24 @@ function drawImageActualSize() {
         ctx.fill();
         ctx.closePath();
 
-      if(UpPressed){
-        Player.y-=Player.speed;
-        }
-      if (DownPressed){
-        Player.y+=Player.speed;
-        }
-      if(RightPressed){
-        Player.x+=Player.speed;
-        }
-      if(LeftPressed){
-        Player.x-=Player.speed;
-        }
+      if(UpPressed){Player.y-=Player.speed;}if(DownPressed){Player.y+=Player.speed;}if(RightPressed){Player.x+=Player.speed;}if(LeftPressed){Player.x-=Player.speed;}
 
-        for (let C=1; C < Fish.length+1; C++){
-           if(Fish[C] > cramw+20){
+        for (let C=0; C < FishArray.length; C++){
 
-              Fish[C] =(getRandom(-40,0));
-              Fish[C+1] =(getRandom(10,cramh-20));
-              FishPasses[C] ++;
+           if(FishArray[C].x > cramw+20){
+
+              FishArray[C].x =(getRandom(0-FishArray[C].size,0-3*FishArray[C].size));
+              FishArray[C].y =(getRandom(10,cramh-20));
+              FishArray[C].passes ++;
            }
 
-           if ( FishPasses[C] > 3){
-
-              Fish[C] =(getRandom(0,20));
-              Fish[C+1] =(getRandom(10,cramh-20));
-
-              fishcol[C] =(getRandom(0,100));
-              fishcol[C+1] =(getRandom(0,200));
-              fishcol[C+2] =(getRandom(0,255));
-
-              fishmove[C] =(getRandom(2,8));
-              fishmove[C+1] =(getRandom(2,8));
-
-              fishSize[C] = (getRandom(1,(1.2*level*(fishSizeInc))));
-
-              if (FishExists[C] == false) {
-                FishExists[C] == true;
-              }
-
-              FishPasses[C] = 0;
+           if ( FishArray[C].passes > 3){
+             FishSpawn();
+           }
+           if (FishArray[C].alive==false) {
+             console.log("Fish #"+C+" was eaten/deleted");
+             FishArray.splice(C,1);
+             console.log(FishArray);
            }
          }
       //drawImageActualSize();
@@ -284,7 +226,7 @@ function drawImageActualSize() {
 
         fishScore();
       requestAnimationFrame(draw);
-      };
+    };
       draw();
     </script>
 

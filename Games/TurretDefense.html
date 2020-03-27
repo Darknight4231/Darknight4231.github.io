@@ -2,6 +2,9 @@
 <head>
   <title>Turret Defense</title>
   <style>
+  body {
+    background-color: grey;
+  }
     #canvas{
       display: block;
       outline: solid 2px black;
@@ -23,7 +26,7 @@
   canvas.height = 400;
   let cramw = canvas.width;
   let cramh = canvas.height;
-  const Griddiv = cramw/3;      //original was 50
+  const Griddiv = cramw/20;      //original was 50
   const cramwGrid = cramw/Griddiv;
   const cramhGrid = cramh/Griddiv;
   let GridONOFF = false;

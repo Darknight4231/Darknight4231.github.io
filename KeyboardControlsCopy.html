@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+canvas { background: #eee;}
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background-color: rgb(10,200,255);
+  font-family:  VL Gothic, arial;
+}
+
+</style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+
+<script>
+
+  const canvas = document.getElementById("canvas"); const ctx = canvas.getContext('2d');
+  const cramw = canvas.width = window.innerWidth-canvas.offsetLeft; const cramh = canvas.height = window.innerHeight-canvas.offsetTop;
+
+  let rightPressed = false; let leftPressed = false; let downPressed = false; let upPressed = false;
+
+  //NYI Not Yet Implemented
+   let attackPressed = false;
+
+  let Player = {
+    x: cramw/2,
+    y: cramh/2,
+    color: "rgb(200,100,255)",
+    size: 32,
+    speed: 5,
+    Strength: 1,
+    Defense: 1,
+    Sprite: new Image(),
+    Spritesrc: 'TestSpriteStick.png',
+  }
+
+  document.addEventListener("click", ()=>{console.log(Player);})
+  // KEYBOARD
+     document.addEventListener("keydown", keyDownHandler, false);
+     document.addEventListener("keyup", keyUpHandler, false);
+
+     function keyDownHandler(e) {
+         if ("code" in e) {
+             switch(e.key) {
+                 case "Unidentified":
+                     break;
+                 case "ArrowRight":
+                 case "Right": // IE <= 9 and FF <= 36
+                 case "KeyD":
+                 case "d":
+                     rightPressed = true;
+                     return;
+                 case "ArrowLeft":
+                 case "Left": // IE <= 9 and FF <= 36
+                 case "KeyA":
+                     leftPressed = true;
+                     return;
+                 case "ArrowUp":
+                 case "Up": // IE <= 9 and FF <= 36
+                 case "KeyW":
+                     upPressed = true;
+                     return;
+                 case "ArrowDown":
+                 case "Down": // IE <= 9 and FF <= 36
+                 case "KeyS":
+                     downPressed = true;
+                     return;
+                 default:
+                  console.log("Default "+e.key);
+                     return;
+             }
+         }
+     }
+     function keyUpHandler(e) {
+         if ("code" in e) {
+             switch(e.key) {
+                 case "Unidentified":
+                     break;
+                 case "ArrowRight":
+                 case "Right": // IE <= 9 and FF <= 36
+                 case "KeyD":
+                     rightPressed = false;
+                     return;
+                 case "ArrowLeft":
+                 case "Left": // IE <= 9 and FF <= 36
+                 case "KeyA":
+                     leftPressed = false;
+                     return;
+                 case "ArrowUp":
+                 case "Up": // IE <= 9 and FF <= 36
+                 case "KeyW":
+                     upPressed = false;
+                     return;
+                 case "ArrowDown":
+                 case "Down": // IE <= 9 and FF <= 36
+                 case "KeyS":
+                     downPressed = false;
+                     return;
+                 default:
+                     return;
+             }
+         }
+     }
+
+     let Sprite = {
+       Col: 0,
+       Row: 0,
+     }
+
+       Player.Sprite.src = Player.Spritesrc;
+       Player.Sprite.onload = Startup();
+
+       function SpriteUpdate(){
+         if (Sprite.Row  === 7) {
+           Sprite.Row = 0;
+         } else {
+           Sprite.Row ++;
+         }
+       };
+
+     function Startup(){ setInterval(SpriteUpdate, 100); Draw(); };
+
+  function Draw(){
+
+      if (rightPressed){Player.x+=Player.speed;} if (downPressed){Player.y+=Player.speed;} if (leftPressed){Player.x-=Player.speed;} if (upPressed){Player.y-=Player.speed;}
+
+      ctx.beginPath();
+      ctx.clearRect(Player.x-Player.size, Player.y-Player.size, 6*Player.size, 6*Player.size);
+      //drawImage(image,    sx,       sy,   sWidth,  sHeight,    dx,     dy, dWidth,dHeight)
+      ctx.drawImage(Player.Sprite, (Sprite.Col*32), (Sprite.Row*32), 32, 32, Player.x, Player.y, 128, 128);
+      ctx.closePath();
+
+      requestAnimationFrame(Draw);
+  }
+
+</script>
+<script src="KeyboardControlsCopy.js"></script>
+
+</body>
