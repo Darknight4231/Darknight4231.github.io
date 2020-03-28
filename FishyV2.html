@@ -75,17 +75,53 @@ function drawImageActualSize() {
 
     let fishSizeInc = 1.5;
 
+    let TempFishSpeedArray = [];
+    let Stopped = false;
+
     let LevelIncrement = 0.75;
     let level = 1;
     let C = 1;
 
+    document.addEventListener("click", UserClick);
     document.addEventListener("keydown", keydown);
     document.addEventListener("keyup"  , keyup);
 
+    let Sprite = {
+      Col: 0,
+      Row: 0,
+    }
+
+      let SpriteImg = new Image();
+      SpriteImg.src = 'Images/FishyPlayer.png';
+      SpriteImg.onload = Startup();
+
+      function SpriteUpdate(){
+        if (Sprite.Row  === 7) {
+          Sprite.Row = 0;
+        } else {
+          Sprite.Row ++;
+        }
+      };
+
+    function Startup(){
+
+      setInterval(SpriteUpdate, 100);
+      draw();
+    };
 
     function getRandom(min, max) {
         min=Math.ceil(min);max=Math.floor(max);return Math.floor(Math.random()*(max-min+1))+min;
     };
+
+    function UserClick(){
+      if (Stopped) {
+        for (i = 0; i < FishArray.length; i++) {FishArray[i].speed = TempFishSpeedArray[i];}
+        Stopped = false;
+      } else {
+        for (i = 0; i < FishArray.length; i++) {FishArray[i].speed = 0;}
+        Stopped = true;
+      }
+    }
 
     function keydown(e){
     if(e.key=="Right"||e.key=="ArrowRight"||e.key=="d"){RightPressed=true;}
@@ -114,11 +150,13 @@ function drawImageActualSize() {
       if (FirstLevel) {
         for ( let C = 0; C < Math.ceil(numFish*(level*LevelIncrement)); C++) {
           FishArray.push(new Fish(getRandom(-40,0),getRandom(10,cramh-20),getRandom(1*level*(fishSizeInc),20*level*(fishSizeInc)),(getRandom(1,5)),[getRandom(0,200),getRandom(100,255),getRandom(50,255)]));
+          TempFishSpeedArray.push(getRandom(1,5));
         }
         FirstLevel = false;
       } else {
         for ( let C = 0; C < level; C++) {
           FishArray.push(new Fish(getRandom(-40,0),getRandom(10,cramh-20),getRandom(1*level*(fishSizeInc),20*level*(fishSizeInc)),(getRandom(1,5)),[getRandom(0,200),getRandom(100,255),getRandom(50,255)]));
+          TempFishSpeedArray.push(getRandom(1,5));
         }
       }
     };
@@ -177,9 +215,11 @@ function drawImageActualSize() {
       let Blue = Player.color[2];
 
       ctx.beginPath();
-      ctx.fillStyle = `rgb( ${(Red)}, ${(Green)}, ${(Blue)})`;
+      //ctx.fillStyle = `rgb( ${(Red)}, ${(Green)}, ${(Blue)})`;
+      ctx.drawImage(SpriteImg, Player.x, Player.y, Player.width, Player.height);
       ctx.rect(Player.x,Player.y, Player.width, Player.height);
-      ctx.fill();
+      //ctx.fill();
+      ctx.stroke();
       ctx.closePath();
     };
 
@@ -227,7 +267,7 @@ function drawImageActualSize() {
         fishScore();
       requestAnimationFrame(draw);
     };
-      draw();
+      /*draw();*/
     </script>
 
 
