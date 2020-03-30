@@ -33,19 +33,7 @@ body{
     let DownPressed  = false;
     let LeftPressed  = false;
     let RightPressed = false;
-/*
-    const image = new Image();
-    image.onload = drawImageActualSize;
 
-    //image.src = 'https://darknight4231.github.io/Images/Fishy.png';
-
-function drawImageActualSize() {
-  // To use the custom size we'll have to specify the scale parameters
-  // using the element's width and height properties - lets draw one
-  // on top in the corner:
-  ctx.drawImage(this, 0, 0, cramw, cramh);
-}
-*/
     let Player = {
       x : cramw/2, y : cramh/2,
       width : 20,  height : 20,
@@ -82,7 +70,7 @@ function drawImageActualSize() {
     let level = 1;
     let C = 1;
 
-    document.addEventListener("click", UserClick);
+    //document.addEventListener("click", UserClick);
 
 
     let Sprite = {Col: 0, Row: 0,};
@@ -118,23 +106,32 @@ function drawImageActualSize() {
         Stopped = true;
       }
     }
-/*
-document.addEventListener("keydown", keydown);
-document.addEventListener("keyup"  , keyup);
-    function keydown(e){
-    if(e.key=="Right"||e.key=="ArrowRight"||e.key=="d"){RightPressed=true;}
-    if(e.key=="Left"||e.key=="ArrowLeft"||e.key=="a"){LeftPressed = true;}
-    if(e.key=="Up"||e.key=="ArrowUp"||e.key=="w"){UpPressed=true;}
-    if(e.key=="Down"||e.key=="ArrowDown"||e.key=="s"){DownPressed=true;}
-    };
 
-    function keyup(e){
-    if(e.key=="Right"||e.key=="ArrowRight"||e.key=="d"){RightPressed=false;}
-    if(e.key=="Left"||e.key=="ArrowLeft"||e.key=="a"){LeftPressed=false;}
-    if(e.key=="Up"||e.key=="ArrowUp"||e.key=="w"){UpPressed = false;}
-    if(e.key=="Down"||e.key=="ArrowDown"||e.key=="s"){DownPressed=false;}
-    };*/
-
+      document.addEventListener("mousedown", touchpress);
+      window.addEventListener("mouseup", touchup);
+console.log(cramw+"<W   H>"+cramh);
+      function touchpress(e){
+        console.log("Mousedown, Y="+e.clientY);
+        console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
+        if ((e.clientY-canvas.offsetTop)-Player.y<cramh/15) {
+          UpPressed = true;
+        }
+        if ((e.clientY-canvas.offsetTop)-Player.y>0) {
+          DownPressed = true;
+        }
+        if ((e.clientX-canvas.offsetLeft)-Player.x<cramw/15) {
+          LeftPressed = true;
+        }
+        if ((e.clientX-canvas.offsetLeft)-Player.x>0) {
+          RightPressed = true;
+        }
+      }
+      function touchup(e){
+        UpPressed = false;
+        DownPressed = false;
+        LeftPressed = false;
+        RightPressed = false;
+      }
     // KEYBOARD
        document.addEventListener("keydown", keyDownHandler, false);
        document.addEventListener("keyup", keyUpHandler, false);
@@ -154,7 +151,7 @@ document.addEventListener("keyup"  , keyup);
                    case "ArrowLeft":
                    case "Left": // IE <= 9 and FF <= 36
                    case "KeyA":
-                       LeftRightPressed = true;
+                       LeftPressed = true;
                        return;
                    case "ArrowUp":
                    case "Up": // IE <= 9 and FF <= 36
@@ -175,7 +172,7 @@ document.addEventListener("keyup"  , keyup);
                RightPressed = true;
            }
            else if(e.keyCode == 37) {
-               LeftRightPressed = true;
+               LeftPressed = true;
            }
            if(e.keyCode == 40) {
                DownPressed = true;
@@ -197,7 +194,7 @@ document.addEventListener("keyup"  , keyup);
                    case "ArrowLeft":
                    case "Left": // IE <= 9 and FF <= 36
                    case "KeyA":
-                       LeftRightPressed = false;
+                       LeftPressed = false;
                        return;
                    case "ArrowUp":
                    case "Up": // IE <= 9 and FF <= 36
@@ -217,7 +214,7 @@ document.addEventListener("keyup"  , keyup);
                RightPressed = false;
            }
            else if(e.keyCode == 37) {
-               LeftRightPressed = false;
+               LeftPressed = false;
            }
            if(e.keyCode == 40) {
                DownPressed = false;
