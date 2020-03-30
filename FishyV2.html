@@ -83,13 +83,9 @@ function drawImageActualSize() {
     let C = 1;
 
     document.addEventListener("click", UserClick);
-    document.addEventListener("keydown", keydown);
-    document.addEventListener("keyup"  , keyup);
 
-    let Sprite = {
-      Col: 0,
-      Row: 0,
-    }
+
+    let Sprite = {Col: 0, Row: 0,};
 
       let SpriteImg = new Image();
       SpriteImg.src = 'Images/FishyPlayer.png';
@@ -122,7 +118,9 @@ function drawImageActualSize() {
         Stopped = true;
       }
     }
-
+/*
+document.addEventListener("keydown", keydown);
+document.addEventListener("keyup"  , keyup);
     function keydown(e){
     if(e.key=="Right"||e.key=="ArrowRight"||e.key=="d"){RightPressed=true;}
     if(e.key=="Left"||e.key=="ArrowLeft"||e.key=="a"){LeftPressed = true;}
@@ -135,7 +133,99 @@ function drawImageActualSize() {
     if(e.key=="Left"||e.key=="ArrowLeft"||e.key=="a"){LeftPressed=false;}
     if(e.key=="Up"||e.key=="ArrowUp"||e.key=="w"){UpPressed = false;}
     if(e.key=="Down"||e.key=="ArrowDown"||e.key=="s"){DownPressed=false;}
-    };
+    };*/
+
+    // KEYBOARD
+       document.addEventListener("keydown", keyDownHandler, false);
+       document.addEventListener("keyup", keyUpHandler, false);
+
+       function keyDownHandler(e) {
+           if ("code" in e) {
+               switch(e.key) {
+                   case "Unidentified":
+                        console.log("Unidentified " +e.key);
+                       break;
+                   case "ArrowRight":
+                   case "Right": // IE <= 9 and FF <= 36
+                   case "KeyD":
+                   case "d":
+                       RightPressed = true;
+                       return;
+                   case "ArrowLeft":
+                   case "Left": // IE <= 9 and FF <= 36
+                   case "KeyA":
+                       LeftRightPressed = true;
+                       return;
+                   case "ArrowUp":
+                   case "Up": // IE <= 9 and FF <= 36
+                   case "KeyW":
+                       UpPressed = true;
+                       return;
+                   case "ArrowDown":
+                   case "Down": // IE <= 9 and FF <= 36
+                   case "KeyS":
+                       DownPressed = true;
+                       return;
+                   default:
+                    console.log("Default "+e.key);
+                       return;
+               }
+           }
+           if(e.keyCode == 39) {
+               RightPressed = true;
+           }
+           else if(e.keyCode == 37) {
+               LeftRightPressed = true;
+           }
+           if(e.keyCode == 40) {
+               DownPressed = true;
+           }
+           else if(e.keyCode == 38) {
+               UpPressed = true;
+           }
+       }
+       function keyUpHandler(e) {
+           if ("code" in e) {
+               switch(e.key) {
+                   case "Unidentified":
+                       break;
+                   case "ArrowRight":
+                   case "Right": // IE <= 9 and FF <= 36
+                   case "KeyD":
+                       RightPressed = false;
+                       return;
+                   case "ArrowLeft":
+                   case "Left": // IE <= 9 and FF <= 36
+                   case "KeyA":
+                       LeftRightPressed = false;
+                       return;
+                   case "ArrowUp":
+                   case "Up": // IE <= 9 and FF <= 36
+                   case "KeyW":
+                       UpPressed = false;
+                       return;
+                   case "ArrowDown":
+                   case "Down": // IE <= 9 and FF <= 36
+                   case "KeyS":
+                       DownPressed = false;
+                       return;
+                   default:
+                       return;
+               }
+           }
+           if(e.keyCode == 39) {
+               RightPressed = false;
+           }
+           else if(e.keyCode == 37) {
+               LeftRightPressed = false;
+           }
+           if(e.keyCode == 40) {
+               DownPressed = false;
+           }
+           else if(e.keyCode == 38) {
+               UpPressed = false;
+           }
+       }
 
       function FishSpawn(){
         FishArray[C].x=getRandom(0-1.2*FishArray[C].size,0-FishArray[C].size);

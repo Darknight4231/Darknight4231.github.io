@@ -57,7 +57,7 @@ let box = {
 };
 
 function keypress(e){
-  console.log(e.key +" key was pressed");
+
 };
 function keyUphandler(e){
   if (e.key=='w') {
@@ -140,6 +140,7 @@ function EnemyCollide(i){
 
   if(Enemies[i].x <= box.x+box.width && box.x <= Enemies[i].x+Enemies[i].Size &&
    Enemies[i].Lane*(cramh/3) == box.y){
+     location.reload();
         alert("game over dude");
       }
     };
