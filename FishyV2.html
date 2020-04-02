@@ -107,11 +107,11 @@ body{
       }
     }
 
-    canvas.addEventListener("touchstart", touchpress, false);
+  /*  canvas.addEventListener("touchstart", touchpress, false);
     canvas.addEventListener("touchend", touchup, false);
     //canvas.addEventListener("touchcancel", handleCancel, false);
     canvas.addEventListener("touchmove", touchmove, false);
-
+*/
 console.log(cramw+"<W   H>"+cramh);
 
 /*console.log("Mousedown, Y="+e.clientY);
@@ -119,13 +119,13 @@ console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
 */
       function touchpress(e){
 
-        if ((e.pageY)-Player.y<cramh/15) {
+        if ((e.pageY)-Player.y<cramh) {
           UpPressed = true;
         }
         if ((e.pageY)-Player.y>0) {
           DownPressed = true;
         }
-        if ((e.pageX)-Player.x<cramw/15) {
+        if ((e.pageX)-Player.x<cramw) {
           LeftPressed = true;
         }
         if ((e.pageY)-Player.x>0) {
@@ -155,21 +155,29 @@ console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
                    case "Right": // IE <= 9 and FF <= 36
                    case "KeyD":
                    case "d":
+                   case "D":
                        RightPressed = true;
                        return;
                    case "ArrowLeft":
                    case "Left": // IE <= 9 and FF <= 36
                    case "KeyA":
+                   case "a":
+                   case "A":
+                     break;
                        LeftPressed = true;
                        return;
                    case "ArrowUp":
                    case "Up": // IE <= 9 and FF <= 36
                    case "KeyW":
+                   case "w":
+                   case "W":
                        UpPressed = true;
                        return;
                    case "ArrowDown":
                    case "Down": // IE <= 9 and FF <= 36
                    case "KeyS":
+                   case "s":
+                   case "S":
                        DownPressed = true;
                        return;
                    default:
@@ -198,21 +206,29 @@ console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
                    case "ArrowRight":
                    case "Right": // IE <= 9 and FF <= 36
                    case "KeyD":
+                   case "d":
+                   case "D":
                        RightPressed = false;
                        return;
                    case "ArrowLeft":
                    case "Left": // IE <= 9 and FF <= 36
                    case "KeyA":
+                   case "a":
+                   case "A":
                        LeftPressed = false;
                        return;
                    case "ArrowUp":
                    case "Up": // IE <= 9 and FF <= 36
                    case "KeyW":
+                   case "w":
+                   case "W":
                        UpPressed = false;
                        return;
                    case "ArrowDown":
                    case "Down": // IE <= 9 and FF <= 36
                    case "KeyS":
+                   case "s":
+                   case "S":
                        DownPressed = false;
                        return;
                    default:
