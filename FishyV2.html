@@ -107,31 +107,40 @@ body{
       }
     }
 
-      document.addEventListener("mousedown", touchpress);
-      window.addEventListener("mouseup", touchup);
+    canvas.addEventListener("touchstart", touchpress, false);
+    canvas.addEventListener("touchend", touchup, false);
+    //canvas.addEventListener("touchcancel", handleCancel, false);
+    canvas.addEventListener("touchmove", touchmove, false);
+
 console.log(cramw+"<W   H>"+cramh);
+
+/*console.log("Mousedown, Y="+e.clientY);
+console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
+*/
       function touchpress(e){
-        console.log("Mousedown, Y="+e.clientY);
-        console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
-        if ((e.clientY-canvas.offsetTop)-Player.y<cramh/15) {
+
+        if ((e.pageY)-Player.y<cramh/15) {
           UpPressed = true;
         }
-        if ((e.clientY-canvas.offsetTop)-Player.y>0) {
+        if ((e.pageY)-Player.y>0) {
           DownPressed = true;
         }
-        if ((e.clientX-canvas.offsetLeft)-Player.x<cramw/15) {
+        if ((e.pageX)-Player.x<cramw/15) {
           LeftPressed = true;
         }
-        if ((e.clientX-canvas.offsetLeft)-Player.x>0) {
+        if ((e.pageY)-Player.x>0) {
           RightPressed = true;
         }
-      }
+      };
+      function touchmove(e){
+            touchpress(e);
+      };
       function touchup(e){
         UpPressed = false;
         DownPressed = false;
         LeftPressed = false;
         RightPressed = false;
-      }
+      };
     // KEYBOARD
        document.addEventListener("keydown", keyDownHandler, false);
        document.addEventListener("keyup", keyUpHandler, false);
@@ -224,24 +233,26 @@ console.log(cramw+"<W   H>"+cramh);
            }
        }
 
-      function FishSpawn(){
+      function FishSpawn(C){
+        FishArray[C].passes=0;
         FishArray[C].x=getRandom(0-1.2*FishArray[C].size,0-FishArray[C].size);
         FishArray[C].y=getRandom(10,cramh-20);
         FishArray[C].size=getRandom(1*level*(fishSizeInc),20*level*(fishSizeInc));
         FishArray[C].speed=getRandom(1,5);
         FishArray[C].Color=[getRandom(0,200),getRandom(100,255),getRandom(50,255)];
-        FishArray[C].passes=0;
+        FishArray[C].alive=true;
+
       };
 
       function NewLevel(level){
       if (FirstLevel) {
-        for ( let C = 0; C < Math.ceil(numFish*(level*LevelIncrement)); C++) {
+        for ( let C = 0; C < 20; C++) {
           FishArray.push(new Fish(getRandom(-40,0),getRandom(10,cramh-20),getRandom(1*level*(fishSizeInc),20*level*(fishSizeInc)),(getRandom(1,5)),[getRandom(0,200),getRandom(100,255),getRandom(50,255)]));
           TempFishSpeedArray.push(getRandom(1,5));
         }
         FirstLevel = false;
       } else {
-        for ( let C = 0; C < level; C++) {
+        for ( let C = 0; C < level*1.2; C++) {
           FishArray.push(new Fish(getRandom(-40,0),getRandom(10,cramh-20),getRandom(1*level*(fishSizeInc),20*level*(fishSizeInc)),(getRandom(1,5)),[getRandom(0,200),getRandom(100,255),getRandom(50,255)]));
           TempFishSpeedArray.push(getRandom(1,5));
         }
@@ -338,7 +349,7 @@ console.log(cramw+"<W   H>"+cramh);
            }
 
            if ( FishArray[C].passes > 3){
-             FishSpawn();
+             FishSpawn(C);
            }
            if (FishArray[C].alive==false) {
              console.log("Fish #"+C+" was eaten/deleted");
