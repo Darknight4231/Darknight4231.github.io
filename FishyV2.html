@@ -23,6 +23,85 @@ body{
 
   <script>
 
+
+if (navigator.maxTouchPoints>0) {
+
+console.log("HELPPPAPAPPAAA");
+}  else {
+
+  // KEYBOARD
+     document.addEventListener("keydown", keyDownHandler, false);
+     document.addEventListener("keyup", keyUpHandler, false);
+
+     function keyDownHandler(e) {
+       console.log(e.key);
+             switch(e.key) {
+                 case "Unidentified":
+                      console.log("Unidentified " +e.key);
+                     break;
+                 case "ArrowRight":
+                 case "Right": // IE <= 9 and FF <= 36
+                 case "KeyD":
+                 case "d":
+                     RightPressed = true;
+                     break;
+                 case "ArrowLeft":
+                 case "Left": // IE <= 9 and FF <= 36
+                 case "KeyA":
+                 case "a":
+                     LeftPressed = true;
+                     break;
+                 case "KeyW":
+                 case "w":
+                 case "ArrowUp":
+                 case "Up": // IE <= 9 and FF <= 36
+                     UpPressed = true;
+                     break;
+                 case "ArrowDown":
+                 case "Down": // IE <= 9 and FF <= 36
+                 case "KeyS":
+                 case "s":
+                     DownPressed = true;
+                     break;
+                 default:
+                  console.log("Default "+e.key);
+                     return;
+             }
+     }
+     function keyUpHandler(e) {
+             switch(e.key) {
+                 case "Unidentified":
+                     break;
+                 case "ArrowRight":
+                 case "Right": // IE <= 9 and FF <= 36
+                 case "KeyD":
+                 case "d":
+                     RightPressed = false;
+                     break;
+                 case "ArrowLeft":
+                 case "Left": // IE <= 9 and FF <= 36
+                 case "KeyA":
+                 case "a":
+                     LeftPressed = false;
+                     break;
+                 case "ArrowUp":
+                 case "Up": // IE <= 9 and FF <= 36
+                 case "KeyW":
+                 case "w":
+                     UpPressed = false;
+                     break;
+                 case "ArrowDown":
+                 case "Down": // IE <= 9 and FF <= 36
+                 case "KeyS":
+                 case "s":
+                     DownPressed = false;
+                     break;
+                 default:
+                     return;
+             }
+     }
+
+};
     let canvas = document.getElementById("Canvas");
     let ctx    = canvas.getContext("2d");
 
@@ -70,7 +149,8 @@ body{
     let level = 1;
     let C = 1;
 
-    //document.addEventListener("click", UserClick);
+
+    //document.addEventListener("click", PauseFunction);
 
 
     let Sprite = {Col: 0, Row: 0,};
@@ -97,7 +177,7 @@ body{
         min=Math.ceil(min);max=Math.floor(max);return Math.floor(Math.random()*(max-min+1))+min;
     };
 
-    function UserClick(){
+    function PauseFunction(){
       if (Stopped) {
         for (i = 0; i < FishArray.length; i++) {FishArray[i].speed = TempFishSpeedArray[i];}
         Stopped = false;
@@ -107,16 +187,9 @@ body{
       }
     }
 
-  /*  canvas.addEventListener("touchstart", touchpress, false);
-    canvas.addEventListener("touchend", touchup, false);
-    //canvas.addEventListener("touchcancel", handleCancel, false);
-    canvas.addEventListener("touchmove", touchmove, false);
-*/
 console.log(cramw+"<W   H>"+cramh);
 
-/*console.log("Mousedown, Y="+e.clientY);
-console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
-*/
+
       function touchpress(e){
 
         if ((e.pageY)-Player.y<cramh) {
@@ -141,113 +214,7 @@ console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
         LeftPressed = false;
         RightPressed = false;
       };
-    // KEYBOARD
-       document.addEventListener("keydown", keyDownHandler, false);
-       document.addEventListener("keyup", keyUpHandler, false);
 
-       function keyDownHandler(e) {
-           if ("code" in e) {
-               switch(e.key) {
-                   case "Unidentified":
-                        console.log("Unidentified " +e.key);
-                       break;
-                   case "ArrowRight":
-                   case "Right": // IE <= 9 and FF <= 36
-                   case "KeyD":
-                   case "d":
-                   case "D":
-                       RightPressed = true;
-                       return;
-                   case "ArrowLeft":
-                   case "Left": // IE <= 9 and FF <= 36
-                   case "KeyA":
-                   case "a":
-                   case "A":
-                     break;
-                       LeftPressed = true;
-                       return;
-                   case "ArrowUp":
-                   case "Up": // IE <= 9 and FF <= 36
-                   case "KeyW":
-                   case "w":
-                   case "W":
-                       UpPressed = true;
-                       return;
-                   case "ArrowDown":
-                   case "Down": // IE <= 9 and FF <= 36
-                   case "KeyS":
-                   case "s":
-                   case "S":
-                       DownPressed = true;
-                       return;
-                   default:
-                    console.log("Default "+e.key);
-                       return;
-               }
-           }
-           if(e.keyCode == 39) {
-               RightPressed = true;
-           }
-           else if(e.keyCode == 37) {
-               LeftPressed = true;
-           }
-           if(e.keyCode == 40) {
-               DownPressed = true;
-           }
-           else if(e.keyCode == 38) {
-               UpPressed = true;
-           }
-       }
-       function keyUpHandler(e) {
-           if ("code" in e) {
-               switch(e.key) {
-                   case "Unidentified":
-                       break;
-                   case "ArrowRight":
-                   case "Right": // IE <= 9 and FF <= 36
-                   case "KeyD":
-                   case "d":
-                   case "D":
-                       RightPressed = false;
-                       return;
-                   case "ArrowLeft":
-                   case "Left": // IE <= 9 and FF <= 36
-                   case "KeyA":
-                   case "a":
-                   case "A":
-                       LeftPressed = false;
-                       return;
-                   case "ArrowUp":
-                   case "Up": // IE <= 9 and FF <= 36
-                   case "KeyW":
-                   case "w":
-                   case "W":
-                       UpPressed = false;
-                       return;
-                   case "ArrowDown":
-                   case "Down": // IE <= 9 and FF <= 36
-                   case "KeyS":
-                   case "s":
-                   case "S":
-                       DownPressed = false;
-                       return;
-                   default:
-                       return;
-               }
-           }
-           if(e.keyCode == 39) {
-               RightPressed = false;
-           }
-           else if(e.keyCode == 37) {
-               LeftPressed = false;
-           }
-           if(e.keyCode == 40) {
-               DownPressed = false;
-           }
-           else if(e.keyCode == 38) {
-               UpPressed = false;
-           }
-       }
 
       function FishSpawn(C){
         FishArray[C].passes=0;
@@ -257,7 +224,6 @@ console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
         FishArray[C].speed=getRandom(1,5);
         FishArray[C].Color=[getRandom(0,200),getRandom(100,255),getRandom(50,255)];
         FishArray[C].alive=true;
-
       };
 
       function NewLevel(level){
@@ -276,10 +242,10 @@ console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
     };
 
     function Fishcollide(C){
-
+Player.x-(Player.width/2), Player.y-(Player.height/2)
       if(FishArray[C].alive) {
-        if(FishArray[C].x <= Player.x+Player.width && Player.x <= FishArray[C].x+FishArray[C].size &&
-         FishArray[C].y <= Player.y+Player.height && Player.y <= FishArray[C].y+FishArray[C].size){
+        if(FishArray[C].x <= Player.x+(Player.width/2) && Player.x-(Player.width/2) <= FishArray[C].x+FishArray[C].size &&
+         FishArray[C].y <= Player.y+(Player.height/2) && Player.y-(Player.height/2) <= FishArray[C].y+FishArray[C].size){
           if(Player.size < Math.pow(FishArray[C].size,2)){
             PlayerDead = true;
             } else {
@@ -329,15 +295,16 @@ console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
       let Blue = Player.color[2];
 
       ctx.beginPath();
-      //ctx.fillStyle = `rgb( ${(Red)}, ${(Green)}, ${(Blue)})`;
-      ctx.drawImage(SpriteImg, Player.x, Player.y, Player.width, Player.height);
-      ctx.rect(Player.x,Player.y, Player.width, Player.height);
-      //ctx.fill();
+      ctx.drawImage(SpriteImg, Player.x-(Player.width/2), Player.y-(Player.height/2), Player.width, Player.height);
+      ctx.rect(Player.x-(Player.width/2), Player.y-(Player.height/2), Player.width, Player.height);
       ctx.stroke();
       ctx.closePath();
-    };
 
-
+      if (Player.x-(Player.width/2)<1){Player.x=(Player.width/2);};
+      if(Player.x+(Player.width/2)>cramw){Player.x=cramw-(Player.width/2)};
+      if(Player.y-(Player.height/2)<1){Player.y=(Player.height/2)};
+      if(Player.y+(Player.height/2)>cramh){Player.y=cramh-(Player.height/2)};
+  };
 
     NewLevel(level);
 
@@ -370,7 +337,6 @@ console.log("Mousedown, X="+e.clientX+"  Player.x="+Player.x);
            if (FishArray[C].alive==false) {
              console.log("Fish #"+C+" was eaten/deleted");
              FishArray.splice(C,1);
-             console.log(FishArray);
            }
          }
       //drawImageActualSize();

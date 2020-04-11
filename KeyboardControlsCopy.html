@@ -42,7 +42,7 @@ body {
     Strength: 1,
     Defense: 1,
     Sprite: new Image(),
-    Spritesrc: 'TestSpriteStick.png',
+    Spritesrc: 'Images/TestSpriteStick.png',
   }
 
   document.addEventListener("click", ()=>{console.log(Player);})
@@ -51,6 +51,7 @@ body {
      document.addEventListener("keyup", keyUpHandler, false);
 
      function keyDownHandler(e) {
+       console.log('keypressed');
          if ("code" in e) {
              switch(e.key) {
                  case "Unidentified":
@@ -59,21 +60,25 @@ body {
                  case "Right": // IE <= 9 and FF <= 36
                  case "KeyD":
                  case "d":
+                 console.log('rightPressed');
                      rightPressed = true;
                      return;
                  case "ArrowLeft":
                  case "Left": // IE <= 9 and FF <= 36
                  case "KeyA":
+                 console.log('leftPressed');
                      leftPressed = true;
                      return;
                  case "ArrowUp":
                  case "Up": // IE <= 9 and FF <= 36
                  case "KeyW":
+                 console.log('upPressed');
                      upPressed = true;
                      return;
                  case "ArrowDown":
                  case "Down": // IE <= 9 and FF <= 36
                  case "KeyS":
+                 console.log('downPressed');
                      downPressed = true;
                      return;
                  default:

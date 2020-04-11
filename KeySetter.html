@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+canvas { background: #eee;}
+body {
+
+  background-color: rgb(10,200,255);
+  font-family:  VL Gothic, arial;
+}
+
+</style>
+</head>
+
+<body>
+<p id="Key"><br/></p>
+
+<label><button type="button" id="Button">Change Custom button</button></label>
+
+<script>
+
+
+document.getElementById('Button').addEventListener('click', ()=>{
+  CustomControlsFunction();
+
+  document.addEventListener("keydown",newkeygen);
+  document.addEventListener("keyup", ()=>{
+    document.removeEventListener("keydown",newkeygen);
+    document.removeEventListener("keyup");
+    })
+  });
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+
+let Left = {
+  Keys:['a'],
+  LeftPressed: false,
+};
+let Right = {
+  Keys:['d'],
+  RightPressed: false,
+};
+
+
+let Controls=[Left,Right];
+
+function keyDownHandler(e){
+  document.getElementById('Key').innerHTML = e.key+" was pressed";
+  switch(e.key) {
+      case "Unidentified":
+          break;
+      case Controls[0].Keys[0]:
+      console.log("A");
+        LeftPressed = true;
+        break;
+      case Controls[1].Keys[0]:
+      console.log('D');
+        RightPressed = true;
+        break;
+      case "Enter":
+        console.log("Enter was pressed");
+        break;
+      default:
+        console.log("Unregistered Key was pressed, update the Switch Cases");
+      return;
+    }
+}
+//`rgb(${c},${c},${c})`
+function keyUpHandler(e){
+  switch(e.key) {
+      case "Unidentified":
+          break;
+      case Controls[0]:
+      console.log("A");
+        LeftPressed = false;
+        break;
+      case Controls[1]:
+      console.log('D');
+        RightPressed = false;
+        break;
+      default:
+        console.log("Unregistered Key was pressed, update the Switch Cases");
+      return;
+}
+}
+
+function CustomControlsFunction(e){
+
+}
+</script>
+</body>
