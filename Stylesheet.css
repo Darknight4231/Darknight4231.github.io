@@ -47,37 +47,37 @@ body {
   }
 
   .GameCol {
-    position:relative;
+    position: relative;
     margin: 0;
     padding: 0;
     padding-top: 0.3em;
     float: left;
 
-    display: block;
+    display: flex;
+    flex: auto;
   }
 
   .GameCol > ul a:hover {
     outline: solid 2px red;
   }
 
-/*  .leftCol {
-    left: 0;
-    top: 0;
-    width: 20% content-box;
-    position: relative;
+  .GameCol > ul > li {
+    height: 10%;
+    width: auto;
   }
 
-  .leftCol>ul>li>a {
-    float: left;
-    clear: left;
-    text-align: center;
-    text-decoration: none;
-  }
-*/
   .navimg {
     position: relative;
-    width: 10%;
-    height: 10%;
+    width: 80%;
+    height: 80%;
+  }
+  #Page {
+    float: left;
+  }
+  .Page{
+    display: flex;
+    flex: auto;
+
   }
 
 
