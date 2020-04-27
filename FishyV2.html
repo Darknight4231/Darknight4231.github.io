@@ -25,40 +25,41 @@ body{
 
 
 if (navigator.maxTouchPoints==0) {
-  console.log("Touchscreen detected");
-
-    /*document.addEventListener("touchstart",TouchStart);
+    document.addEventListener("touchstart",TouchStart);
     document.addEventListener("touchmove",TouchMove);
     document.addEventListener("touchcancel",TouchCancel);
     document.addEventListener("touchend",TouchEnd);
-    */
-    document.addEventListener("mousedown",TouchStart);
-    //document.addEventListener("touchmove",TouchMove);
-    //document.addEventListener("touchcancel",TouchCancel);
-    document.addEventListener("mouseup",TouchEnd);
 
     function TouchStart(e){
-      if ((e.pageY)-Player.y<cramh) {
-        UpPressed = true;
-        ctx.rect(Player.x,((e.pageY)-Player.y),200,20)
-        ctx.stroke();
-      }
-      if ((e.pageY)-Player.y>0) {
-        DownPressed = true;
-      }
-      if ((e.pageX)-Player.x<cramw) {
-        LeftPressed = true;
-      }
-      if ((e.pageY)-Player.x>0) {
+      e.preventDefault();
+
+      if (Player.x < e.changedTouches[0].pageX) {
         RightPressed = true;
+      }if (Player.x > e.changedTouches[0].pageX) {
+        LeftPressed = true;
+      }if (Player.y < e.changedTouches[0].pageY) {
+        DownPressed = true;
+      }if (Player.y > e.changedTouches[0].pageY) {
+        UpPressed = true;
       }
     }
 
     function TouchMove(e){
       e.preventDefault();
+
+      if (Player.x < e.changedTouches[0].pageX) {
+        RightPressed = true;
+      }if (Player.x > e.changedTouches[0].pageX) {
+        LeftPressed = true;
+      }if (Player.y < e.changedTouches[0].pageY) {
+        DownPressed = true;
+      }if (Player.y > e.changedTouches[0].pageY) {
+        UpPressed = true;
+      }
     }
 
     function TouchCancel(e){
+      e.preventDefault();
       UpPressed = false;
       DownPressed = false;
       LeftPressed = false;
@@ -66,12 +67,12 @@ if (navigator.maxTouchPoints==0) {
     }
 
     function TouchEnd(e){
+      e.preventDefault();  
       UpPressed = false;
       DownPressed = false;
       LeftPressed = false;
       RightPressed = false;
     }
-
 
 }  else {
 
@@ -336,7 +337,7 @@ Player.x-(Player.width/2), Player.y-(Player.height/2)
         Player.size = Player.width*Player.height;
         ctx.beginPath();
         ctx.fillStyle = `rgb(20,255,200)`;
-      //  ctx.rect(0,0,cramw,cramh);
+        ctx.rect(0,0,cramw,cramh);
         ctx.fill();
         ctx.closePath();
 
@@ -364,6 +365,7 @@ Player.x-(Player.width/2), Player.y-(Player.height/2)
         PlayerAt();
 
         fishScore();
+
       requestAnimationFrame(draw);
     };
       /*draw();*/
