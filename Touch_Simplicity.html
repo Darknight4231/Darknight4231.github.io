@@ -18,63 +18,16 @@ body {
 
 <body>
 <canvas id="canvas"><p>Heyo, CanvasAPI doesn't work in your current browser; try a different one.</p><canvas>
+
+  <p id="TouchInfo"></p>
 <script>
 
 const canvas = document.getElementById("canvas"); const ctx = canvas.getContext("2d");
 const cramw = canvas.width = 200; const cramh = canvas.height = 400;
 
-/*
-document.addEventListener("touchstart",TouchStart);
-document.addEventListener("touchmove",TouchMove);
-document.addEventListener("touchcancel",TouchCancel);
-document.addEventListener("touchend",TouchEnd);
+const TouchP = document.getElementById("TouchInfo");
 
-function TouchStart(e){
-  e.preventDefault();
-
-  if (Player.x < e.changedTouches[0].pageX) {
-    RightPressed = true;
-  }if (Player.x > e.changedTouches[0].pageX) {
-    LeftPressed = true;
-  }if (Player.y < e.changedTouches[0].pageY) {
-    DownPressed = true;
-  }if (Player.y > e.changedTouches[0].pageY) {
-    UpPressed = true;
-  }
-}
-
-function TouchMove(e){
-  e.preventDefault();
-
-  if (Player.x < e.changedTouches[0].pageX) {
-    RightPressed = true;
-  }if (Player.x > e.changedTouches[0].pageX) {
-    LeftPressed = true;
-  }if (Player.y < e.changedTouches[0].pageY) {
-    DownPressed = true;
-  }if (Player.y > e.changedTouches[0].pageY) {
-    UpPressed = true;
-  }
-}
-
-function TouchCancel(e){
-  e.preventDefault();
-  UpPressed = false;
-  DownPressed = false;
-  LeftPressed = false;
-  RightPressed = false;
-}
-
-function TouchEnd(e){
-  e.preventDefault();
-  UpPressed = false;
-  DownPressed = false;
-  LeftPressed = false;
-  RightPressed = false;
-}
-*/
 document.addEventListener("DOMContentLoaded", startup);
-
 function startup(){
   canvas.addEventListener("touchstart", handleStart, false);
   canvas.addEventListener("touchend", handleEnd, false);
@@ -86,6 +39,7 @@ let ongoingTouches=[];
 
 function handleStart(evt) {
 
+  TouchP.innerHTML = touches[0].pageX+" <X _ Y> "+ touches[0].pageY;
   console.alert("touchstart.");
   let el = document.getElementById("canvas");
   let ctx = el.getContext("2d");
