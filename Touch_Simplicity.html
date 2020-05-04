@@ -73,11 +73,14 @@ function TouchEnd(e){
   RightPressed = false;
 }
 */
+document.addEventListener("DOMContentLoaded", startup);
 
-canvas.addEventListener("touchstart", handleStart, false);
-canvas.addEventListener("touchend", handleEnd, false);
-canvas.addEventListener("touchcancel", handleCancel, false);
-canvas.addEventListener("touchmove", handleMove, false);
+function startup(){
+  canvas.addEventListener("touchstart", handleStart, false);
+  canvas.addEventListener("touchend", handleEnd, false);
+  canvas.addEventListener("touchcancel", handleCancel, false);
+  canvas.addEventListener("touchmove", handleMove, false);
+}
 
 let ongoingTouches=[];
 
