@@ -157,7 +157,7 @@ function handleEnd(evt) {
 }
 function handleCancel(evt) {
   evt.preventDefault();
-  window.alert("touchcancel.");
+  console.alert("touchcancel.");
   let touches = evt.changedTouches;
 
   for (let i = 0; i < touches.length; i++) {
@@ -173,7 +173,7 @@ function colorForTouch(touch) {
   g = g.toString(16); // make it a hex digit
   b = b.toString(16); // make it a hex digit
   let color = "#" + r + g + b;
-  window.alert("color for touch with identifier " + touch.identifier + " = " + color);
+  console.alert("color for touch with identifier " + touch.identifier + " = " + color);
   return color;
 }
 
