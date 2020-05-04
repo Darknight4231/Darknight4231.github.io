@@ -38,9 +38,9 @@ function startup(){
 let ongoingTouches=[];
 
 function handleStart(evt) {
-
+  evt.preventDefault();
   TouchP.innerHTML = touches[0].pageX+" <X _ Y> "+ touches[0].pageY;
-  console.alert("touchstart.");
+  window.alert("touchstart.");
   let el = document.getElementById("canvas");
   let ctx = el.getContext("2d");
   let touches = evt.changedTouches;
@@ -55,10 +55,10 @@ function handleStart(evt) {
     ctx.fill();
     window.alert("touchstart:" + i + ".");
   }
-  evt.preventDefault();
+
 }
 function handleMove(evt) {
-
+ evt.preventDefault();
   let el = document.getElementById("canvas");
   let ctx = el.getContext("2d");
   let touches = evt.changedTouches;
@@ -83,10 +83,10 @@ function handleMove(evt) {
     } else {
       window.alert("can't figure out which touch to continue");
     }
-  }  evt.preventDefault();
+  }
 }
 function handleEnd(evt) {
-
+  evt.preventDefault();
   log("touchend");
   let el = document.getElementById("canvas");
   let ctx = el.getContext("2d");
@@ -107,7 +107,7 @@ function handleEnd(evt) {
     } else {
       window.alert("can't figure out which touch to end");
     }
-  }  evt.preventDefault();
+  }
 }
 function handleCancel(evt) {
 
