@@ -104,7 +104,7 @@ function handleStart(evt) {
   evt.preventDefault();
 }
 function handleMove(evt) {
-  evt.preventDefault();
+
   let el = document.getElementById("canvas");
   let ctx = el.getContext("2d");
   let touches = evt.changedTouches;
@@ -129,10 +129,10 @@ function handleMove(evt) {
     } else {
       window.alert("can't figure out which touch to continue");
     }
-  }
+  }  evt.preventDefault();
 }
 function handleEnd(evt) {
-  evt.preventDefault();
+
   log("touchend");
   let el = document.getElementById("canvas");
   let ctx = el.getContext("2d");
@@ -153,10 +153,10 @@ function handleEnd(evt) {
     } else {
       window.alert("can't figure out which touch to end");
     }
-  }
+  }  evt.preventDefault();
 }
 function handleCancel(evt) {
-  evt.preventDefault();
+
   console.alert("touchcancel.");
   let touches = evt.changedTouches;
 
@@ -173,7 +173,7 @@ function colorForTouch(touch) {
   g = g.toString(16); // make it a hex digit
   b = b.toString(16); // make it a hex digit
   let color = "#" + r + g + b;
-  console.alert("color for touch with identifier " + touch.identifier + " = " + color);
+  console.alert("color for touch with identifier " + touch.identifier + " = " + color); evt.preventDefault();
   return color;
 }
 
