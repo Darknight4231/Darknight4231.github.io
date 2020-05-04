@@ -24,7 +24,7 @@ body{
   <script>
 
 
-if (navigator.maxTouchPoints==0) {
+if (navigator.maxTouchPoints>2) {
     document.addEventListener("touchstart",TouchStart);
     document.addEventListener("touchmove",TouchMove);
     document.addEventListener("touchcancel",TouchCancel);
@@ -67,7 +67,7 @@ if (navigator.maxTouchPoints==0) {
     }
 
     function TouchEnd(e){
-      e.preventDefault();  
+      e.preventDefault();
       UpPressed = false;
       DownPressed = false;
       LeftPressed = false;

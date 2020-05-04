@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+canvas { background: #eee;}
+body {
+  background-color: rgb(10,200,255);
+  font-family:  VL Gothic, arial;
+}
+</style>
+</head>
+
+<body>
+<canvas><p>Your browser doesn't support CanvasAPI -- use another browser such as Chrome or Edge.</p></canvas>
+
+<script>
+
+function getRandom(min, max) {
+    min=Math.ceil(min);max=Math.floor(max);return Math.floor(Math.random()*(max-min+1))+min;
+};
+
+function cooldown(){
+
+};
+
+function wavegen(){
+  if (Number.isInteger( WaveNumber/3 )){new Siege();}else{
+    if(RangedMinions*1.5>MeleeMinions){new MeleeMinion();}else{new RangedMinion();}
+  }
+};
+
+setInterval(wavegen,MAGICNUMBERS);
+
+function minion(lane, team, type){
+  this.lane = lane;
+  this.hp = 10*WaveNumber;
+  this.damage = 2*WaveNumber;
+  this.cooldown = 200;
+  this.alive = true;
+  this.type = getRandomInt(1,3);
+  this.team = team;
+
+};
+
+</script>
+</body>

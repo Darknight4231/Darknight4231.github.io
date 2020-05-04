@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+canvas { background: #eee; display: block; margin: 0 auto;}
+body {
+  background-color: rgb(10,200,255);
+  font-family:  VL Gothic, arial;
+  padding: 0; margin: 0;
+ }
+</style>
+</head>
+
+<body>
+<canvas id="myCanvas"><p>Your browser doesn't support CanvasAPI -- use another browser such as Chrome or Edge.</p></canvas>
+
+<script>
+
+
+const canvas = document.getElementById('myCanvas'); const ctx = canvas.getContext("2d");
+const cramw = canvas.width = window.innerWidth; const cramh = canvas.height = window.innerHeight;
+
+function getRandom(min, max) {
+    min=Math.ceil(min);max=Math.floor(max);return Math.floor(Math.random()*(max-min+1))+min;
+};
+
+function attack(e){
+  for (var i = 0; i < MinionArray.length; i++) {
+    MinionArray[i].x
+  }
+};
+
+function cooldown(e){
+
+};
+
+
+let RangedMinions =0;
+let MeleeMinions  =0;
+let SiegeMinions  =0;
+let MinionArray  =[];
+let WaveNumber    =0;
+
+function minion(lane, team, type, direction){
+  this.lane = lane;
+  this.hp = 10*WaveNumber;
+  this.damage = 2*WaveNumber;
+  this.cooldown = 200;
+  this.alive = true;
+  this.type = type;
+  this.team = team;
+  this.direction = direction;
+  this.y = 0+(cramh*team);
+  this.x = (cramw/3)*lane+(cramw/6);
+  this.range = type*5+5;
+};
+
+function wavegen(){
+  WaveNumber++;
+  if (Number.isInteger(WaveNumber/3)) {SiegeMinions++; for (i = 1; i < 4; i++) {MinionArray.push(new minion(i, 0, 2, 2));MinionArray.
+    push(new minion(i, 1, 2, -2));}}else{
+    if(RangedMinions.length*1.5>MeleeMinions.length){MeleeMinions++; for (i = 1; i < 4; i++) {for (c = 0; c < 4; c++) {MinionArray.push(new minion(i, 0, 0, 2));MinionArray.push(new minion(i, 1, 0, -2));}}}else{RangedMinions++; for (i = 0; i < 3; i++) {for (c = 0; c < 4; c++){MinionArray.push(new minion(i, 0, 1, 2));MinionArray.push(new minion(i, 1, 1, -2));}}}
+  }
+  for (i = 0; i < MeleeMinions.length; i++) {
+    MinionArray.push(new minion(i, 0, 0, 2));
+  }
+  console.log("Wave "+WaveNumber+" Generated");
+};
+
+function Sort(type, index){
+  let idx = MinionArray.indexOf(type);
+    while (idx != -1) {
+      index.push(idx);
+      idx = MinionArray.indexOf(type, idx + 1);
+    }
+ }
+
+setInterval(wavegen,3000);
+
+function minion(lane, team, type, direction){
+  this.lane = lane;
+  this.hp = 10*WaveNumber;
+  this.damage = 2*WaveNumber;
+  this.cooldown = 200;
+  this.alive = true;
+  this.type = type;
+  this.team = team;
+  this.direction = direction;
+  this.y = 0+(cramh*team);
+  this.x = (cramw/3)*lane+(cramw/6);
+  this.range = type*5+5;
+};
+
+function draw(){
+  ctx.clearRect(0,0,cramw,cramh);
+  for (i = 0; i < MinionArray.length; i++) {
+      ctx.beginPath();
+      if (MinionArray[i].team == 0) {ctx.fillStyle = `rgb(200,50,50)`;}
+      else {ctx.fillStyle = `rgb(80,120,255)`;}
+      ctx.rect(MinionArray[i].x,MinionArray[i].y,20,20);
+      ctx.stroke();
+      ctx.fill();
+      MinionArray[i].y+=MinionArray[i].direction;
+  }   ctx.closePath();
+  requestAnimationFrame(draw);
+ };
+draw();
+</script>
+</body>
