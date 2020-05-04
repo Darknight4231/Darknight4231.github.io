@@ -86,13 +86,13 @@ let ongoingTouches=[];
 
 function handleStart(evt) {
 
-  window.alert("touchstart.");
+  console.alert("touchstart.");
   let el = document.getElementById("canvas");
   let ctx = el.getContext("2d");
   let touches = evt.changedTouches;
 
   for (let i = 0; i < touches.length; i++) {
-    window.alert("touchstart:" + i + "...");
+    console.alert("touchstart:" + i + "...");
     ongoingTouches.push(copyTouch(touches[i]));
     let color = colorForTouch(touches[i]);
     ctx.beginPath();
