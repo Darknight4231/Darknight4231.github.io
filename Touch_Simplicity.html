@@ -94,10 +94,10 @@ function handleStart(evt) {
   for (let i = 0; i < touches.length; i++) {
     console.alert("touchstart:" + i + "...");
     ongoingTouches.push(copyTouch(touches[i]));
-    let color = colorForTouch(touches[i]);
+    //let color = colorForTouch(touches[i]);
     ctx.beginPath();
     ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
-    ctx.fillStyle = color;
+    ctx.fillStyle = `rgb(255,0,0)`;
     ctx.fill();
     window.alert("touchstart:" + i + ".");
   }
