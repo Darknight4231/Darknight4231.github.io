@@ -85,7 +85,7 @@ function startup(){
 let ongoingTouches=[];
 
 function handleStart(evt) {
-  evt.preventDefault();
+
   console.alert("touchstart.");
   let el = document.getElementById("canvas");
   let ctx = el.getContext("2d");
@@ -101,6 +101,7 @@ function handleStart(evt) {
     ctx.fill();
     console.alert("touchstart:" + i + ".");
   }
+  evt.preventDefault();
 }
 function handleMove(evt) {
   evt.preventDefault();
