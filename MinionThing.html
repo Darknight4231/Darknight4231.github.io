@@ -30,48 +30,35 @@ function getRandom(min, max) {
     min=Math.ceil(min);max=Math.floor(max);return Math.floor(Math.random()*(max-min+1))+min;
 };
 
-function attack(e){
-  for (var i = 0; i < MinionArray.length; i++) {
-    MinionArray[i].x
-  }
-};
 
 function cooldown(e){
 
 };
 
-
-let RangedMinions =0;
-let MeleeMinions  =0;
-let SiegeMinions  =0;
-let MinionArray  =[];
+let Wave=[1,1,1,0,0];
+let BlueMinion   =[];
+let RedMinion    =[];
 let WaveNumber    =0;
+let lanes         =3;
 
-function minion(lane, team, type, direction){
-  this.lane = lane;
-  this.hp = 10*WaveNumber;
-  this.damage = 2*WaveNumber;
-  this.cooldown = 200;
-  this.alive = true;
-  this.type = type;
-  this.team = team;
-  this.direction = direction;
-  this.y = 0+(cramh*team);
-  this.x = (cramw/3)*lane+(cramw/6);
-  this.range = type*5+5;
+let rgbToHex = function (rgb) {
+  let hex = Number(rgb).toString(16);
+  if (hex.length < 2) {
+       hex = "0" + hex;
+  }
+  return hex;
 };
 
-function wavegen(){
-  WaveNumber++;
-  if (Number.isInteger(WaveNumber/3)) {SiegeMinions++; for (i = 1; i < 4; i++) {MinionArray.push(new minion(i, 0, 2, 2));MinionArray.
-    push(new minion(i, 1, 2, -2));}}else{
-    if(RangedMinions.length*1.5>MeleeMinions.length){MeleeMinions++; for (i = 1; i < 4; i++) {for (c = 0; c < 4; c++) {MinionArray.push(new minion(i, 0, 0, 2));MinionArray.push(new minion(i, 1, 0, -2));}}}else{RangedMinions++; for (i = 0; i < 3; i++) {for (c = 0; c < 4; c++){MinionArray.push(new minion(i, 0, 1, 2));MinionArray.push(new minion(i, 1, 1, -2));}}}
-  }
-  for (i = 0; i < MeleeMinions.length; i++) {
-    MinionArray.push(new minion(i, 0, 0, 2));
+function WaveGen(){
+    if (Number.isInteger(WaveNumber/3)) {Wave.push(2);} else {if (Wave[Wave.length-3]==0) {Wave.push(1);}else {Wave.push(0);}}
+  for (let i = 0; i < Wave.length; i++) {
+    for(let c=0; c<lanes; c++){
+    BlueMinion.push(new minion(c,Wave[i],2,'#DC1414'));
+    RedMinion.push(new minion(c,Wave[i],-2,'#DC1414'));}
   }
   console.log("Wave "+WaveNumber+" Generated");
-};
+    WaveNumber++;
+}
 
 function Sort(type, index){
   let idx = MinionArray.indexOf(type);
@@ -81,35 +68,46 @@ function Sort(type, index){
     }
  }
 
-setInterval(wavegen,3000);
+setInterval(WaveGen,3000);
 
-function minion(lane, team, type, direction){
+function minion(lane, type, direction, color){
   this.lane = lane;
   this.hp = 10*WaveNumber;
   this.damage = 2*WaveNumber;
   this.cooldown = 200;
   this.alive = true;
+  this.canAttack=true;
   this.type = type;
-  this.team = team;
+  this.color = color;
   this.direction = direction;
-  this.y = 0+(cramh*team);
-  this.x = (cramw/3)*lane+(cramw/6);
+  this.y = cramh/2;
+  this.x = (cramw/6)
+  this.width=200;
   this.range = type*5+5;
 };
 
-function draw(){
-  ctx.clearRect(0,0,cramw,cramh);
-  for (i = 0; i < MinionArray.length; i++) {
-      ctx.beginPath();
-      if (MinionArray[i].team == 0) {ctx.fillStyle = `rgb(200,50,50)`;}
-      else {ctx.fillStyle = `rgb(80,120,255)`;}
-      ctx.rect(MinionArray[i].x,MinionArray[i].y,20,20);
-      ctx.stroke();
-      ctx.fill();
-      MinionArray[i].y+=MinionArray[i].direction;
-  }   ctx.closePath();
-  requestAnimationFrame(draw);
+ function draw(){
+
+   ctx.clearRect(0,0,cramw,cramh);
+
+   for (let i = 0; i < RedMinion.length; i++){
+   ctx.beginPath();
+   ctx.fillStyle = 'red';
+   ctx.fillRect(RedMinion[i].x,RedMinion[i].y,RedMinion.width,RedMinion.width);
+   ctx.closePath();
+   RedMinion[i].y+=RedMinion[i].direction;
  };
+   for (let i = 0; i < BlueMinion.length; i++) {
+     ctx.beginPath();
+     ctx.fillStyle = 'blue';
+     ctx.rect(BlueMinion[i].x,BlueMinion[i].y,BlueMinion.width,BlueMinion.width);
+     ctx.fill();
+     ctx.closePath();
+     BlueMinion[i].y=BlueMinion[i].y+BlueMinion[i].direction;
+   };
+   ctx.closePath();
+   requestAnimationFrame(draw);
+ }
 draw();
 </script>
 </body>
