@@ -31,15 +31,25 @@ function cooldown(e){
 
 }
 ****/
+  let fps = 0;
+  let fpsarray = 0;
 
-let Wave=[1,1,1,0,0];
+function fpsCounter(){
+  fps = fpsarray;
+  fpsarray = 0;
+}
+
+let Wave=[0,0,0,1,1];
 let BlueMinion   =[];
 let RedMinion    =[];
 let WaveNumber    =0;
 let lanes         =3;
 
+
+/**   Minion Types
+0 = melee,    1 = Ranged,    2= Seige **/
 function WaveGen(){
-    if (Number.isInteger(WaveNumber/3)) {Wave.push(2);} else {if (Wave[Wave.length-3]==0) {Wave.push(1);}else {Wave.push(0);}}
+    if (Number.isInteger(WaveNumber/3)) {Wave.push(2);} else {if (Wave[Wave.length-3]==1) {Wave.push(0);}else {Wave.push(1);}}
   for (let i = 0; i < Wave.length; i++) {
     for(let c=0; c<lanes; c++){
       BlueMinion.push(new minion(c,Wave[i],2,'blue',0));
@@ -50,7 +60,7 @@ function WaveGen(){
 }
 setInterval(WaveGen,3000);
 
-function minion(lane, type, direction, color, y){
+function minion(lane, type, direction, color, y,){
   this.lane = lane;
   this.hp = 10*WaveNumber;
   this.damage = 2*WaveNumber;
@@ -58,13 +68,13 @@ function minion(lane, type, direction, color, y){
   this.alive = true;
   this.canAttack=true;
   this.type = type;
-  this.range = type*this.width+20;
+  this.width=cramw/(8*lanes)+type*5;
+  this.range = type*8+this.width;
   this.color = color;
   this.direction = direction;
-  this.y = y;
-  this.x = cramw/8+lane*(cramw/lanes);
-  this.width=cramw/(8*lanes);
-  this.range = type*5+5;
+  this.y = y+(type*direction*this.width);
+  this.x = cramw/8+lane*(cramw/lanes)-(this.width/2);
+  this.range = type*5+50;
 }
 
 function collision(){
@@ -74,7 +84,7 @@ function collision(){
       RedMinion.splice(j,1);}
     for (let k = 0; k < BlueMinion.length; k++) {
       if (RedMinion[j].lane=BlueMinion[k].lane) {
-        if (BlueMinion[k].y-RedMinion[j].y>RedMinion[j].range&&RedMinion[j].canAttack) {
+        if (RedMinion[j].y-BlueMinion[k].y<RedMinion[j].range&&RedMinion[j].canAttack) {
           RedMinion[j].direction = 0;
           BlueMinion[k].hp -= RedMinion[j].damage;
           if (BlueMinion[k].hp<=0) {BlueMinion.splice(k,1); RedMinion[j].direction = -2;}
@@ -88,18 +98,23 @@ function collision(){
         BlueMinion.splice(k,1);}
       for (let j = 0; j < RedMinion.length; j++) {
   if (BlueMinion[k].lane=RedMinion[j].lane) {
-    if (BlueMinion[k].y-RedMinion[j].y>BlueMinion[k].range&&BlueMinion[k].canAttack) {
+    if (RedMinion[j].y-BlueMinion[k].y<BlueMinion[k].range&&BlueMinion[k].canAttack) {
         BlueMinion[k].direction = 0;
         RedMinion[j].hp -= BlueMinion[k].damage;
         if (RedMinion[j].hp<=0) {RedMinion.splice(j,1); BlueMinion[k].direction=2;}
         }
       }
     }
-  }
+ }
 }
  function draw(){
 
    ctx.clearRect(0,0,cramw,cramh);
+   ctx.beginPath();
+   ctx.font = "50px sansSerif";
+   ctx.fillStyle = 'black';
+   ctx.fillText('FPS '+fps,cramw/200,cramh/11,cramw/15);
+   ctx.closePath();
 
    for (let i = 0; i < RedMinion.length; i++){
    ctx.beginPath();
@@ -118,8 +133,11 @@ function collision(){
      BlueMinion[i].y=BlueMinion[i].y+BlueMinion[i].direction;
    }
    collision();
+   fpsarray++;
    requestAnimationFrame(draw);
  }
+
+ setInterval(fpsCounter,1000);
 draw();
 </script>
 </body>
