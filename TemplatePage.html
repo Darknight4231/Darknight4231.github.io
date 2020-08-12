@@ -8,16 +8,15 @@
     <meta name="GENERATOR" content="Arachnophilia 5.5" />
     <meta name="FORMATTER" content="Arachnophilia 5.5" />
     <style>
-canvas { background: #eee;}
-body {
-  background-color: rgb(10,200,255);
-  font-family:  VL Gothic, arial;
-}
+    * { padding: 0; margin: 0; }
+    canvas { background: #eee; display: block; margin: 0 auto; }
+    body{
+      background-color: rgb(50,50,50);
+      }
 </style>
 </head>
 
 <body>
-
 drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
 Given an image, this function takes the area of the source image specified by the rectangle whose top-left corner is
  (sx, sy) and whose width and height are sWidth and sHeight and draws it into the canvas,
@@ -25,10 +24,18 @@ Given an image, this function takes the area of the source image specified by th
 <br/>
   Remainder (%)
   The remainder operator returns the remainder left over when one operand is divided by a second operand. It always takes the sign of the dividend.
+<canvas id="myCanvas"><p>Your browser doesn't support CanvasAPI -- use another browser such as Chrome or Edge.</p></canvas>
 <script>
      document.addEventListener("keydown", keyDownHandler, false);
      function keyDownHandler(e){
        console.log(e.key+" "+ e.keyCode);
      }
+
+     const canvas = document.getElementById("myCanvas");
+     const ctx = canvas.getContext("2d");
+
+     //this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded, is what you get.
+     const cramw = myCanvas.width = window.innerWidth;
+     const cramh = myCanvas.height = window.innerHeight;
 </script>
 </body>

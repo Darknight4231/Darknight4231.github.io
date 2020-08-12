@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+    * { padding: 0; margin: 0; }
+    canvas { background: #eee; display: block; margin: 0 auto; }
+    body{
+      background-color: rgb(50,50,50);
+      }
+</style>
+</head>
+
+<body>
+
+<canvas id="myCanvas"><p>Your browser doesn't support CanvasAPI -- use another browser such as Chrome or Edge.</p></canvas>
+<script>
+
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+
+//this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded, is what you get.
+const cramw = myCanvas.width = window.innerWidth;
+const cramh = myCanvas.height = window.innerHeight;
+document.addEventListener('keypress', KeyDown);
+document.addEventListener('keyup', KeyUp);
+canvas.addEventListener('mousedown',peck);
+
+let x=cramw/2;
+let y=cramh/2;
+
+let Mouse = [100,100];
+let point = [x,y];
+
+function peck(e){
+  let mouseY = e.clientY-canvas.offsetTop;
+  let mouseX = e.clientX-canvas.offsetLeft;
+  Mouse[0] = [mouseX];
+  Mouse[1] = [mouseY];
+}
+
+function KeyDown(e){
+  switch (e.key) {
+    case 'd':
+      point[0]=point[0]+20;
+      break;
+    case 'a':
+      point[0]=point[0]-20;
+      break;
+    default:
+    console.log('fucked it up');
+      return;
+
+  }
+}
+function KeyUp (){
+  console.log('poop up');
+}
+
+function calcAngleDegrees(x, y) {
+  return Math.atan2(y, x) * 180 / Math.PI;
+}
+
+console.log(calcAngleDegrees(5, 5));
+//expected output: 45
+
+console.log(calcAngleDegrees(10, 10));
+//expected output: 45
+
+console.log(calcAngleDegrees(0, 10));
+//expected output: 90
+
+
+function draw(){
+ctx.clearRect(0,0,cramw,cramh);
+ctx.lineWidth = 6;
+ctx.strokeStyle = `rgb(0,100,255)`;
+ctx.moveTo(point[0],point[1]);
+ctx.stroke();
+ctx.lineTo(Mouse[0],Mouse[1]);
+ctx.fillText(`${calcAngleDegrees(Mouse[0]-point[0],point[1]-Mouse[1])}`,Mouse[0],Mouse[1]);
+ctx.fillRect(point[0],point[1],20,20);
+requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>

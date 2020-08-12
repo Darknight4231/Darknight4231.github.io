@@ -11,19 +11,31 @@
     <meta name="GENERATOR" content="Arachnophilia 5.5" />
     <meta name="FORMATTER" content="Arachnophilia 5.5" />
     <style>
-canvas { background: #eee;}
+canvas {
+  background: #eee;
+  display: block;
+  padding: 0;}
 body {
-
   background-color: rgb(10,200,255);
   font-family:  VL Gothic, arial;
+  margin: 0 auto; padding: 0;
+  overflow: hidden;
+}
+.Size_choices{
+  display: flex;
+  margin-left: 20%;
+  padding: inherit;
+  width: 50%;
+  height: 50%;
 }
 
 </style>
+<script async src="Arrow3.js"></script>
   </head>
 
   <body>
   <audio>
-     <source src="hoouh.mp3" type= "audio/mp3" id="fall">
+     <!-- <source src="hoouh.mp3" type= "audio/mp3" id="fall"> -->
      <control></control>
      Your browser does not support the
 
@@ -33,9 +45,12 @@ body {
     <nav class="leftCol">
 
     </nav>
-<canvas id="myCanvas">
-<p>This message is for those who can't have a canvas element running in their browser. Try a different browser to see what's on the page.</p>
-</canvas>
+    <p class="Size_choices">Hello! Please choose your desired Game size. WASD to move (Space and W can both be used to jump) Clicking anywhere on the canvas will fire an arrow.</p>
+
+<button type="button" class="Size_choices" id="Play" value="2">Play Game</button>
+<button type="button" class="Size_choices" id="Play2" value="1">Play Game FULLSCREEN</button>
+<button type="button" class="Size_choices" id="Play3" value="4">Play Game 1/4 Screen, centered</button>
+
 <!--   <p>
     This is a wonderful little project I'm working on. Hopefully one day you can actually do something in it. For now, though.. <br/><br/>
     It shoots (soon to be) arrows with care to showcase gravity, and (X,Y) values of clicks.
@@ -58,7 +73,7 @@ body {
 
          -->
 
-    <script src="Arrow2.js"></script>
+
       </body>
 
 </html>
