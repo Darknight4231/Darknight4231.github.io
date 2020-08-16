@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+    * { padding: 0; margin: 0; }
+    canvas { background: #eee; display: block; margin: 0 auto; }
+    body{
+      background-color: rgb(50,50,50);
+      }
+</style>
+</head>
+
+<body>
+<canvas id="myCanvas"><p>Your browser doesn't support CanvasAPI -- use another browser such as Chrome or Edge.</p></canvas>
+<script>
+
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+const cramw = canvas.width = window.innerWidth;
+const cramh = canvas.height = window.innerHeight;
+let Keyreleased = false;
+let Player = {
+    x: cramw/2,
+    y: cramh/2,
+    size: 20,
+    speed: 20,
+    Free: 0,
+    Grappled: false,
+}
+let Enemy = {
+  x: 200,
+  y: 200,
+  size: 200,
+  difficulty: 100,
+}
+let RightPressed = false;
+let LeftPressed  = false;
+let UpPressed    = false;
+let DownPressed  = false;
+
+// KEYBOARD
+   document.addEventListener("keydown", keyDownHandler);
+   document.addEventListener("keyup", keyUpHandler);
+/*           KeyCodes for
+       W 87  A 65  S 83  D 68
+     KeyCodes are physical placement on Keyboard, and should be used to optimize playability*/
+   function keyDownHandler(e) {
+           switch(e.key) {
+               case "Unidentified":
+                    console.log("Unidentified " +e.key);
+                   break;
+               case "ArrowRight":
+               case "Right":
+               case "KeyD":
+               case "D":
+               case "d":
+                   RightPressed = true;
+                   break;
+               case "ArrowLeft":
+               case "Left":
+               case "KeyA":
+               case "A":
+               case "a":
+                   LeftPressed = true;
+                   break;
+               case "KeyW":
+               case "w":
+               case "W":
+               case "ArrowUp":
+               case " ":
+               case "Up":
+                   UpPressed = true;
+                   break;
+               case "ArrowDown":
+               case "Down":
+               case "KeyS":
+               case "s":
+               case "S":
+                   DownPressed = true;
+                   break;
+               default:
+                console.log("Default -- unconfigured key "+e.key);
+                   return;
+           }
+   }
+   function keyUpHandler(e) {
+           switch(e.key) {
+               case "Unidentified":
+                   break;
+               case "ArrowRight":
+               case "Right":
+               case "KeyD":
+               case "d":
+               case "D":
+                   RightPressed = false;
+                   break;
+               case "ArrowLeft":
+               case "Left":
+               case "KeyA":
+               case "a":
+               case "A":
+                   LeftPressed = false;
+                   break;
+               case "ArrowUp":
+               case "Up":
+               case "KeyW":
+               case "w":
+               case "W":
+               case " ":
+                   UpPressed = false;
+                   break;
+               case "ArrowDown":
+               case "Down":
+               case "KeyS":
+               case "s":
+               case "S":
+                   DownPressed = false;
+                   break;
+               default:
+                   return;
+           }
+   }
+//FishArray[C].x <= Player.x+(Player.width/2) && Player.x-(Player.width/2) <= FishArray[C].x+FishArray[C].size && FishArray[C].y <= Player.y+(Player.height/2) && Player.y-(Player.height/2) <= FishArray[C].y+FishArray[C].size
+  function player_bounds(){
+    if (Player.x-(Player.width/2)<1){Player.x=(Player.width/2);};
+    if(Player.x+(Player.width/2)>cramw){Player.x=cramw-(Player.width/2)};
+    if(Player.y-(Player.height/2)<1){Player.y=(Player.height/2)};
+    if(Player.y+(Player.height/2)>cramh){Player.y=cramh-(Player.height/2)};
+  }
+   function collisionDetection(){
+     if ((Player.x+Player.size/2)>=Enemy.x&&(Player.x-Player.size/2)<=Enemy.x+Enemy.size&&(Player.y+Player.size/2)>=Enemy.y&&(Player.y-Player.size/2)<=Enemy.y+Enemy.size&&!Player.Grappled) {
+       Player.Grappled=true;
+       Player.Free = Enemy.difficulty/2;
+     }
+   }
+   function Grapple(){
+     //if (Keyreleased){
+       if(RightPressed){Player.Free+=2;}
+       if(LeftPressed){Player.Free+=2;}
+    /*} else*/ if (Player.Free>Enemy.difficulty) {
+       Keyreleased = false;
+       Player.Grappled=false;
+       Player.Free = Enemy.difficulty/2;
+       Player.x = cramw/2;
+     } else {
+       Player.Free --;
+     }
+     /*if (keyUpHandler) {
+       console.log("hey there help me out");
+     }*/
+   }
+
+   function drawGrapple(){
+     ctx.beginPath();
+     ctx.fillStyle = `rgb(${(Enemy.difficulty-Player.Free)*1.5},${Player.Free*2},${Enemy.difficulty})`;
+     ctx.strokeStyle = 'black';
+     ctx.rect(Player.x,Player.y-40,Player.Free,20);
+     ctx.fill();
+     ctx.rect(Player.x-2,Player.y-42,Enemy.difficulty,22);
+     ctx.stroke();
+     ctx.closePath();
+   }
+   function drawPlayer(){
+     ctx.beginPath();
+     ctx.clearRect(0,0,cramw,cramh);
+     ctx.fillStyle = 'blue';
+     ctx.rect(Player.x,Player.y,Player.size,Player.size);
+     ctx.fill();
+     ctx.closePath();
+   }
+   function drawEnemy(){
+     ctx.beginPath();
+     ctx.fillStyle = 'red';
+     ctx.rect(Enemy.x,Enemy.y,Enemy.size,Enemy.size);
+     ctx.fill();
+     ctx.closePath();
+   }
+
+   function draw(){
+     collisionDetection();
+     if (Player.Grappled) {
+       drawPlayer();
+       drawEnemy();
+       drawGrapple();
+       Grapple();
+     } else {
+     if(UpPressed){Player.y-=Player.speed;}if(DownPressed){Player.y+=Player.speed;}if(RightPressed){Player.x+=Player.speed;}if(LeftPressed){Player.x-=Player.speed;}
+     drawPlayer();
+     drawEnemy();
+    }
+   requestAnimationFrame(draw);
+  };
+draw();
+</script>
+</body>
