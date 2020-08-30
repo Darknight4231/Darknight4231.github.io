@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+body {
+  margin: 0;
+  overflow: hidden;
+  }
+
+</style>
+</head>
+
+<body>
+  <canvas id="canvas"><p>Canvas API isn't supported in your current browser, try a different one.</p></canvas>
+<script>
+
+  const canv = document.getElementById('canvas');
+  const cramw =  canv.width = window.innerWidth; const cramh = canv.height = window.innerHeight;
+  const ctx = canv.getContext('2d');
+  const slow = 0.2;
+  const grav = 2;
+
+// Looking  0=Left,  1=Right
+  let Player = {
+    x: cramw/2,
+    y: cramh/2,
+    Jumpheight: 12,
+    FallSpeed: 0,
+    Looking: 1,
+  }
+
+  // KEYBOARD
+     document.addEventListener("keydown", keyDownHandler);
+     document.addEventListener("keyup", keyUpHandler);
+     let rightPressed = false;
+     let leftPressed  = false;
+     let upPressed    = false;
+     let downPressed  = false;
+     let up = false;
+  /*           KeyCodes for
+         W 87  A 65  S 83  D 68
+       KeyCodes are physical placement on Keyboard, they are DEPRECATED, but IMHO should be used to optimize playability*/
+     function keyDownHandler(e) {
+       if (e.repeat) {
+         return;
+       }
+             switch(e.key) {
+                 case "Unidentified":
+                      console.log("Unidentified " +e.key);
+                     break;
+                 case "ArrowRight":
+                 case "Right": // IE <= 9 and FF <= 36
+                 case "KeyD":
+                 case "D":
+                 case "d":
+                     rightPressed = true;
+                     Player.Looking = 1;
+                     Sprite.Row = 0;
+                     break;
+                 case "ArrowLeft":
+                 case "Left": // IE <= 9 and FF <= 36
+                 case "KeyA":
+                 case "A":
+                 case "a":
+                     leftPressed = true;
+                     Player.Looking = 0;
+                     Sprite.Row = 0;
+                     break;
+                 case "KeyW":
+                 case "w":
+                 case "W":
+                 case "ArrowUp":
+                 case " ":
+                 case "Up": // IE <= 9 and FF <= 36
+                     upPressed = true;
+                     Sprite.Row = 0;
+                     break;
+                 case "ArrowDown":
+                 case "Down": // IE <= 9 and FF <= 36
+                 case "KeyS":
+                 case "s":
+                 case "S":
+                     downPressed = true;
+                     Sprite.Row = 0;
+                     break;
+                 default:
+                  console.log("Default "+e.key);
+                     return;
+             }
+     }
+     function keyUpHandler(e) {
+             switch(e.key) {
+                 case "Unidentified":
+                     break;
+                 case "ArrowRight":
+                 case "Right": // IE <= 9 and FF <= 36
+                 case "KeyD":
+                 case "d":
+                 case "D":
+                     rightPressed = false;
+                     Sprite.Col = 0;
+                     Sprite.Row = 0;
+                     break;
+                 case "ArrowLeft":
+                 case "Left": // IE <= 9 and FF <= 36
+                 case "KeyA":
+                 case "a":
+                 case "A":
+                     leftPressed = false;
+                     Sprite.Col = 0;
+                     Sprite.Row = 0;
+                     break;
+                 case "ArrowUp":
+                 case "Up": // IE <= 9 and FF <= 36
+                 case "KeyW":
+                 case "w":
+                 case "W":
+                 case " ":
+                     upPressed = false;
+                     Sprite.Col = 0;
+                     Sprite.Row = 0;
+                     break;
+                 case "ArrowDown":
+                 case "Down": // IE <= 9 and FF <= 36
+                 case "KeyS":
+                 case "s":
+                 case "S":
+                     downPressed = false;
+                     Sprite.Col = 0;
+                     Sprite.Row = 0;
+                     break;
+                 default:
+                     return;
+             }
+     }
+
+    ctx.beginPath();
+    ctx.fillStyle = 'black';
+    ctx.font = '48px serif';
+    ctx.fillText('Loading Sprite',200,200);
+    ctx.closePath();
+
+  let Sprite = {
+    Col: 0,
+    Row: 0,
+  }
+
+    let SpriteImg = new Image();
+    //SpriteImg.src = '../Images/shit6x8.png';
+    SpriteImg.src = '../Images/MC_perhap.png'
+    SpriteImg.onload = Startup();
+
+  function SpriteUpdate(){
+    if (upPressed) {
+      Sprite.Col = 4;
+    } else if (downPressed) {
+      Sprite.Col = 5;
+    } else if (leftPressed) {
+      Sprite.Col = 2;
+    } else if (rightPressed) {
+      Sprite.Col = 3;
+    } else {
+      if (Sprite.Row==7&&Sprite.Col==0) {
+        Sprite.Row = 0;
+        Sprite.Col = 1;
+      } else if (Sprite.Row==7&&Sprite.Col==1){
+        Sprite.Row = 0;
+        Sprite.Col = 0;
+      } else {
+        Sprite.Row +=1;
+      return;
+      }
+    }
+    if (Sprite.Row  == 7) {
+      Sprite.Row = 0;
+    } else {
+      Sprite.Row +=1;
+    }
+  };
+
+
+  function Startup(){
+
+    setInterval(SpriteUpdate, 100);
+    Draw();
+  };
+
+  function WhereAmIAt(){
+    if (rightPressed) {
+      Player.x += 2;
+    }
+    if (leftPressed) {
+      Player.x -=2;
+    }
+    /*if (upPressed && up) {
+      if (Player.FallSpeed<0) {
+        console.log('This never happens...');
+        Player.FallSpeed -=grav;
+      } else if (Player.FallSpeed>=0){
+        Player.y -= Player.FallSpeed;
+        Player.FallSpeed --;
+        console.log('EE');
+      }
+    } else */if (upPressed) {
+      up = true;
+      Player.FallSpeed = Player.Jumpheight;
+      Player.y -= Player.FallSpeed;
+      Player.FallSpeed --;
+    }
+    if (downPressed) {
+      Player.y +=cramh/100;
+    }
+  }
+
+  function Xboundary(x){
+
+             if (x > canvas.width-21) { //  right boundary
+            return canvas.width-Player.size;
+        } else if (x < 0){               //left boundary
+         return  1;
+        } else return x;
+    };
+
+  function Yboundary(y){
+
+               if (y < 0) {              //top boundary
+          return  0;
+        } else if (y > canvas.height-20){//bottom boundary
+          return canvas.height-Player.size;
+        } else return y;
+    };
+
+  function Draw(){
+
+    WhereAmIAt();
+
+    ctx.beginPath();
+    ctx.fillStyle = `rgb(0,160,200)`;
+    ctx.rect(0,0,cramw,cramh);
+    ctx.fill();
+    ctx.closePath();
+
+    //drawImage(image,    sx,       sy,   sWidth,  sHeight,    dx,     dy, dWidth,dHeight)   ---- s = splice   d = draw, so - sx=splice x, and dx = draw x
+    ctx.beginPath();
+    ctx.drawImage(SpriteImg, (Sprite.Col*64), (Sprite.Row*196), 64, 196, Player.x,Player.y, 128, 196);
+    ctx.closePath();
+
+    requestAnimationFrame(Draw);
+  };
+</script>
+</body>

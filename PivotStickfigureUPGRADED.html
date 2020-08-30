@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>
+      **Template**
+    </title>
+    <meta name="GENERATOR" content="Arachnophilia 5.5" />
+    <meta name="FORMATTER" content="Arachnophilia 5.5" />
+    <style>
+    * { padding: 0; margin: 0; }
+    canvas { background: #eee; display: block; margin: 0 auto; }
+    body{
+      background-color: rgb(50,50,50);
+      }
+</style>
+</head>
+
+<body>
+<canvas id="myCanvas"><p>Your browser doesn't support CanvasAPI -- use another browser such as Chrome or Edge.</p></canvas>
+<button type="button" name="button">HElloo!!-----</button>
+<button type="button" name="button">New Frame</button>
+<button type="button" name="button">New Object</button>
+<button type="button" name="button">Add TO Object</button>
+<button type="button" name="button">Delete FROM Object</button>
+<input type="color" id="Colorchoice">
+
+<!-- Started 8/27/2020, ~2:00 pm
+Allow user to move points on screen - draw lines between (user chosen) connected points **Called objects here**
+Save all points/objects on screen + Create new frame
+Keep previous frame in alpha, while only allowing current frame to be edited
+Click play, start at 0 and and draw each frame till the end
+
+**** Should I work for no-keyboard controls? *****
+
+*Thoughts/ideas
+Mousedown - verify if mouse is over hitbox of point (if over multiple, go for what it's closest to the center of)
+Object creation - Make one point on next mousedown event
+
+void ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle [, anticlockwise]);
+
+slice does not alter the original array. It returns a shallow copy of elements from the original array. Elements of the original array are copied into the returned array as follows:
+
+For object references (and not the actual object), slice copies object references into the new array. Both the original and new array refer to the same object. If a referenced object changes, the changes
+ are visible to both the new and original arrays.
+For strings, numbers and booleans (not String, Number and Boolean objects), slice copies the values into the new array. Changes to the string, number, or boolean in one array do not affect the other array.
+If a new element is added to either array, the other array is not affected.
+
+For Now, just make a dot you can move
+
+
+I want an iterative function to go through all vertices
+
+for(C=0;C<Vertices.length;C++){
+ moveTo(Vertices[0].x,Vertices[0].y);
+ lineTo(Vertices[C].x,Vertices[C].y);
+}
+
+-->
+<script>
+//  document.addEventListener('keydown',keyDownHandler,false);
+
+    let EllipseSize = 30;
+
+     function keyDownHandler(e){
+       console.log(e.key+" "+ e.keyCode);
+     }
+
+     const canvas = document.getElementById("myCanvas");
+     const ctx = canvas.getContext("2d");
+     let colorcode = document.getElementById("Colorchoice");
+     colorcode.addEventListener("change",()=>{});
+
+     //this chooses the canvas "myCanvas" and makes it take up the same space as the window does. dunno about resizing updates.. ****Resizing does not work--whatever the window size is when loaded, is what you get.
+     const cramw = myCanvas.width = window.innerWidth/1.1;
+     const cramh = myCanvas.height = window.innerHeight/1.1;
+     canvas.addEventListener("mousedown", mousedownHandler, false);
+     canvas.addEventListener("mouseup", mouseupHandler, false);
+
+     let Objects = [];
+
+     let object =[];
+/*
+All I need is an Object {
+        x: [[Point1X],[Point2X],[],etc.];
+        y: [[Point1X],[Point2X],[],etc.];
+        color: #ff0000;
+}
+*/
+     function Point(x,y) {
+       this.x = x;
+       this.y = y;
+     }
+     let chosen = 0;
+
+     function mousedownHandler(e){
+       let mouseX = e.clientX-canvas.offsetLeft; let mouseY =e.clientY-canvas.offsetTop;
+       let Yes = false;
+
+      for (var i = 0; i < object.length; i++) {
+         if (object[i].x+EllipseSize>=mouseX&&mouseX>=object[i].x-EllipseSize&&object[i].y+EllipseSize>=mouseY&&mouseY>=object[i].y-EllipseSize) {
+           console.log("FUCKMEEE");
+            Yes = true;
+            object[i].x =mouseX; object[i].y = mouseY;
+            return;
+         }
+       }
+    if (Yes) {
+
+    } else {
+      object.push( new Point(mouseX,mouseY));
+    }
+   }
+
+     function mouseupHandler(e){
+
+     }
+
+
+
+    // void ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle [, anticlockwise]);
+
+     function Draw(){
+       ctx.fillStyle = 'cyan';
+       ctx.rect(0,0,cramw,cramh);
+       ctx.fill();
+
+       ctx.strokeStyle = 'red';
+       ctx.fillStyle = `${colorcode.value}`;
+       for (var i = 0; i < object.length; i++) {
+         ctx.beginPath();
+            ctx.ellipse(object[i].x,object[i].y,EllipseSize,EllipseSize,0,0,360,false);
+            ctx.fill();
+            ctx.stroke();
+          ctx.closePath();
+       }
+       for(C=0;C<object.length;C++){
+         ctx.beginPath();
+         ctx.strokeStyle = 'white';
+        ctx.moveTo(object[0].x,object[0].y);
+        ctx.lineTo(object[C].x,object[C].y);
+        ctx.stroke();
+        ctx.closePath();
+      }
+       requestAnimationFrame(Draw);
+     }
+     Draw();
+</script>
+</body>

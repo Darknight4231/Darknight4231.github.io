@@ -13,3 +13,10 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Element/map
           target="_blank" alt="JavaScript" />
 </map>
 <img usemap="#infographic" src="/media/examples/mdn-info2.png" alt="MDN infographic" />
+
+Here is all you need to know about relative file paths:
+
+Starting with “/” returns to the root directory and starts there
+Starting with “../” moves one directory backwards and starts there
+Starting with “../../” moves two directories backwards and starts there (and so on…)
+To move forward, just start with the first subdirectory and keep moving forward
