@@ -33,13 +33,13 @@ if (navigator.maxTouchPoints>2) {
     function TouchStart(e){
       e.preventDefault();
 
-      if (cramw/4 < e.changedTouches[0].pageX) {
+      if (3*cramw/4 < e.changedTouches[0].pageX) {
         RightPressed = true;
-      }if (4/cramw > e.changedTouches[0].pageX) {
+      }if (cramw/4 > e.changedTouches[0].pageX) {
         LeftPressed = true;
-      }if (cramh/4 < e.changedTouches[0].pageY) {
+      }if (3*cramh/4 < e.changedTouches[0].pageY) {
         DownPressed = true;
-      }if (4/cramh > e.changedTouches[0].pageY) {
+      }if (cramh/4 > e.changedTouches[0].pageY) {
         UpPressed = true;
       }
     }
