@@ -26,20 +26,20 @@ body{
 
 if (navigator.maxTouchPoints>2) {
     document.addEventListener("touchstart",TouchStart);
-    document.addEventListener("touchmove",TouchMove);
+    //document.addEventListener("touchmove",TouchMove);
     document.addEventListener("touchcancel",TouchCancel);
     document.addEventListener("touchend",TouchEnd);
 
     function TouchStart(e){
       e.preventDefault();
 
-      if (Player.x < e.changedTouches[0].pageX) {
+      if (cramw/4 < e.changedTouches[0].pageX) {
         RightPressed = true;
-      }if (Player.x > e.changedTouches[0].pageX) {
+      }if (cramw/4 > e.changedTouches[0].pageX) {
         LeftPressed = true;
-      }if (Player.y < e.changedTouches[0].pageY) {
+      }if (cramh/4 < e.changedTouches[0].pageY) {
         DownPressed = true;
-      }if (Player.y > e.changedTouches[0].pageY) {
+      }if (cramh/4 > e.changedTouches[0].pageY) {
         UpPressed = true;
       }
     }
@@ -299,9 +299,10 @@ Player.x-(Player.width/2), Player.y-(Player.height/2)
     function drawfish(){
       for ( let C = 0; C < FishArray.length; C ++) {
             ctx.beginPath();
-            ctx.fillStyle = `rgb(${(FishArray[C].Color[0])},${(FishArray[C].Color[1])},${(FishArray[C].Color[2])})`;
+            ctx.strokeStyle = `rgb(${(FishArray[C].Color[0])},${(FishArray[C].Color[1])},${(FishArray[C].Color[2])})`;
+            ctx.drawImage(SpriteImg, FishArray[C].x,FishArray[C].y,FishArray[C].size,FishArray[C].size);
             ctx.rect(FishArray[C].x,FishArray[C].y,FishArray[C].size,FishArray[C].size);
-            ctx.fill();
+            ctx.stroke();
             ctx.closePath();
 
             FishArray[C].x +=FishArray[C].speed;
