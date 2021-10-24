@@ -35,11 +35,11 @@ if (navigator.maxTouchPoints>2) {
 
       if (cramw/4 < e.changedTouches[0].pageX) {
         RightPressed = true;
-      }if (cramw/4 > e.changedTouches[0].pageX) {
+      }if (4/cramw > e.changedTouches[0].pageX) {
         LeftPressed = true;
       }if (cramh/4 < e.changedTouches[0].pageY) {
         DownPressed = true;
-      }if (cramh/4 > e.changedTouches[0].pageY) {
+      }if (4/cramh > e.changedTouches[0].pageY) {
         UpPressed = true;
       }
     }
