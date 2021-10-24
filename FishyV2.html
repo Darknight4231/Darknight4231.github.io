@@ -26,20 +26,20 @@ body{
 
 if (navigator.maxTouchPoints>2) {
     document.addEventListener("touchstart",TouchStart);
-    //document.addEventListener("touchmove",TouchMove);
+    document.addEventListener("touchmove",TouchMove);
     document.addEventListener("touchcancel",TouchCancel);
     document.addEventListener("touchend",TouchEnd);
 
     function TouchStart(e){
       e.preventDefault();
 
-      if (Player.x+cramw/8 < e.changedTouches[0].pageX) {
+      if (Player.x+cramw/12 < e.changedTouches[0].pageX) {
         RightPressed = true;
-      }if (Player.x-cramw/8 > e.changedTouches[0].pageX) {
+      }if (Player.x-cramw/12 > e.changedTouches[0].pageX) {
         LeftPressed = true;
-      }if (Player.y+cramh/8 < e.changedTouches[0].pageY) {
+      }if (Player.y+cramh/12 < e.changedTouches[0].pageY) {
         DownPressed = true;
-      }if (Player.y-cramh/8 > e.changedTouches[0].pageY) {
+      }if (Player.y-cramh/12 > e.changedTouches[0].pageY) {
         UpPressed = true;
       }
     }
@@ -47,13 +47,13 @@ if (navigator.maxTouchPoints>2) {
     function TouchMove(e){
       e.preventDefault();
 
-      if (Player.x < e.changedTouches[0].pageX) {
+      if (Player.x+cramw/12 < e.changedTouches[0].pageX) {
         RightPressed = true;
-      }if (Player.x > e.changedTouches[0].pageX) {
+      }if (Player.x-cramw/12 > e.changedTouches[0].pageX) {
         LeftPressed = true;
-      }if (Player.y < e.changedTouches[0].pageY) {
+      }if (Player.y+cramh/12 < e.changedTouches[0].pageY) {
         DownPressed = true;
-      }if (Player.y > e.changedTouches[0].pageY) {
+      }if (Player.y+cramh/12 > e.changedTouches[0].pageY) {
         UpPressed = true;
       }
     }
