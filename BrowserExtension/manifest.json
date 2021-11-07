@@ -1,0 +1,20 @@
+{
+"manifest_version": 2,
+"name": "DarkMode",
+"description": "This sets all webpage body background colors to a specific color. No more fears of light vs dark mode. yay.",
+"version": "1",
+"browser_action":{
+"default_icon": "Diddle.png",
+"default_popup": "Popup.html"
+},
+  "content_scripts": [{
+"matches": [
+"<all_urls>"
+],
+"js": ["BrowserExtensionCode.js"]
+}],
+
+"permissions": [
+   "storage"
+ ]
+}

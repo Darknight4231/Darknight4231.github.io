@@ -20,7 +20,17 @@
 <canvas id="canvas"> </canvas>
 <script>
 
+let pep = 'heehee';
 
+
+let json = JSON.stringify({count:pep, result:43});
+let objy = JSON.parse(json);
+
+console.log(objy.count);
+// expected output: 42
+
+console.log(objy.result);
+// expected output: true
 
 
 var canvas = document.getElementById("canvas");
@@ -28,7 +38,8 @@ var ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth- 1/10*window.innerWidth;
 canvas.height = window.innerHeight-1/10*window.innerHeight;
 
-canvas.addEventListener("mousedown", doglook);
+canvas.addEventListener("mousedown", mousedown);
+canvas.addEventListener("mousemove",mousemove);
 canvas.addEventListener("mouseup", dognolook);
 
 
@@ -64,25 +75,38 @@ function Updatedog () {
   }
 };
 
+function mousedown(e){
+  //mousedown=true;
+
+};
+
+function mousemove(e){
+
+};
 
 function doglook(e){
 
-  var mouseX = e.clientX;
-  var mouseY = e.clientY;
+//  if(mousedown=true;){
+      var mouseX = e.clientX;
+      var mouseY = e.clientY;
 
-  dog.x=mouseX-dog.width/2;
-  dog.y=mouseY-dog.height/2;
+      dog.x=mouseX-dog.width/2;
+      dog.y=mouseY-dog.height/2;
 
-//SET A TEMPORARY SPEED HOLDER, WAIT A FEW SECONDS AND THEN RESTART FROM WHERE WAS
-//LAST CLICKED
-// OR MAKE IT FOR DURING MOUSEDOWN DOG JUST DOESN'T MOVE, MOUSEUP IT MOVES
+    //SET A TEMPORARY SPEED HOLDER, WAIT A FEW SECONDS AND THEN RESTART FROM WHERE WAS
+    //LAST CLICKED
+    // OR MAKE IT FOR DURING MOUSEDOWN DOG JUST DOESN'T MOVE, MOUSEUP IT MOVES
 
 
-//DO BOTH FOR FUN
+    //DO BOTH FOR FUN
+    console.log(mousedown);
+  //};
+
 };
 
 function dognolook(e){
-
+  console.log("Is false now");
+ //mousedown=false;
 
 };
 
@@ -95,8 +119,7 @@ function draw () {
   ctx.fill();
   ctx.closePath();
 
-  Updatedog();
-
+Updatedog();
 
   requestAnimationFrame(draw);
 };
