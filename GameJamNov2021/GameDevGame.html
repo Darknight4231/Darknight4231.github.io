@@ -1,0 +1,315 @@
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+  <title>Idle Game Dev Game</title>
+<style>
+body{background-color: black; color: white;}
+div{background-color: indigo;}
+td{text-align: center; vertical-align: middle;}
+.unlockable{display: none;}
+.BarSize{width: 100%; background-color: black;}
+.BarProgress{width: 0%; height: 2em; background-color: green;}
+#Stats{display: none;}
+table{padding: 1em;}
+.Tables{display: none;}
+#Non-Char{margin: 2%;}
+#GameDevTab{display: block;}
+#Chim{top: 0;left: 0; float: left; width: 0%; display: none;}
+canvas{display: none;}
+</style>
+</head>
+
+<body>
+<!-- okay, tabular for resources. makes sense.
+ Divs for ease of show/hide certain elements, buttons and whatever contained within.
+ ...
+is that all he used?!?!? IT LOOKS LIKE IT JESUS (talking about CivClicker's code, used it as a starting point of reference.)
+just code then and CSS, which I hate. not hate, I'm just not experienced with lol
+
+
+CSS looks like a lot of floats and width/height adjustments to fit in whatever DIV size is available. not bad. -->
+
+<div id="Chim">
+  <img id="CharImg" src="oh_hon.png" alt="">
+  <canvas id="canvas"></canvas>
+</div>
+
+<div id="body">
+<div id="Stats">
+    <table>
+      <thead>
+        <tr>
+          <th>Enjoyment Currently</th><th class="unlockable" id="PRpoints">PRpoints</th>
+        </tr>
+      </thead>
+    <tbody>
+      <tr>
+        <td id="Enjoyment">0</td><td class="unlockable" id="prtxt">0</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="Non-Char">
+
+<div id="TabsTable">
+  <table>
+    <tr>
+      <th><button type="button" id="CharButton">Character</button></th>
+      <th><button type="button" id="StatsButton">Stats</button></th>
+      <th><button type="button" id="GameDevButton">GameDevTab</button></th>
+      <th><button class="unlockable" type="button" id="PRButton">PersonalRelations</button></th>
+      <th><button class="unlockable" type="button" id="Companybutton">Company</button></th>
+      <th><button type="button" id="SettingsButton">Settings</button></th>
+    </tr>
+  </table>
+</div>
+
+<div class="Tables" id="GameDevTab">
+  <table>
+    <thead>
+      <th><button type="button" id="MakeAssetsBT">Make Assets</button><div class="BarSize"><div class="BarProgress" id="AssetsBar"></div></div></th>
+      <th><button type="button" id="MakeEngineBT">WorkOnEngine</button><div class="BarSize"><div class="BarProgress" id="EngineBar"></div></div></th>
+      <th><button type="button" class="unlockable" id="TestBT">BugTest</button><div class="BarSize"><div class="BarProgress" id="TestBar"></div></div></th>
+      <th><button type="button" class="unlockable" id="MechanicsBT">Mechanics</button><div class="BarSize"><div class="BarProgress" id="MechanicsBar"></div></div></th>
+      <th><button type="button" class="unlockable" id="BPBT">BackgroundProcessess</button><div class="BarSize"><div class="BarProgress" id="BPBar"></div></div></th>
+      <th><button type="button" class="unlockable" id="StoryBT">WorkOnStory</button><div class="BarSize"><div class="BarProgress" id="StoryBar"></div></div></th>
+      <th id="unlockall">ALLL for dev purposes ofc</th>
+    </thead>
+  </table>
+</div>
+
+<div class="Tables" id="PRTab">
+  <table>
+    <thead>
+      <th><button type="button" id="Campaigning">Campaigning</button><div class="BarSize"><div class="BarProgress" id="PRBar"></div></div></th>
+      <th><button type="button" id="">Campaigning</button><div class="BarSize"><div class="BarProgress" id="PRBar"></div></div></th>
+      <th><button type="button" id="">Campaigning</button><div class="BarSize"><div class="BarProgress" id="PRBar"></div></div></th>
+    </thead>
+  </table>
+</div>
+
+<div class="Tables" id="CompanyTab">
+  <table>
+    <thead>
+      <th><button type="button" id="">HiringTab</button></th>
+      <th><button type="button" id="">Upgrades</button></th>
+      <th><button type="button" id="">Classes</button></th>
+    </thead>
+  </table>
+</div>
+
+<div class="Tables" id="Settings">
+  <tr><button type="button" id="Save">Save</button></tr>
+  <tr><button type="button" id="Load">Load</button></tr>
+  <tr><button type="button" id="Reset">Reset</button></tr>
+</div>
+
+
+</div>
+</div>
+</body>
+
+<script>
+let cat=0;
+window.onload= load();
+let UpdateSpeed=100;
+
+
+
+let Enjoyment = 0;
+let pr = 0;
+
+let Tables=document.querySelectorAll(".Tables");
+//VARIABLES FOR DOCUMENT EASE//
+//this is stats div element, though it says 'table'
+//main table
+let Statstable=document.getElementById("Stats");
+
+//sidetables
+let GameDevTable=document.getElementById("GameDevTab");
+let PRtable=document.getElementById("PRTab");
+
+//This is addEventListeners for clicky -- display, don't display.. upgrades, etc.
+let EnjoyStat=document.getElementById("Enjoyment");
+let PRStat=document.getElementById("prtxt");
+
+let charDiv =document.getElementById("Chim");
+let charimg = document.getElementById("CharImg");
+
+let canvas=document.getElementById("canvas");
+//let ctx = canvas.getContext('2d');
+
+let cramw='100%';
+let cramh='100%';
+let body=document.getElementById("body");
+
+//GAME MAKING VARS//
+let Assets={
+  time: 100,
+  Enjoyment: 500,
+  Pr:0,
+  progress:0,
+  id:document.getElementById("AssetsBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+}
+let Engine={
+  time: 500,
+  Enjoyment: 51,
+  Pr: 1,
+  progress: 0,
+  id: document.getElementById("EngineBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+}
+let BugTest={
+  time: 1000,
+  Enjoyment: 10,
+  Pr: 50,
+  progress: 0,
+  id: document.getElementById("TestBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+}
+let Mechanics={
+  time: 100,
+  Enjoyment: 100,
+  Pr: 50,
+  progress: 0,
+  id: document.getElementById("MechanicsBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+}
+let BackgroundProcessess={
+  time: 1000,
+  Enjoyment: 10,
+  Pr: 50,
+  progress: 0,
+  id: document.getElementById("BPBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+}
+let Story={
+  time: 1000,
+  Enjoyment: 10,
+  Pr: 50,
+  progress: 0,
+  id: document.getElementById("StoryBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+}
+
+let devunlock =document.querySelectorAll('.unlockable');
+
+//show/hide stats
+document.getElementById('StatsButton').addEventListener("click",()=>{if (Statstable.style.display=='block'){Statstable.style.display='none';}else{Statstable.style.display='block';};});
+
+document.getElementById("GameDevButton").addEventListener("click",()=>{console.log("Showing GameDevTab");for (i = 0; i < Tables.length; i++) {Tables[i].style.display='none';}; GameDevTable.style.display='block';});
+document.getElementById("PRButton").addEventListener("click",()=>{console.log("prstuff  "+Tables.length);for (i = 0; i < Tables.length; i++) {Tables[i].style.display='none';}; PRtable.style.display='block';});
+document.getElementById("SettingsButton").addEventListener("click",()=>{console.log('settings ON');for (i = 0; i < Tables.length; i++) {Tables[i].style.display='none';}; document.getElementById('Settings').style.display='block';},false);
+//GameTable Listeners -- these just send respective objects to the move function.
+document.getElementById("MakeAssetsBT").addEventListener("click", ()=> {move(Assets);}, false);
+document.getElementById("MakeEngineBT").addEventListener("click", ()=> {move(Engine);}, false);
+document.getElementById('TestBT').addEventListener("click",()=>{move(BugTest);},false);
+document.getElementById("MechanicsBT").addEventListener("click", ()=>{move(Mechanics);},false);
+document.getElementById("BPBT").addEventListener("click", ()=>{move(BackgroundProcessess);},false);
+document.getElementById("StoryBT").addEventListener("click", ()=>{move(Story);},false);
+
+document.getElementById("Save").addEventListener("click", ()=>{save();},false);
+document.getElementById("Load").addEventListener("click", ()=>{load();},false);
+document.getElementById("Reset").addEventListener("click", ()=>{console.log('not yet implemented..');},false);
+/*
+document.getElementById("").addEventListener("click", ()=>{move();},false);
+document.getElementById("").addEventListener("click", ()=>{move();},false);
+document.getElementById("").addEventListener("click", ()=>{move();},false);
+*/
+//shows everything with the 'unlockable' class
+document.getElementById("unlockall").addEventListener("click",()=>{console.log('Hello, DevUnlocked '+devunlock.length+' things.'); Assets.auto=true; for (i = 0; i < devunlock.length; i++){devunlock[i].style.display='block';};});
+
+
+
+//ShowHideCharacter
+document.getElementById("CharButton").addEventListener("click",()=> {
+  if (charDiv.style.width=='0%') {
+    console.log("big");
+charDiv.style.width='20%';
+charDiv.style.height='100%';
+charimg.style.width='100%';
+charimg.style.height='40%';
+body.style.marginLeft='20%';
+charDiv.style.display='block';
+  }else{
+charDiv.style.width='0%';
+charDiv.style.height='0%';
+charDiv.style.display='none';
+body.style.marginLeft='0%';
+  }
+});
+
+function move(object) {
+  console.log("Started move for  "+ object);
+  i=0;
+
+  if (object.progress===0) {
+    object.progress=1;
+    if (i == 0) {
+      i = 1;
+      let width = 1;
+      let id = setInterval(frame, object.time*object.multiplier);
+      console.log(object.time+' '+object.multiplier);
+
+      function frame() {
+        if (width >= 100) {
+          clearInterval(id);
+          i = 0;
+          Enjoyment+=object.Enjoyment;
+          pr+=object.Pr;
+          object.id.style.width="0%";
+          object.progress=0;
+          console.log("FINISHED MOVE");
+          if (object.auto==true) {move(object);};
+        } else {
+          width++;
+          object.id.style.width = width + "%";
+        }
+      }
+    }
+  }
+};
+
+
+function save(){
+
+localStorage.setItem('myCat', [Enjoyment,Assets,Engine]);
+localStorage.setItem('Assets',Assets);
+//literal RIP
+ cat = localStorage.getItem('myCat');
+console.log("Game Saved --  "+cat);
+}
+
+function load(){
+ if (cat) {
+   console.log("Saved data loaded.");
+   Enjoyment='poopy';
+   Assets=localStorage.getItem('Assets');
+   //Engine=cat[2];
+ }else{console.log("No save data exists.");}}
+
+
+function main (){
+
+if (Enjoyment>50 && document.getElementById("TestBT").style.display=='none') {document.getElementById("TestBT").style.display='block';}
+EnjoyStat.innerHTML=(Enjoyment);
+PRStat.innerHTML=pr;
+}
+
+setInterval(main, UpdateSpeed);
+</script>
+</html>

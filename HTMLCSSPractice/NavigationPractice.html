@@ -33,11 +33,13 @@ label {
   }
 
   .SHE a{
-    padding: 2em;
+    padding-top: : 2em;
+    padding-left: 20%;
+    padding-right: 40%;
     padding-bottom: 4em;
     text-decoration: none;
     font-size: 2em;
-    display: block;
+    display: flex;
     color: grey;
   }
 
@@ -87,22 +89,18 @@ label {
 <script>
   const SHE = document.getElementById('SHE');
   const body = document.getElementById('body');
-  let nav = 0;
   document.getElementById('Navthing').onclick = function(){
-    if (nav == 0) {
-    if (SHE.style.width == "250px") {
+    if (SHE.style.width > "1px") {
       SHE.style.width = "0px";
       body.style.marginLeft = "0px";
       console.log("no nav");
       return;
-    }
-    if (SHE.style.width = "0px") {
-      SHE.style.width = "250px";
-      body.style.marginLeft = "250px";
+    }else{
+      SHE.style.width = "20%";
+      body.style.marginLeft = "20%";
       console.log('nav');
       return;
     }
-   }
   };
   document.getElementById('CLOSENAV').onclick = function(){
     document.getElementById('SHE').style.width = "0px";
