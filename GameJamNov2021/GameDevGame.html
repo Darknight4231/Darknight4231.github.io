@@ -287,18 +287,20 @@ function move(object) {
 
 function save(){
 
-localStorage.setItem('myCat', [Enjoyment,Assets,Engine]);
+localStorage.setItem('SaveFile', [Enjoyment,Assets,Engine]);
 localStorage.setItem('Assets',Assets);
 //literal RIP
- cat = localStorage.getItem('myCat');
+ cat = localStorage.getItem('SaveFile');
+ cat2 = localStorage.getItem('Assets');
 console.log("Game Saved --  "+cat);
 }
 
 function load(){
+   cat = localStorage.getItem('SaveFile');
  if (cat) {
    console.log("Saved data loaded.");
    Enjoyment='poopy';
-   Assets=localStorage.getItem('Assets');
+   Assets=cat2;
    //Engine=cat[2];
  }else{console.log("No save data exists.");}}
 
