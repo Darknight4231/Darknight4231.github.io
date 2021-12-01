@@ -16,6 +16,8 @@ table{padding: 1em;}
 #GameDevTab{display: block;}
 #Chim{top: 0;left: 0; float: left; width: 0%; display: none;}
 canvas{display: none;}
+#PopupBox{display: none; position: absolute; z-index: 1; background-color: blue; color: white; padding: 20%;}
+li{margin-top: 2em;}
 </style>
 </head>
 
@@ -34,19 +36,22 @@ CSS looks like a lot of floats and width/height adjustments to fit in whatever D
   <canvas id="canvas"></canvas>
 </div>
 
+<div id="PopupBox"><div id="popuptxt">
+
+Hello! This might be your first time starting the game! </br>
+  You're playing as an aspiring Developer! Make and Engine, work on some Assets or Mechanics to make your game come to life! </br>
+<hr><ul><li>Enjoyment is a rating of how enjoyable your game is -- more Enjoyment means more popularity as a Dev when you release your game!</li><li>PersonalRelations shows how <b>Popular</b> you are as a Dev</li><li>munnys are finances. With enough munnys you can hire members to your Dev team! (you can get munnys by working a job)</li></ul></br></br> Make some games, level yourself as a dev, and become the greatest in the <b>World!</b></br></div><button type="button" id="PopupButton">Okay</button>
+</div>
+
 <div id="body">
 <div id="Stats">
     <table>
       <thead>
-        <tr>
-          <th>Enjoyment Currently</th><th class="unlockable" id="PRpoints">PRpoints</th>
-        </tr>
+        <col>
+          <tr><th>Enjoyment Currently</th><th id="PRpoints">PRpoints</th><th id="munnys">munnys</th></tr>
+          <tr><td id="Enjoyment">0</td><td id="prtxt">0</td><td id="Munnytxt">0</td></tr>
+        </col>
       </thead>
-    <tbody>
-      <tr>
-        <td id="Enjoyment">0</td><td class="unlockable" id="prtxt">0</td>
-      </tr>
-    </tbody>
   </table>
 </div>
 
@@ -57,19 +62,24 @@ CSS looks like a lot of floats and width/height adjustments to fit in whatever D
     <tr>
       <th><button type="button" id="CharButton">Character</button></th>
       <th><button type="button" id="StatsButton">Stats</button></th>
-      <th><button type="button" id="GameDevButton">GameDevTab</button></th>
-      <th><button class="unlockable" type="button" id="PRButton">PersonalRelations</button></th>
-      <th><button class="unlockable" type="button" id="Companybutton">Company</button></th>
       <th><button type="button" id="SettingsButton">Settings</button></th>
     </tr>
   </table>
 </div>
 
+<div id="Tabs">
+  <tr>
+    <th><button type="button" id="GameDevButton">GameDevTab</button></th>
+    <th><button class="unlockable" type="button" id="PRButton">PersonalRelations</button></th>
+    <th><button class="unlockable" type="button" id="Companybutton">Company</button></th>
+  </tr>
+</div>
+
 <div class="Tables" id="GameDevTab">
   <table>
     <thead>
-      <th><button type="button" id="MakeAssetsBT">Make Assets</button><div class="BarSize"><div class="BarProgress" id="AssetsBar"></div></div></th>
       <th><button type="button" id="MakeEngineBT">WorkOnEngine</button><div class="BarSize"><div class="BarProgress" id="EngineBar"></div></div></th>
+      <th><button type="button" class="unlockable" id="MakeAssetsBT">Make Assets</button><div class="BarSize"><div class="BarProgress" id="AssetsBar"></div></div></th>
       <th><button type="button" class="unlockable" id="TestBT">BugTest</button><div class="BarSize"><div class="BarProgress" id="TestBar"></div></div></th>
       <th><button type="button" class="unlockable" id="MechanicsBT">Mechanics</button><div class="BarSize"><div class="BarProgress" id="MechanicsBar"></div></div></th>
       <th><button type="button" class="unlockable" id="BPBT">BackgroundProcessess</button><div class="BarSize"><div class="BarProgress" id="BPBar"></div></div></th>
@@ -100,9 +110,13 @@ CSS looks like a lot of floats and width/height adjustments to fit in whatever D
 </div>
 
 <div class="Tables" id="Settings">
-  <tr><button type="button" id="Save">Save</button></tr>
-  <tr><button type="button" id="Load">Load</button></tr>
-  <tr><button type="button" id="Reset">Reset</button></tr>
+  <table>
+    <thead>
+      <th><button type="button" id="Save">Save</button></th>
+      <th><button type="button" id="Load">Load</button></th>
+      <th><button type="button" id="Reset">Reset</button></th>
+    </thead>
+  </table>
 </div>
 
 
@@ -112,13 +126,14 @@ CSS looks like a lot of floats and width/height adjustments to fit in whatever D
 
 <script>
 let cat=0;
-window.onload= load();
+
 let UpdateSpeed=100;
 
-
+let notiftxt = document.getElementById('popuptxt');
 
 let Enjoyment = 0;
 let pr = 0;
+let munnys =0;
 
 let Tables=document.querySelectorAll(".Tables");
 //VARIABLES FOR DOCUMENT EASE//
@@ -133,6 +148,7 @@ let PRtable=document.getElementById("PRTab");
 //This is addEventListeners for clicky -- display, don't display.. upgrades, etc.
 let EnjoyStat=document.getElementById("Enjoyment");
 let PRStat=document.getElementById("prtxt");
+let Munnytxt=document.getElementById("Munnytxt");
 
 let charDiv =document.getElementById("Chim");
 let charimg = document.getElementById("CharImg");
@@ -145,6 +161,16 @@ let cramh='100%';
 let body=document.getElementById("body");
 
 //GAME MAKING VARS//
+let Engine={
+  time: 5,
+  Enjoyment: 51,
+  Pr: 1,
+  progress: 0,
+  id: document.getElementById("EngineBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+}
 let Assets={
   time: 100,
   Enjoyment: 500,
@@ -154,16 +180,7 @@ let Assets={
   multiplier: 1,
   auto:false,
   created:0,
-}
-let Engine={
-  time: 500,
-  Enjoyment: 51,
-  Pr: 1,
-  progress: 0,
-  id: document.getElementById("EngineBar"),
-  multiplier: 1,
-  auto:false,
-  created:0,
+
 }
 let BugTest={
   time: 1000,
@@ -174,6 +191,7 @@ let BugTest={
   multiplier: 1,
   auto:false,
   created:0,
+  unlocked:0,
 }
 let Mechanics={
   time: 100,
@@ -184,6 +202,7 @@ let Mechanics={
   multiplier: 1,
   auto:false,
   created:0,
+  unlocked:0,
 }
 let BackgroundProcessess={
   time: 1000,
@@ -194,6 +213,7 @@ let BackgroundProcessess={
   multiplier: 1,
   auto:false,
   created:0,
+  unlocked:0,
 }
 let Story={
   time: 1000,
@@ -204,6 +224,7 @@ let Story={
   multiplier: 1,
   auto:false,
   created:0,
+  unlocked:0,
 }
 
 let devunlock =document.querySelectorAll('.unlockable');
@@ -224,10 +245,10 @@ document.getElementById("StoryBT").addEventListener("click", ()=>{move(Story);},
 
 document.getElementById("Save").addEventListener("click", ()=>{save();},false);
 document.getElementById("Load").addEventListener("click", ()=>{load();},false);
-document.getElementById("Reset").addEventListener("click", ()=>{console.log('not yet implemented..');},false);
-/*
-document.getElementById("").addEventListener("click", ()=>{move();},false);
-document.getElementById("").addEventListener("click", ()=>{move();},false);
+document.getElementById("Reset").addEventListener("click", ()=>{localStorage.clear();console.log('Save File Deleted.'); location.reload();},false);
+
+document.getElementById("PopupButton").addEventListener("click", ()=>{document.getElementById('PopupBox').style.display='none';},false);
+/*document.getElementById("").addEventListener("click", ()=>{move();},false);
 document.getElementById("").addEventListener("click", ()=>{move();},false);
 */
 //shows everything with the 'unlockable' class
@@ -253,6 +274,7 @@ body.style.marginLeft='0%';
   }
 });
 
+//This accepts whatever object is passed into it and starts an independent frame() function linked to the progressbar. Should be Async
 function move(object) {
   console.log("Started move for  "+ object);
   i=0;
@@ -273,7 +295,7 @@ function move(object) {
           pr+=object.Pr;
           object.id.style.width="0%";
           object.progress=0;
-          console.log("FINISHED MOVE");
+          FinishMove();
           if (object.auto==true) {move(object);};
         } else {
           width++;
@@ -286,32 +308,63 @@ function move(object) {
 
 
 function save(){
-
-localStorage.setItem('SaveFile', [Enjoyment,Assets,Engine]);
-localStorage.setItem('Assets',Assets);
-//literal RIP
- cat = localStorage.getItem('SaveFile');
- cat2 = localStorage.getItem('Assets');
-console.log("Game Saved --  "+cat);
+    //Not yet JSON'ed
+  let SaveArray = [Enjoyment, pr, munnys, Assets, Engine, BugTest, Mechanics, BackgroundProcessess, Story]
+  let JSONSaveArray= JSON.stringify(SaveArray);
+  localStorage.setItem('DarkSaveFile', JSONSaveArray);
+  console.log("Game Saved --  ");
 }
 
 function load(){
-   cat = localStorage.getItem('SaveFile');
- if (cat) {
+  let saveGrabber = localStorage.getItem('DarkSaveFile');
+  console.log(JSON.parse(saveGrabber));
+ if (saveGrabber) {
+   console.log("Saved data Loading...");
+  let loadedfile = JSON.parse(saveGrabber);
+ Enjoyment=loadedfile[0];
+ pr=loadedfile[1];
+ munnys=loadedfile[2];
+ loadedfile.forEach((index, i) => {
+   console.log("loadedfile["+i+"] "+ loadedfile[i]);
+ });
+
    console.log("Saved data loaded.");
-   Enjoyment='poopy';
-   Assets=cat2;
-   //Engine=cat[2];
- }else{console.log("No save data exists.");}}
+   console.log(loadedfile);
+ }else{console.log("No save data exists."); document.getElementById('PopupBox').style.display='block';}
+
+
+}
+
+function NotifBox(txt){
+  console.log('NotifBox Called with Str '+txt);
+      document.getElementById('PopupBox').style.display='block';
+    notiftxt.innerHTML=txt;
+//'Congratulations on making an '+txt+'! </br> You&apos;ve unlocked other aspects of your game to work on!!'
+}
+
+
+function FinishMove(){
+  if (Enjoyment>=50 && !Assets.unlocked) {
+    console.log('unlocked AssetsBT');
+    Assets.unlocked = 1;
+    document.getElementById('MakeAssetsBT').style.display='block';
+    NotifBox('Congratulations on making an Engine! </br> You&apos;ve unlocked other aspects of your game to work on!!');
+  }
+  if (Enjoyment>55 && document.getElementById("TestBT").style.display=='none') {document.getElementById("TestBT").style.display='block';}
+  console.log('FinishMove');
+}
 
 
 function main (){
 
-if (Enjoyment>50 && document.getElementById("TestBT").style.display=='none') {document.getElementById("TestBT").style.display='block';}
+
 EnjoyStat.innerHTML=(Enjoyment);
 PRStat.innerHTML=pr;
+Munnytxt.innerHTML=munnys;
 }
 
 setInterval(main, UpdateSpeed);
+
+load();
 </script>
 </html>
