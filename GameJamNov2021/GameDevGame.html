@@ -11,13 +11,15 @@ td{text-align: center; vertical-align: middle;}
 .BarProgress{width: 0%; height: 2em; background-color: green;}
 #Stats{display: none;}
 table{padding: 1em;}
+#Tabs>tr>th>button{padding: 20%;}
 .Tables{display: none;}
-#Non-Char{margin: 2%;}
+#Non-Char{margin-left: 40%;}
 #GameDevTab{display: block;}
 #Chim{top: 0;left: 0; float: left; width: 0%; display: none;}
 canvas{display: none;}
-#PopupBox{display: none; position: absolute; z-index: 1; background-color: blue; color: white; padding: 20%;}
+#PopupBox{display: none; position: absolute; z-index: 1; background-color: blue; color: white; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%,-50%); padding: 10%;}
 li{margin-top: 2em;}
+#Stats{margin-left: 40%;}
 </style>
 </head>
 
@@ -115,6 +117,7 @@ Hello! This might be your first time starting the game! </br>
       <th><button type="button" id="Save">Save</button></th>
       <th><button type="button" id="Load">Load</button></th>
       <th><button type="button" id="Reset">Reset</button></th>
+      <th><button type="button" id="UpdateTick">UpdateSpeed</button> <input type="integer" id="UpdateSpeed" class="unlockable" value="100"></th>
     </thead>
   </table>
 </div>
@@ -125,8 +128,6 @@ Hello! This might be your first time starting the game! </br>
 </body>
 
 <script>
-let cat=0;
-
 let UpdateSpeed=100;
 
 let notiftxt = document.getElementById('popuptxt');
@@ -246,20 +247,21 @@ document.getElementById("StoryBT").addEventListener("click", ()=>{move(Story);},
 document.getElementById("Save").addEventListener("click", ()=>{save();},false);
 document.getElementById("Load").addEventListener("click", ()=>{load();},false);
 document.getElementById("Reset").addEventListener("click", ()=>{localStorage.clear();console.log('Save File Deleted.'); location.reload();},false);
+document.getElementById("UpdateTick").addEventListener("click", ()=>{document.getElementById("UpdateSpeed").style.display='block';},false);
+document.getElementById("UpdateSpeed").addEventListener("change", (e)=>{UpdateSpeed = e.target.value; clearInterval(IntervalID); setInterval(main,UpdateSpeed);console.log("UpdateSpeed changed to  "+e.target.value);});
+document.getElementById("PopupButton").addEventListener("click", ()=>{document.getElementById('PopupBox').style.display='none';document.getElementById('PopupBox').style.top = '50%';},false);
 
-document.getElementById("PopupButton").addEventListener("click", ()=>{document.getElementById('PopupBox').style.display='none';},false);
-/*document.getElementById("").addEventListener("click", ()=>{move();},false);
+/*
 document.getElementById("").addEventListener("click", ()=>{move();},false);
 */
-//shows everything with the 'unlockable' class
+
+
+//shows everything with the 'unlockable' class -- it's for dev purposes.
 document.getElementById("unlockall").addEventListener("click",()=>{console.log('Hello, DevUnlocked '+devunlock.length+' things.'); Assets.auto=true; for (i = 0; i < devunlock.length; i++){devunlock[i].style.display='block';};});
-
-
 
 //ShowHideCharacter
 document.getElementById("CharButton").addEventListener("click",()=> {
   if (charDiv.style.width=='0%') {
-    console.log("big");
 charDiv.style.width='20%';
 charDiv.style.height='100%';
 charimg.style.width='100%';
@@ -306,7 +308,7 @@ function move(object) {
   }
 };
 
-
+//This grabs an array of all the objects (currently manually typed in.. and converts them to a JSON string, which isn't really a string as much as a bucket of data).
 function save(){
     //Not yet JSON'ed
   let SaveArray = [Enjoyment, pr, munnys, Assets, Engine, BugTest, Mechanics, BackgroundProcessess, Story]
@@ -315,6 +317,7 @@ function save(){
   console.log("Game Saved --  ");
 }
 
+//This calls the saved JSON string (bucket of data, not a string, remember?) and parses the data. Currently still manually assigning all of this.
 function load(){
   let saveGrabber = localStorage.getItem('DarkSaveFile');
   console.log(JSON.parse(saveGrabber));
@@ -330,7 +333,7 @@ function load(){
 
    console.log("Saved data loaded.");
    console.log(loadedfile);
- }else{console.log("No save data exists."); document.getElementById('PopupBox').style.display='block';}
+ }else{console.log("No save data exists."); document.getElementById('PopupBox').style.display='block';document.getElementById('PopupBox').style.top='20%';}
 
 
 }
@@ -342,7 +345,7 @@ function NotifBox(txt){
 //'Congratulations on making an '+txt+'! </br> You&apos;ve unlocked other aspects of your game to work on!!'
 }
 
-
+//Here's where most of the progression is gonna go... for unlocks that is
 function FinishMove(){
   if (Enjoyment>=50 && !Assets.unlocked) {
     console.log('unlocked AssetsBT');
@@ -357,13 +360,12 @@ function FinishMove(){
 
 function main (){
 
-
 EnjoyStat.innerHTML=(Enjoyment);
 PRStat.innerHTML=pr;
 Munnytxt.innerHTML=munnys;
 }
 
-setInterval(main, UpdateSpeed);
+let IntervalID = setInterval(main, UpdateSpeed);
 
 load();
 </script>
