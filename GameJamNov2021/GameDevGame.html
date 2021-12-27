@@ -31,8 +31,10 @@ is that all he used?!?!? IT LOOKS LIKE IT JESUS (talking about CivClicker's code
 just code then and CSS, which I hate. not hate, I'm just not experienced with lol
 
 
+
 CSS looks like a lot of floats and width/height adjustments to fit in whatever DIV size is available. not bad. -->
 
+<video controls src="Cat.mp4"></video><video controls src="People.mp4"></video>
 <div id="Chim">
   <img id="CharImg" src="oh_hon.png" alt="">
   <canvas id="canvas"></canvas>
@@ -94,9 +96,9 @@ Hello! This might be your first time starting the game! </br>
 <div class="Tables" id="PRTab">
   <table>
     <thead>
-      <th><button type="button" id="Campaigning">Campaigning</button><div class="BarSize"><div class="BarProgress" id="PRBar"></div></div></th>
-      <th><button type="button" id="">Campaigning</button><div class="BarSize"><div class="BarProgress" id="PRBar"></div></div></th>
-      <th><button type="button" id="">Campaigning</button><div class="BarSize"><div class="BarProgress" id="PRBar"></div></div></th>
+      <th><button type="button" id="Campaigning">Campaigning</button><div class="BarSize"><div class="BarProgress" id="CampaignBar"></div></div></th>
+      <th><button type="button" id="SocialMedia">Social Media</button><div class="BarSize"><div class="BarProgress" id="SocialMediaBar"></div></div></th>
+      <th><button type="button" id="Demos">Demos</button><div class="BarSize"><div class="BarProgress" id="DemosBar"></div></div></th>
     </thead>
   </table>
 </div>
@@ -227,7 +229,39 @@ let Story={
   created:0,
   unlocked:0,
 }
-
+let Campaigning = {
+  time: 1000,
+  Enjoyment: 10,
+  Pr: 50,
+  progress: 0,
+  id: document.getElementById("CampaignBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+  unlocked:0,
+};
+let SocialMedia ={
+  time: 1000,
+  Enjoyment: 10,
+  Pr: 50,
+  progress: 0,
+  id: document.getElementById("SocialMediaBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+  unlocked:0,
+};
+let Demos = {
+  time: 1000,
+  Enjoyment: 50,
+  Pr: 50,
+  progress: 0,
+  id: document.getElementById("DemosBar"),
+  multiplier: 1,
+  auto:false,
+  created:0,
+  unlocked:0,
+};
 let devunlock =document.querySelectorAll('.unlockable');
 
 //show/hide stats
@@ -243,6 +277,10 @@ document.getElementById('TestBT').addEventListener("click",()=>{move(BugTest);},
 document.getElementById("MechanicsBT").addEventListener("click", ()=>{move(Mechanics);},false);
 document.getElementById("BPBT").addEventListener("click", ()=>{move(BackgroundProcessess);},false);
 document.getElementById("StoryBT").addEventListener("click", ()=>{move(Story);},false);
+
+document.getElementById("Campaigning").addEventListener("click", ()=>{move(Campaigning);},false);
+document.getElementById("SocialMedia").addEventListener("click", ()=>{move(SocialMedia);},false);
+document.getElementById("Demos").addEventListener("click", ()=>{move(Demos);},false);
 
 document.getElementById("Save").addEventListener("click", ()=>{save();},false);
 document.getElementById("Load").addEventListener("click", ()=>{load();},false);
@@ -265,8 +303,7 @@ document.getElementById("CharButton").addEventListener("click",()=> {
 charDiv.style.width='20%';
 charDiv.style.height='100%';
 charimg.style.width='100%';
-charimg.style.height='40%';
-body.style.marginLeft='20%';
+charimg.style.height= window.innerheight*0.5;
 charDiv.style.display='block';
   }else{
 charDiv.style.width='0%';
@@ -300,6 +337,7 @@ function move(object) {
           FinishMove();
           if (object.auto==true) {move(object);};
         } else {
+          console.log(loadedfile);
           width++;
           object.id.style.width = width + "%";
         }
@@ -307,11 +345,11 @@ function move(object) {
     }
   }
 };
-
+let loadedfile = [];
 //This grabs an array of all the objects (currently manually typed in.. and converts them to a JSON string, which isn't really a string as much as a bucket of data).
 function save(){
     //Not yet JSON'ed
-  let SaveArray = [Enjoyment, pr, munnys, Assets, Engine, BugTest, Mechanics, BackgroundProcessess, Story]
+  let SaveArray = [Enjoyment, pr, munnys, Assets, Engine, BugTest, Mechanics, BackgroundProcessess, Story, Campaigning, Demos, SocialMedia];
   let JSONSaveArray= JSON.stringify(SaveArray);
   localStorage.setItem('DarkSaveFile', JSONSaveArray);
   console.log("Game Saved --  ");
@@ -323,10 +361,28 @@ function load(){
   console.log(JSON.parse(saveGrabber));
  if (saveGrabber) {
    console.log("Saved data Loading...");
-  let loadedfile = JSON.parse(saveGrabber);
+   loadedfile = JSON.parse(saveGrabber);
  Enjoyment=loadedfile[0];
  pr=loadedfile[1];
  munnys=loadedfile[2];
+ Assets=loadedfile[3];
+ Engine=loadedfile[4];
+ BugTest=loadedfile[5];
+ Mechanics=loadedfile[6];
+ BackgroundProcessess=loadedfile[7];
+ Story=loadedfile[8];
+ Campaigning=loadedfile[9];
+ Demos=loadedfile[10];
+ SocialMedia=loadedfile[11];
+/*loadedfile[];
+ loadedfile[];
+ loadedfile[];
+ loadedfile[];
+ loadedfile[];
+ loadedfile[];
+ loadedfile[];
+ loadedfile[];
+ loadedfile[];*/
  loadedfile.forEach((index, i) => {
    console.log("loadedfile["+i+"] "+ loadedfile[i]);
  });

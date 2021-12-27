@@ -1,6 +1,6 @@
 function colorchanged(e){
-  document.querySelector("p").innerHTML = this.value;
-  let stringy = JSON.stringify({color:this.value, id:this.id})
+  //document.querySelector("p").innerHTML = this.value;
+  let stringy = JSON.stringify({color:this.value, id:this.id});
   //let stringy = JSON.stringify({this.id:this.value})
   document.getElementById("headingText").innerHTML = 'Color is now '+ e.value;
   //Send color to web page in tab.
@@ -13,10 +13,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   chrome.storage.local.get(null,function (obj){
       console.log(JSON.stringify(obj));
   });
-  //Set some content from browser action
+/*  //Set some content from browser action
   chrome.storage.local.set({"anotherIdentifier":"Another awesome Content"},function (){
       console.log("Storage Succesful");
-  });
+  });*/
   //This first checks to see if elements exist in the webpage, then adds EventListeners where needed.
   if(document.querySelector('aside')){document.getElementById("Aside").addEventListener("change", colorchanged);}else{document.getElementById("AsideDiv").style.display='none';}
   if(document.querySelector('h1')){document.getElementById("Header1Text").addEventListener("change", colorchanged);}else{document.getElementById("H1Div").style.display='none';}
@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   if(document.querySelector('h6')){document.getElementById("Header6Text").addEventListener("change", colorchanged);}else{document.getElementById("H6Div").style.display='none';}
   if(document.querySelector('div')){document.getElementById("divinput").addEventListener("change", colorchanged);document.getElementById("divinputtxt").addEventListener("change", colorchanged);}else{document.getElementById("Div").style.display='none';}
   if(document.querySelector('body')){document.getElementById("bodyBackground").addEventListener("change", colorchanged);document.getElementById("BodyText").addEventListener("change", colorchanged);}else{document.getElementById("bodyBackground").style.display='none';document.getElementById("BodyText").style.display='none';}
+});
+
   /*if(confirm("Use old colors?")){
 
     //next step
@@ -40,7 +42,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       window.alert(JSON.stringify(obj));
     });
   };*/
-});
+
 
 
 //*******************************************************//

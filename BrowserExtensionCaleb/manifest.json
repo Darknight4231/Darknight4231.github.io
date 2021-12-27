@@ -1,0 +1,16 @@
+{
+"manifest_version": 2,
+"name": "FastVideo",
+"options_page": "options.html",
+"description": "This sets all Videos to play faster.",
+"version": "1",
+"browser_action": {
+   "default_icon": "Fishy.png",
+   "default_popup": "Popup.html"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+"js": ["FastVideoPlayerExtension2.js"]
+}],
+"permissions": ["storage", "tabs", "activeTab"]
+}

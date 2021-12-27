@@ -214,7 +214,7 @@
     if (SqCircbutton.innerHTML == 'Circle') {
       ctx.rect(ClickLoc[0],ClickLoc[1],BrushSize,BrushSize);
     } else if (SqCircbutton.innerHTML == 'Square') {
-      ctx.arc(ClickLoc[0],ClickLoc[1], BrushSize/2, degToRad(0), degToRad(360), false);
+      ctx.arc(ClickLoc[0]+BrushSize/2,ClickLoc[1]+BrushSize/2, BrushSize/2, degToRad(0), degToRad(360), false);
     }
     ctx.fill();
     ctx.closePath();
