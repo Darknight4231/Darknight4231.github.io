@@ -31,7 +31,15 @@ window.addEventListener('load', () => {
 
 function Message(){
 chrome.tabs.query({currentWindow: true, active:true}, function (tab){
-chrome.tabs.sendMessage(tab[0].id, 'Run');
+  try {
+    chrome.tabs.sendMessage(tab[0].id, 'Run');
+    console.log("Message sent successfully.");
+  } catch (e) {
+    console.log("Failed Sending, error.");
+    console.log(e);
+    return;
+  } finally {
+  }
   });
 }
 
