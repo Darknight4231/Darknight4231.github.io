@@ -1,0 +1,17 @@
+To utilize this,
+
+1: Unzip folder wherever you'd like it to sit. (Doesn't matter where to my knowledge).
+2: Open browser
+3: Find  "Manage Extensions" > Load Unpacked > Select the "Speedy Extension" folder wherever you unzipped it.
+4: Set a speed using the popup. This will load and run through any time a tab changes, is activated, opened, created, updated.
+
+
+
+**CAUTION**
+When changing speed using the popup, give the extension a few moments before proceeding to change the value again. It filters through all DOM elements on ALL web pages, so it might take it a moment. Changing before it finishes its process will simply halt playback of ALL videos.
+***********
+
+
+**NOTE**
+This HAS to have some kind of adblocker -- it doesn't currently work when Youtube videos load iframes over the main video, and resets its own playspeed. With uBlocker, this isn't an issue.
+********

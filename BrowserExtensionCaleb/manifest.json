@@ -3,14 +3,35 @@
 "name": "FastVideo",
 "options_page": "options.html",
 "description": "This sets all Videos to play faster.",
-"version": "1",
+"version": "0.6.2",
 "browser_action": {
    "default_icon": "Fishy.png",
    "default_popup": "Popup.html"
   },
-  "content_scripts": [{
-    "matches": ["<all_urls>"],
-"js": ["FastVideoPlayerExtension2.js"]
-}],
-"permissions": ["storage", "tabs", "activeTab"]
+  "background":{
+    "scripts": ["Background4.js"],
+    "persistent": true
+  },
+  "options_ui": {
+  "page": "options.html",
+  "browser_style": true
+  },
+  "content_scripts":[
+    {
+    "matches":["<all_urls>"],
+    "js": ["Content.js"]
+    }
+  ],
+
+"permissions": [
+    "contextMenus",
+    "privacy",
+    "storage",
+    "tabs",
+    "unlimitedStorage",
+    "webNavigation",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ]
 }
