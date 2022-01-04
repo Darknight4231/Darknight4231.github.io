@@ -4,6 +4,9 @@ chrome.webNavigation.onCreatedNavigationTarget.addListener(details => {
     Message();
 });
 */
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.set({'iFrames': false},function() {});
+});
 
 chrome.webNavigation.onCommitted.addListener(details => {
     console.log("Commited");

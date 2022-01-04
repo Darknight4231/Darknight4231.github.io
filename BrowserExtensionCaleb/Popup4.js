@@ -11,3 +11,7 @@ function SpeedChanged(e){
       chrome.tabs.sendMessage(tabs[0].id, 'Run');
   });
 };
+
+chrome.storage.sync.get('VidSpeed', (data) => {
+document.getElementById("SpeedTxt").innerHTML = 'Video is playing at '+ data.VidSpeed+'x speed';
+});
