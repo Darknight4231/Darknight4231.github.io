@@ -1,0 +1,38 @@
+.Radio {
+  padding: 2em;
+  margin: 2em;
+}
+
+
+.ranges{
+  clear: both;
+  float: left;
+}
+
+.rangelabel{
+  float: left;
+  position: relative;
+}
+#poo>label {
+  outline: solid 1px black;
+}
+
+button{
+  padding: 2em;
+  margin: 2em;
+  float:left;
+  clear: both;
+}
+*, !script{
+  display: grid;
+}
+*:disabled {
+  color: grey;
+  background-color: grey;
+}
+#END:disabled{
+  background-color: black;
+}
+canvas{
+  outline: 1px solid blue;
+}

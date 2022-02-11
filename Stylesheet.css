@@ -81,5 +81,5 @@ body {
   }
 
 
-/*So > just means filter through the list, first element first, keep goin till you
+/* So > just means filter through the list, first element first, keep goin till you
   get to the element and then class name or id you're going for. */

@@ -2,19 +2,19 @@
 "manifest_version": 2,
 "name": "FastVideo",
 "description": "This sets all Videos to play faster. Please access Options page before using.",
-"version": "0.6.2",
+"version": "999",
 "browser_action": {
-   "default_icon": "Fishy.png",
-   "default_popup": "Popup.html"
+   "default_icon": "Fishy2.png",
+   "default_popup": "Popup2.html"
   },
   "background":{
-    "scripts": ["Background4.js"],
+    "scripts": ["Background5.js"],
     "persistent": true
   },
   "content_scripts":[
     {
     "matches":["<all_urls>"],
-    "js": ["Content.js"]
+    "js": ["Content3.js"]
     }
   ],
 

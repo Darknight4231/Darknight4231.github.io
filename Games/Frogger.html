@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<title>FroggeryThing</title>
+    <style>
+      * { padding: 0; margin: 0; background:#000000;}
+      canvas{
+        background: #000000; display: block; margin: 0 auto;
+       }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<body>
+<script>
+  document.addEventListener("keydown", keydown);
+  document.addEventListener("keyup"  , keyup);
+
+let c="80,200,120";
+
+
+function keydown(e){
+
+  if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
+    RightPressed = true;
+    Player.locX++;
+  }
+  if ( e.key == "Left" || e.key == "ArrowLeft" || e.key == "a"){
+    LeftPressed = true;
+    Player.locX--;
+  }
+  if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
+    UpPressed = true;
+    Player.locY++;
+  }
+  if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s" ) {
+    DownPressed = true;
+   }
+   if ( c.key == "Down" || e.key == "c" ) {
+     c = prompt('Please use rgb for colors',Player.color);
+   	Player.color = c;
+    }
+};
+
+function keyup(e){
+
+  if (e.key=="Right" || e.key=="ArrowRight" || e.key == "d"){
+    RightPressed = false;
+  }
+  if ( e.key=="Left" || e.key=="ArrowLeft"  || e.key == "a"){
+    LeftPressed = false;
+  }
+  if ( e.key == "Up" || e.key == "ArrowUp" || e.key == "w" ) {
+    UpPressed = false;
+   }
+  if ( e.key == "Down" || e.key == "ArrowDown" || e.key == "s") {
+    DownPressed = false;
+   }
+};
+
+  let canvas=document.getElementById('canvas');
+  let ctx=canvas.getContext('2d');
+  let cramw  = canvas.width = window.innerWidth;
+  let cramh = canvas.height = window.innerHeight;
+
+
+function getRandom(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive-- min and max are possible values to have return.
+  };
+
+
+//While entirely unnecessary, this helps clarity.
+let Player={
+  color: c,
+  locX: 0,
+  locY: 0,
+}
+
+let land={
+  walkable: true,
+  color1: 20,
+  color2: 100,
+  color3: 40,
+}
+
+let water={
+  walkable: false,
+  color1: 10,
+  color2: 50,
+  color3: 150,
+}
+
+let layer1 =[];
+let layer2 =[];
+let layer3 =[];
+
+let screen = [layer1,layer2,layer3];
+
+//Splice ayer 1 down to layer2, 2 to 3, delete 3 on player move up
+//make a new layer 1
+
+
+function Playerdraw(){
+
+  ctx.beginPath();
+  ctx.rect(cramw/2-cramw/20,cramh-cramh/4,cramw/10,cramh/10);
+  ctx.fillStyle = `rgb(${c})`;
+  ctx.fill();
+  ctx.closePath();
+}
+
+
+function Createlevel(){
+  for (i = 0; i < 10; i++) {
+    if (getRandom(0,1)>0.5) {
+      layer1.push(land);
+    } else {
+      layer1.push(water);
+    }
+  }
+}
+
+for (i = 0; i < 10; i++) {
+  if (getRandom(0,1)>0.5) {
+    layer2.push(land);
+  } else {
+    layer2.push(water);
+  }
+  if (getRandom(0,1)>0.5) {
+    layer3.push(land);
+  } else {
+    layer3.push(water);
+  }
+}
+
+Createlevel();
+
+function Draw(){
+
+  for (var i = 0; i < layer1.length; i++) {
+    ctx.beginPath();
+
+    let col1=layer1[i].color1;
+    let col2=layer1[i].color2;
+    let col3=layer1[i].color3;
+
+    ctx.rect(i*(cramw/10),0,cramw/10,cramh/10);
+    ctx.fillStyle = `rgb(${col1},${col2},${col3})`;
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.beginPath();
+
+    let col4=layer2[i].color1;
+    let col5=layer2[i].color2;
+    let col6=layer2[i].color3;
+
+    ctx.rect(i*(cramw/10),cramh/10,cramw/10,cramh/10);
+    ctx.fillStyle = `rgb(${col4},${col5},${col6})`;
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.beginPath();
+
+    let col7=layer3[i].color1;
+    let col8=layer3[i].color2;
+    let col9=layer3[i].color3;
+
+    ctx.rect(i*(cramw/10),2*(cramh/10),cramw/10,cramh/10);
+    ctx.fillStyle = `rgb(${col7},${col8},${col9})`;
+    ctx.fill();
+    ctx.closePath();
+  }
+
+  ctx.beginPath();
+  ctx.rect(cramw/2-cramw/20,cramh-cramh/4,cramw/10,cramh/10);
+  ctx.fillStyle = `rgb(${c})`;
+  ctx.fill();
+  ctx.closePath();
+
+requestAnimationFrame(Draw);
+}
+Draw();
+
+//c = prompt('Please use rgb for colors, or leave as default',Player.color);
+//Player.color = c
+</script>
+</html>

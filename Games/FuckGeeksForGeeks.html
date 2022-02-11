@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <label for="ee">What number column?</label>
+    <input type="number" id="feck" name="ee" value="">
+    <p id="changeme">aaaah numbers</p>
+  </body>
+
+  <script>
+  document.getElementById('feck').addEventListener('change', printString);
+  document.getElementById('changeme').innerHTML= "FEACK";
+  
+  // Javascript program to find Excel
+  // column name from a given
+  // column number
+
+  // Function to print Excel column
+      // name for a given column number
+  function printString(e)
+  {
+    let columnNumber=this.value;
+      // To store result (Excel column name)
+          let columnName = [];
+
+          while (columnNumber > 0) {
+              // Find remainder
+              let rem = columnNumber % 26;
+
+              // If remainder is 0, then a
+              // 'Z' must be there in output
+              if (rem == 0) {
+                  columnName.push("Z");
+                  columnNumber = Math.floor(columnNumber / 26) - 1;
+              }
+              else // If remainder is non-zero
+              {
+                  columnName.push(String.fromCharCode((rem - 1) + 'A'.charCodeAt(0)));
+                  columnNumber = Math.floor(columnNumber / 26);
+              }
+          }
+
+          // Reverse the string and print result
+          document.getElementById('changeme').innerHTML=((columnName.reverse().join("")+"<br>"));
+  }
+
+  function Solution(e) {
+    console.log("hey function call");
+    console.log(this.value);
+          // Your code goes here
+          let alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','e','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+          let outs ;
+          let lop ;
+
+          while(this.value>26){
+              if(this.value-26>0){
+                  lop++;
+                  this.value-26;
+                  console.log(lop);
+              }
+          }
+          while(lop/26>1){
+              outs.concat(alphabet[0]);
+              lop-26;
+        }
+          if(this.value<27){
+      outs.concat(alphabet[this.value]);
+      console.log(outs);
+      document.getElementById('changeme').innerHTML= outs;
+      }
+  }
+
+
+  </script>
+
+</html>

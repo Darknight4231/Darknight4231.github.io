@@ -11,40 +11,53 @@ I think this is mostly due to loading Chrome.sync so frequently.
 If I actually -SEND- the value instead that'd be a hell of a lot faster,
 and not occupy all service workers.
 */
+//localStorage.setItem('DarkSaveFile', JSONSaveArray);
+//saveGrabber = localStorage.getItem('DarkSaveFile');
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({'iFrames': false},function() {});
-  chrome.storage.sync.set({'VidSpeed': 1},function() {});
+  localStorage.setItem('iFrames', false);
+  localStorage.setItem('VidSpeed', 1);
 });
+
+let array = [];
+
+    //Always load the values before sending any messages.
+    localStorage.getItem('VidSpeed', (data) => {array[0]=data.VidSpeed});
+      localStorage.getItem('iFrames',  (data) => {array[1]=data.iFrames; });
 
 chrome.webNavigation.onCommitted.addListener(details => {
     console.log("Commited");
-    Message();
+    Message("Commited");
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     console.log("Updated");
-    Message();
+    Message("Updated");
 });
 
 chrome.tabs.onActivated.addListener(details => {
     console.log("Activated");
-    Message();
+    Message("Activated");
 });
 
 document.onreadystatechange=function(){
   console.log("ReadyStateChanged");
-    Message();
+    Message("ReadyStateChanged");
 }
 
 window.addEventListener('load', () => {
   console.log("Page fully loaded");
-    Message();
+    Message("Page fully loaded");
 });
 
-function Message(){
+});
+
+function Message(Reason){
+  array[2]=Reason;
+  stringy = JSON.stringify(array);
+  console.log(stringy);
 chrome.tabs.query({active:true, currentWindow:true}, function (tab){
   try {
-    chrome.tabs.sendMessage(tab[0].id, 'Run');
+    chrome.tabs.sendMessage(tab[0].id, stringy);
     console.log("Message sent successfully.");
   } catch (e) {
     console.log("Failed Sending, error.");

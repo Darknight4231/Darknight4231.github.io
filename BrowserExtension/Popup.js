@@ -16,7 +16,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 /*  //Set some content from browser action
   chrome.storage.local.set({"anotherIdentifier":"Another awesome Content"},function (){
       console.log("Storage Succesful");
-  });*/
+  });
+*/
+
+/*
+Using Chrome storage to actually get something done.
+  chrome.storage.sync.get('VidSpeed', (data) => {})
+  chrome.storage.sync.set({'VidSpeed': this.value},function() {});
+*/
   //This first checks to see if elements exist in the webpage, then adds EventListeners where needed.
   if(document.querySelector('aside')){document.getElementById("Aside").addEventListener("change", colorchanged);}else{document.getElementById("AsideDiv").style.display='none';}
   if(document.querySelector('h1')){document.getElementById("Header1Text").addEventListener("change", colorchanged);}else{document.getElementById("H1Div").style.display='none';}
@@ -28,46 +35,3 @@ document.addEventListener("DOMContentLoaded", (event) => {
   if(document.querySelector('div')){document.getElementById("divinput").addEventListener("change", colorchanged);document.getElementById("divinputtxt").addEventListener("change", colorchanged);}else{document.getElementById("Div").style.display='none';}
   if(document.querySelector('body')){document.getElementById("bodyBackground").addEventListener("change", colorchanged);document.getElementById("BodyText").addEventListener("change", colorchanged);}else{document.getElementById("bodyBackground").style.display='none';document.getElementById("BodyText").style.display='none';}
 });
-
-  /*if(confirm("Use old colors?")){
-
-    //next step
-    chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-    chrome.tabs.sendMessage(tabs[0].id, stringy);
-
-
-      });
-    chrome.storage.local.get(null,function (obj){
-      console.log(JSON.stringify(obj));
-      window.alert(JSON.stringify(obj));
-    });
-  };*/
-
-
-
-//*******************************************************//
-/*Copied stuff https://eecs.blog/making-a-browser-extension/
-window.addEventListener('load', (event) => {
-//Initialize extension to the stored values.
-chrome.storage.sync.get(['color'], function(color) {
-setColor(color.color);
-});
-document.getElementById("inputText").addEventListener("change", event =>{
-//Get color.
-const color = event.target.value;
-//Set color.
-setColor(color);
-//Save color.
-chrome.storage.sync.set({'color': color}, function(){});
-});
-});
-function colorchanged(color, id)
-{
-//Display the selected color.
-document.getElementById("headingText").innerHTML = color;
-//Send color to web page in tab.
-chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-chrome.tabs.sendMessage(tabs[0].id, color);
-});
-}
-*/

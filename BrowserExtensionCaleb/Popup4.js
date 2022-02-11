@@ -3,7 +3,7 @@ document.getElementById("SpeedValue").addEventListener("change", SpeedChanged);
 
 function SpeedChanged(e){
   console.log("Storage attempting to set to  "+this.value);
-  chrome.storage.sync.set({'VidSpeed': this.value},function() {});
+  chrome.storage.sync.set({'VidSpeed': this.value},() => {});
   console.log("Storage set to "+this.value);
   document.getElementById("SpeedTxt").innerHTML = 'Video is playing at '+ this.value+'x speed';
 

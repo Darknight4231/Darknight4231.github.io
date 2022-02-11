@@ -1,51 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <style>
-
-    .Radio {
-      padding: 2em;
-      margin: 2em;
-    }
-    .Radio:hover{
-      background-color: grey;
-    }
-
-    .ranges{
-      clear: both;
-      float: left;
-    }
-    .ranges:hover{
-      background-color: black;
-    }
-    .rangelabel{
-      float: left;
-      position: relative;
-    }
-    #poo>label {
-      outline: solid 1px black;
-    }
-
-    button{
-      padding: 2em;
-      margin: 2em;
-      float:left;
-      clear: both;
-    }
-    *, !script{
-      display: grid;
-    }
-    *:disabled {
-      color: grey;
-      background-color: grey;
-    }
-    #END:disabled{
-      background-color: black;
-    }
-    canvas{
-      outline: 1px solid blue;
-    }
-
-  </style>
+<link rel="stylesheet" href="AudioAPI.css">
 </head>
 
 <body>
@@ -143,10 +98,10 @@ Freeq.onchange = function(){
 }
 
 
-  let feedForward = [0.00020298, 0.0004059599, 0.00020298];
-  let feedBackward = [1.0126964558, -1.9991880801, 0.9873035442];
-  //let feedForward = [0.3, 0.04, 0.3];
-  //let feedBackward = [0.3, -0.5, 0.3];
+  //let feedForward = [0.00020298, 0.0004059599, 0.00020298];
+  //let feedBackward = [1.0126964558, -1.9991880801, 0.9873035442];
+  let feedForward = [0.3, 0.04, 0.3];
+  let feedBackward = [0.3, -0.5, 0.3];
   //let feedForward = [0.3, 0.000000000004, 0.00000009];
   //let feedBackward = [0.3, -0.000000005, 0.00000009];
 

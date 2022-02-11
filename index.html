@@ -8,7 +8,29 @@
 
 </head>
 
-<!--/* remember that #is for ids and .is for classes*/-->
+<!--
+
+remember that #is for ids and .is for classes
+
+You can use <ins> tp showcase inserted text - - it has its own stylings as well.
+  <del> is similar to show removed text but also has a strikethrough
+
+
+These can be used to get or set, respectively
+
+  chrome.storage.sync.get('KeyHere', (data) => {
+
+  do things (if you want to use the KeyHere, use the passed data value, like this.)
+  if(data.KeyHere){do more things}
+
+})
+
+  chrome.storage.sync.set({'KeyHere': value},function() {});
+  This doesn't need anything within its function. Honestly dunno why it has one.
+  Not sure how to get rid of it though.
+
+
+-->
 <body>
 
 <div class="Page">
