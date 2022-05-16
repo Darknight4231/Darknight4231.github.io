@@ -49,7 +49,7 @@ function drawImageActualSize() {
 */
 
 // THIS TOUCH WAS COPIED FROM MOZILLA    https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
-Function startup(){
+function startup(){
   canvas.addEventListener("touchstart", handleStart, false);
   canvas.addEventListener("touchend", handleEnd, false);
   //canvas.addEventListener("touchcancel", handleCancel, false);
@@ -201,6 +201,7 @@ UpPressed=false;
     function Fishcollide(C){
 
       if(FishExists[C]) {
+        if(
         Fish[C] <= Player.x+Player.width && Player.x <= Fish[C]+fishSize[C] &&
          Fish[C+1] <= Player.y+Player.height && Player.y <= Fish[C+1]+fishSize[C]){
           if(Player.size < Math.pow(fishSize[C],2)){

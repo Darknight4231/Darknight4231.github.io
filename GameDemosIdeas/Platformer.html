@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<head>
+</head>
+
+<body style="margin: 0; padding: none; overflow: hidden;">
+
+
+<canvas id="Platform">
+
+</canvas>
+
+<script>
+
+    const canv=document.getElementById("Platform");
+    const ctx=canv.getContext("2d");
+
+    cramw = canv.width  = window.innerWidth;
+    cramh =canv.height = window.innerHeight;
+
+    window.addEventListener('load', () => {
+      document.addEventListener('keydown', keyDownHandler);
+     // document.addEventListener('keyup', keyUpHandler);
+    })
+
+    let Player = {
+        x: 200,
+        y: 200,
+        size: 400,
+        color: '',
+        speed:{x:0,y:0},
+        speedlim:10,
+        Acc:0,
+    }
+
+    let Boxes={
+        x2:[cramw-600],
+        y:[cramh-200],
+        size:[100],
+    };
+
+    let collidables=[]
+
+    let grav=10;
+
+ // KEYBOARD
+/*           KeyCodes for
+        W 87  A 65  S 83  D 68
+      KeyCodes are physical placement on Keyboard, and should be used to optimize playability*/
+    function keyDownHandler(e) {
+        console.log(e.key);
+        switch(e.key) {
+                case "Unidentified":
+                    break;
+                case "ArrowRight":
+                case "Right": // IE <= 9 and FF <= 36
+                case "KeyD":
+                case "d":
+                case "D":
+                    Player.speed.x++;
+                    break;
+                case "ArrowLeft":
+                case "Left": // IE <= 9 and FF <= 36
+                case "KeyA":
+                case "a":
+                case "A":
+                    Player.speed.x--;
+                    break;
+                case "ArrowUp":
+                case "Up": // IE <= 9 and FF <= 36
+                case "KeyW":
+                case "w":
+                case "W":
+                case " ":
+                    Player.speed.y--;
+                    //Player.Acc=-4;
+                    break;
+                case "ArrowDown":
+                case "Down": // IE <= 9 and FF <= 36
+                case "KeyS":
+                case "s":
+                case "S":
+                    Player.speed.y++;
+                    break;
+                default:
+                    return;
+            }
+    }
+
+    function Collision(){
+
+        //No world fall-through
+        if(Player.y+Player.size>cramh){Player.y=cramh-Player.size;}
+
+        //BoundingBoxes...
+        for (let i = 0; i < Boxes.x2.length; i++) {
+
+            if (Player.x+Player.size>Boxes.x2[i] && Player.x<Boxes.x2[i]+Boxes.size[i] &&
+                 Player.y+Player.size>Boxes.y[i]&&Player.y<Boxes.y[i]+Player.size) {
+                Colliding(1,i);
+            }
+        }
+    }
+
+    function Colliding(collcheck,obj){
+        //Use collcheck 0,1,2,3 for Left, Top, Right, Bottom collision
+
+        //Switch Cases
+        switch (collcheck) {
+                //Left Collision
+            case 0:   
+                Player.x=Boxes.x2[obj]-Player.size;
+                break;
+
+                //Top
+            case 1:
+                Player.y=Boxes.y[obj]-Player.size;
+                Player.Acc=0;
+                break;
+
+                //Right
+            case 2:
+                Player.x=Boxes.x2[obj]+Player.size;
+                break;       
+
+                //Bottom     
+            case 3:
+                Player.y=Boxes.y[obj]+Player.size;
+                break;
+            default:
+                break;
+        }
+    }
+
+    //Use Load states to REDUCE REDRAWING... would it help, though?
+    function Draw(){
+        ctx.beginPath();
+        ctx.fillStyle=`rgb(0,0,0)`;
+        ctx.rect(0,0,cramw,cramh);
+        ctx.fill();
+        ctx.closePath();
+        //ctx.clearRect(0,0,cramw,cramh);
+        Collision();
+
+        ctx.beginPath();
+        ctx.fillStyle = '#9932CC';
+        ctx.rect(Player.x, Player.y, Player.size, Player.size);
+        ctx.fill();
+        ctx.closePath();
+
+        for(let i=0; i<Boxes.x2.length; i++){
+        ctx.beginPath();
+        ctx.fillStyle = 'rgb(10,160,255)';
+        ctx.rect(Boxes.x2[i], Boxes.y[i], Boxes.size[i], Boxes.size[i]);
+        ctx.fill();
+        ctx.closePath();
+        };
+        Player.x+=Player.speed.x;
+        Player.y+=Player.speed.y;
+
+        if(Player.Acc>grav){
+        Player.y=Player.y+grav;
+        } else {
+            Player.Acc=Player.Acc+0.05;
+            Player.y=Player.y+Player.Acc;
+        }
+        console.log(Player.Acc);
+        requestAnimationFrame(Draw);
+    }
+
+
+    Draw();
+</script>
+</body>

@@ -18,7 +18,7 @@ body {
 </head>
 
 <body>
-
+<img src="Images/Tree2.gif">
 <canvas id="Canvas"><p>Your browser does not support CanvasAPI, try using a different browser like Chrome, or Edge.</p></canvas>
 <script>
 
@@ -29,11 +29,19 @@ body {
     let cramh = canvas.height = window.innerHeight;
 
      document.addEventListener("keydown", keyDownHandler, false);
+     document.addEventListener("keyup", keyUpHandler, false);
      document.addEventListener("click",clickHandler, false);
 
+let KeyInteract = false;
 
      function keyDownHandler(e){
        console.log(e.key+" "+ e.code);
+       KeyInteract=true;
+     }
+
+     function keyUpHandler(e){
+       console.log(e.key+" UP "+e.code);
+       KeyInteract=false;
      }
 
 
@@ -43,6 +51,21 @@ body {
         this.x=x;
         this.y=y;
       }
+
+
+      function drawcurve(){
+        if (clicks.length>3&&KeyInteract) {
+
+    ctx.clearRect(0,0,cramw,cramh);
+
+    ctx.beginPath();
+    ctx.moveTo(clicks[0].x, clicks[0].y);
+    ctx.bezierCurveTo(clicks[1].x, clicks[1].y, clicks[2].x, clicks[2].y, clicks[3].x, clicks[3].y);
+    ctx.stroke();
+    ctx.closePath();
+    clicks.splice(0);
+      }
+  }
   //void ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle [, anticlockwise]);
      function clickHandler(e){
         clicks.push(new clicked((e.clientX-canvas.offsetLeft),(e.clientY-canvas.offsetTop)));
@@ -52,20 +75,6 @@ body {
         ctx.ellipse((e.clientX-canvas.offsetLeft),(e.clientY-canvas.offsetTop),1,1,0,0,360,false);
         ctx.fill();
         ctx.closePath();
-
-       if (clicks.length>3) {
-
-         ctx.clearRect(0,0,cramw,cramh);
-         
-         ctx.beginPath();
-         ctx.moveTo(clicks[0].x, clicks[0].y);
-         ctx.bezierCurveTo(clicks[1].x, clicks[1].y, clicks[2].x, clicks[2].y, clicks[3].x, clicks[3].y);
-         ctx.stroke();
-         ctx.closePath();
-           clicks.splice(0);
-
-       }
-
      }
 
 </script>

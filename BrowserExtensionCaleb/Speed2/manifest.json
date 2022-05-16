@@ -1,6 +1,6 @@
 {
 "manifest_version": 2,
-"name": "FastVideo",
+"name": "InstaGib",
 "description": "This sets all Videos to play faster. Please access Options page before using.",
 "version": "999",
 "browser_action": {

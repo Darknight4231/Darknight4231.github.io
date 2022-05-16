@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <head>
 <title>VoiceModder</title>
-
 </head>
 <body>
 
   <p id="um">VoiceModulator redone into Autotune hopefully.</p>
-  <button type="button" id="start" name="button" onclick="start()">Start</button>
+  <button type="button" id="start" name="button" onclick="start">Start</button>
 
   <script>
 
@@ -41,16 +40,30 @@ if (navigator.mediaDevices) {
     navigator.mediaDevices.getUserMedia({audio:true}).then(function (stream) {
       console.log('audioexists');
 
-
             let audioCtx = new AudioContext();
             let source = audioCtx.createMediaStreamSource(stream);
             let reverbNode = audioCtx.createConvolver();
             let biquadFilter = audioCtx.createBiquadFilter();
-            biquadFilter.type = 'highpass';
-            biquadFilter.detune = 0;
-            biquadFilter.q = 1;
+            biquadFilter.type = 'lowshelf';
+            biquadFilter.detune = 8;
+            biquadFilter.q = 8;
             biquadFilter.frequency.value = 80;
-            biquadFilter.gain.value = 1;
+            biquadFilter.gain.value = -2;
+
+            let biquadFilter2 = audioCtx.createBiquadFilter();
+            biquadFilter.type = 'highshelf';
+            biquadFilter.detune = 8;
+            biquadFilter.q = 8;
+            biquadFilter.frequency.value = 80;
+            biquadFilter.gain.value = -2;
+
+            let biquadFilter3 = audioCtx.createBiquadFilter();
+            biquadFilter.type = 'bandpass';
+            biquadFilter.detune = 8;
+            biquadFilter.q = 10;
+            biquadFilter.frequency.value = 220;
+            biquadFilter.gain.value = -2;
+
 
 function base64ToArrayBuffer(base64) {
     var binaryString = window.atob(base64);
@@ -61,13 +74,64 @@ function base64ToArrayBuffer(base64) {
     }
     return bytes.buffer;
 };
+
+
+let distortion = audioCtx.createWaveShaper();
+
+function makeDistortionCurve(amount) {
+  var k = typeof amount === 'number' ? amount : 50,
+     n_samples = 44100,
+     curve = new Float32Array(n_samples),
+     deg = Math.PI / 180,
+     i = 0,
+    x;
+  for ( ; i < n_samples; ++i ) {
+    x = i * 2 / n_samples - 1;
+    curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+  }
+  return curve;
+};
+
+
+//distortion.curve = makeDistortionCurve(400);
+//distortion.oversample = '4x';
+
             //source.connect(reverbNode);
             //reverbNode.connect(biquadFilter);
             //reverbNode.connect(audioCtx.destination);
             source.connect(biquadFilter);
-            biquadFilter.connect(audioCtx.destination);
+            biquadFilter.connect(biquadFilter2);
+            //biquadFilter2.connect(biquadFilter3);
+            biquadFilter2.connect(audioCtx.destination);
+            //distortion.connect(audioCtx.destination);
 });
 };
 };
+
+/*
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+var distortion = audioCtx.createWaveShaper();
+
+  ...
+
+function makeDistortionCurve(amount) {
+  var k = typeof amount === 'number' ? amount : 50,
+    n_samples = 44100,
+    curve = new Float32Array(n_samples),
+    deg = Math.PI / 180,
+    i = 0,
+    x;
+  for ( ; i < n_samples; ++i ) {
+    x = i * 2 / n_samples - 1;
+    curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+  }
+  return curve;
+};
+
+  ...
+
+distortion.curve = makeDistortionCurve(400);
+distortion.oversample = '4x';
+*/
 </script>
 </body>
