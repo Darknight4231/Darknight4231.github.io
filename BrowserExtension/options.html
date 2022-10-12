@@ -1,0 +1,18 @@
+﻿​<!DOCTYPE html>
+<html>
+<head>
+<title>DarkModePopupBrowserExtension</title>
+
+</head>
+<body>
+<input id="originalcolor" type='checkbox'><label>Use original site colors, or extension?</label>
+<script>
+
+document.getElementById("originalcolor").addEventListener("input", ()=>{
+  chrome.storage.sync.set({'colorobjheader': color}, function() {
+      console.log(id+ ' is set to ' + color);
+    });
+  });
+</script>
+</body>
+</html>
