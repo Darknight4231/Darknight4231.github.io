@@ -89,16 +89,19 @@ if (navigator.maxTouchPoints>2) {
                  case "Right": // IE <= 9 and FF <= 36
                  case "KeyD":
                  case "d":
+                 case "D":
                      RightPressed = true;
                      break;
                  case "ArrowLeft":
                  case "Left": // IE <= 9 and FF <= 36
                  case "KeyA":
                  case "a":
+                 case "A":
                      LeftPressed = true;
                      break;
                  case "KeyW":
                  case "w":
+                 case "W": 
                  case "ArrowUp":
                  case "Up": // IE <= 9 and FF <= 36
                      UpPressed = true;
@@ -107,6 +110,7 @@ if (navigator.maxTouchPoints>2) {
                  case "Down": // IE <= 9 and FF <= 36
                  case "KeyS":
                  case "s":
+                 case "S": 
                      DownPressed = true;
                      break;
                  default:
@@ -122,24 +126,28 @@ if (navigator.maxTouchPoints>2) {
                  case "Right": // IE <= 9 and FF <= 36
                  case "KeyD":
                  case "d":
+                 case "D":
                      RightPressed = false;
                      break;
                  case "ArrowLeft":
                  case "Left": // IE <= 9 and FF <= 36
                  case "KeyA":
                  case "a":
+                 case "A":
                      LeftPressed = false;
                      break;
                  case "ArrowUp":
                  case "Up": // IE <= 9 and FF <= 36
                  case "KeyW":
                  case "w":
+                 case "W": 
                      UpPressed = false;
                      break;
                  case "ArrowDown":
                  case "Down": // IE <= 9 and FF <= 36
                  case "KeyS":
                  case "s":
+                 case "S": 
                      DownPressed = false;
                      break;
                  default:
@@ -160,6 +168,8 @@ if (navigator.maxTouchPoints>2) {
     let LeftPressed  = false;
     let RightPressed = false;
 
+    let alerted = false;
+    
     let Player = {
       x : cramw/2, y : cramh/2,
       width : 20,  height : 20,
@@ -187,7 +197,7 @@ if (navigator.maxTouchPoints>2) {
      this.Color = Color;
    };
 
-    let fishSizeInc = 1.4;
+    let fishSizeInc = 1.3;
 
     let TempFishSpeedArray = [];
     let Stopped = false;
@@ -216,7 +226,7 @@ if (navigator.maxTouchPoints>2) {
 
     function Startup(){
 
-      setInterval(SpriteUpdate, 100);
+      //setInterval(SpriteUpdate, 100);
       draw();
     };
 
@@ -261,6 +271,13 @@ console.log(cramw+"<W   H>"+cramh);
           TempFishSpeedArray.push(getRandom(1,5));
         }
       }
+      if(level>15){
+        alert("You've grown to be such a large fish the entire sea was consumed!");
+      for (let C = 0; C < FishArray.length; C++) {
+        FishArray[C].speed = 0;
+        Player.speed = 0;
+        }
+      }
     };
 
     function Fishcollide(C){
@@ -298,17 +315,20 @@ Player.x-(Player.width/2), Player.y-(Player.height/2)
       };
 
     function drawfish(){
+
+
+      ctx.beginPath();
       for ( let C = 0; C < FishArray.length; C ++) {
-            ctx.beginPath();
+            ctx.scale(-1,1);
             ctx.strokeStyle = `rgb(${(FishArray[C].Color[0])},${(FishArray[C].Color[1])},${(FishArray[C].Color[2])})`;
-            ctx.drawImage(SpriteImg, FishArray[C].x,FishArray[C].y,FishArray[C].size,FishArray[C].size);
+            ctx.drawImage(SpriteImg,-(FishArray[C].x)-FishArray[C].size,FishArray[C].y,FishArray[C].size,FishArray[C].size);
+            ctx.scale(-1,1);
             ctx.rect(FishArray[C].x,FishArray[C].y,FishArray[C].size,FishArray[C].size);
             ctx.stroke();
-            ctx.closePath();
-
             FishArray[C].x +=FishArray[C].speed;
             Fishcollide(C);
-        }
+          }
+        ctx.closePath();
       };
 
     function PlayerAt(){
@@ -334,7 +354,7 @@ Player.x-(Player.width/2), Player.y-(Player.height/2)
 
       function draw(){
 
-        if(PlayerDead){location.reload();alert("game over dude");}
+        if(PlayerDead){location.reload();if(!alerted){alert("game over dude");alerted=true;};}
 
         Player.size = Player.width*Player.height;
         ctx.beginPath();
@@ -370,9 +390,6 @@ Player.x-(Player.width/2), Player.y-(Player.height/2)
 
       requestAnimationFrame(draw);
     };
-      /*draw();*/
-    </script>
-
-
-  </body>
-  </html>
+</script>
+</body>
+</html>
