@@ -48,13 +48,13 @@ if (navigator.maxTouchPoints>2) {
       e.preventDefault();
 
       if (Player.x+cramw/12 < e.changedTouches[0].pageX) {
-        RightPressed = true;
+        RightPressed = true; LeftPressed=false;
       }if (Player.x-cramw/12 > e.changedTouches[0].pageX) {
-        LeftPressed = true;
+        LeftPressed = true;  RightPressed=false;
       }if (Player.y+cramh/12 < e.changedTouches[0].pageY) {
-        DownPressed = true;
+        DownPressed = true; UpPressed=false;
       }if (Player.y+cramh/12 > e.changedTouches[0].pageY) {
-        UpPressed = true;
+        UpPressed = true;  DownPressed=false;
       }
     }
 
