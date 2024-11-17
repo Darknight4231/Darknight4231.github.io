@@ -84,6 +84,8 @@ let spriteY = 0;
 let spriteCounter = 0;
 let UpdateID; // Variable to hold the HUD Update Timer's ID, so the game can delete the timer, and change the values as needed by input
 
+let shots = [];
+
 canvas.addEventListener("click",(e)=>{
     if (e.clientX>(cramw/5)*4) {
         document.getElementById("Towers").style.display = "block";
@@ -103,31 +105,41 @@ for(r=0;r<Grid.length;r++){
     }
 };
 
+class Projectile {
+    constructor(row,col,spd,dmg){
+        this.work = 0;
+        this.row = row;
+        this.col = col;
+        this.spd = spd;
+        this.dmg = dmg;
+    }
+}
+
 // **** Generic Tower setup ****
 class Tower {
-    constructor(spd,dmg,cost,frate) {
+    constructor(spd,dmg,cost,frate,row,col) {
         this.Speed = spd;
         this.Damage = dmg;
         this.Cost = cost;
         this.FireRate = frate;
+        this.row = row;
+        this.col = col;
         this.work=0;
         this.kills=0;
-        this.Projectile=[];
+    }
+    Shoot(){
+        //new.Projectile(this.row,this.col,this.spd,this.dmg);
     }
 }
 
+
+
 // **** Generic Projectile, for use in all towers ****
-function Projectile(row,col,spd,dmg){
-    this.row=row;
-    this.col=col;
-    this.work=0;
-    this.spd=spd;
-    this.dmg=dmg;
-};
+
 
 // **** Example Tower Pushing to Grid ****
 console.log(Grid[2][0].length);
-Grid[2][0].push(new Tower(0.5,1,20,0.5));
+Grid[2][0].push(new Tower(0.5,1,20,0.5,2,0));
 console.log(Grid[2][0][0]);
 console.log(Grid[2][0].length);
 
