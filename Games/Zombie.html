@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<head>
+<style>
+    .TopBar{
+        float: left;
+        position: absolute;
+        background-color: aqua;
+        z-index: 1;
+    }
+    #Towers{
+        position: absolute;
+        display: none;
+        align-items: center;
+        float: right;
+    }
+    #ProgressBar{
+        position: absolute;
+        width: 100%;
+        height: 50%;
+        z-index: 5;
+    }
+    body{
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+    }
+    canvas{
+        background-color: black;
+    }
+    img{
+        z-index: 1;
+        position: absolute;
+    }
+</style>
+</head>
+<body>
+    <progress id="ProgressBar"></progress>
+<div class="TopBar">
+    <div id="Towers"><canvas id="TowerCanv"></canvas><li><Button></Button><Button></Button><Button></Button><Button></Button><Button></Button></li></div>
+    <div id="Money"></div><label for="Money">Money</label>
+    <div id="TimerDiv"><input id="Timer" type="range" step="1" min="1" max="180" value="5"></input></div>
+    <div id="FPS"></div>
+    <button id="test">Add $1</button>
+</div>
+
+<div id="CanvasDiv"><canvas id="Canvas"></canvas></div>
+
+<img src="ZombieImages/Kitty_Map.png" alt="a grassy background, like a home's lawn." height="100%" width="100%">
+<script>
+
+document.addEventListener("click",initFunction);
+function initFunction (){
+    document.getElementById("ProgressBar").style.display="none";
+    setInterval(updateGame,20);
+    window.requestAnimationFrame(updatePage);
+    document.removeEventListener("click",(initFunction));
+}
+
+
+document.getElementById("TowerCanv").width = window.innerWidth;
+let Background = new Image();
+Background.src = 'ZombieImages/Kitty_Map.png';
+
+let Cat0 = new Image();
+Cat0.src = 'ZombieImages/CatSheet.png';
+
+let BadBun = new Image();
+BadBun.src = "ZombieImages/BunSheet.png";
+
+let Water = new Image();
+Water.src = "ZombieImages/Water.png";
+
+
+let canvas = document.getElementById("Canvas");
+let ctx    = canvas.getContext("2d");
+
+let cramw  = canvas.width = window.innerWidth;
+let cramh = canvas.height = window.innerHeight;
+
+let Money = 100;
+let spriteX = 0;
+let spriteY = 0;
+let spriteCounter = 0;
+let UpdateID; // Variable to hold the HUD Update Timer's ID, so the game can delete the timer, and change the values as needed by input
+
+canvas.addEventListener("click",(e)=>{
+    if (e.clientX>(cramw/5)*4) {
+        document.getElementById("Towers").style.display = "block";
+    } else {
+        document.getElementById("Towers").style.display = "none";
+    }
+});
+
+// ****  Grid[Row][Column] ****
+let Grid=[];
+Grid.length=5;
+for(r=0;r<Grid.length;r++){
+    Grid[r]=[];
+    Grid[r].length=5;
+    for(c=0;c<Grid.length;c++){
+        Grid[r][c]=[];
+    }
+};
+
+// **** Generic Tower setup ****
+class Tower {
+    constructor(spd,dmg,cost,frate) {
+        this.Speed = spd;
+        this.Damage = dmg;
+        this.Cost = cost;
+        this.FireRate = frate;
+        this.work=0;
+        this.kills=0;
+        this.Projectile=[];
+    }
+}
+
+// **** Generic Projectile, for use in all towers ****
+function Projectile(row,col,spd,dmg){
+    this.row=row;
+    this.col=col;
+    this.work=0;
+    this.spd=spd;
+    this.dmg=dmg;
+};
+
+// **** Example Tower Pushing to Grid ****
+console.log(Grid[2][0].length);
+Grid[2][0].push(new Tower(0.5,1,20,0.5));
+console.log(Grid[2][0][0]);
+console.log(Grid[2][0].length);
+
+class Enemy{
+    constructor(Enemy){
+        this.EnemyName = Enemy;
+    }
+}
+
+class EvilBun extends Enemy {
+
+}
+
+/*
+Alright, what I want, is to be able to render the projectile -inside- the grid location.
+I want to move the projectile every update, whatever speed it is.
+When the projectile gets to the edge of the grid it's in, I want it to SHIFT to the next row over, restarting the x position of its shot.
+
+A smooth projectile, from left to right shooting.
+work 0% - 100% should correspond to the column the projectile is in.
+
+Column == Grid[r][c][p].col
+work == Grid[r][c][p].work
+
+Grid[r][c][p].col = c
+cramw/6 = size
+
+size/work (where work = 0% - 100%, and at 100% it equals 1)
+
+col 2 work 50
+
+col2 + (size/work)
+
+something 
+Grid[r][c][p].work+((cramw/6)*Grid[r][c][p].col)
+
+c*k+(x*k)/100
+*/
+
+    // ********* This is for only updating the HUD ********
+function updatePage(){
+    document.getElementById("Money").innerHTML = Money;
+    document.getElementById("FPS").innerHTML=document.getElementById("Timer").value;
+
+    ctx.clearRect(0,0,cramw,cramh);
+    ctx.drawImage(Background,0,0,cramw,cramh);
+
+    for (r=0;r<Grid.length;r++) {
+        if (Grid[r][0].length!=0) {
+            //console.log(r);
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.fillRect(20,20+(cramh/5)*r,cramh/6,cramh/6);
+            ctx.closePath();
+            //ctx.drawImage(Cat0,20,20+(cramh/5)*r,cramh/6,cramh/6);
+            ctx.drawImage(Cat0, spriteX*256, spriteY*256, 256, 256, 20, 20+(cramh/5)*r, cramh/6,cramh/6)
+        }
+        for (c=0;c<Grid[r].length; c++) {
+            ctx.beginPath();
+            ctx.strokeStyle='blue';
+            ctx.strokeRect(r*cramw/5,+c*cramh/5,cramw/5,cramh/5);
+            ctx.closePath();
+            for (p=0;p<Grid[r][c].length;p++) {
+                    if (Grid[r][c][p].length!=0) {
+                        //console.log(Grid[r][c][p]);
+                        
+                    ctx.beginPath();
+                    ctx.fillStyle=`rgba(20,60,200,0.5)`;
+                    ctx.fillRect(Grid[r][c][p].col*(cramw/5)+Grid[r][c][p].work*(cramw/5)/100,20+(cramh/5)*r,cramh/12,cramh/12);
+                    ctx.drawImage(Water,Grid[r][c][p].col*(cramw/5)+Grid[r][c][p].work*(cramw/5)/100,20+(cramh/5)*r,cramh/12,cramh/12);
+                    ctx.closePath();
+                }
+            }
+        }
+    }
+    window.requestAnimationFrame(updatePage)
+};
+
+    // ********* Do gain game calculations here ***********
+function updateGame(){
+
+    Money++;
+    for(r=0;r<Grid.length;r++){
+      for(c=0;c<Grid.length;c++){
+        for (p=0;p<Grid[r][c].length;p++) {
+            if(Grid[r][c][p].Damage){
+                Grid[r][c][p].work +=Grid[r][c][p].FireRate;
+                if(Grid[r][c][p].work>100){
+                    Grid[r][c+1].push(new Projectile(r,c+1, Grid[r][c][p].Speed,Grid[r][c][p].Damage));
+                    Grid[r][c][p].work=0;
+                    spriteY=1;
+                    spriteX=0;
+                    spriteCounter=0;
+                    //console.log(Grid[r][c][p]);
+                }
+            } else if(Grid[r][c][p].spd){
+              Grid[r][c][p].work+=Grid[r][c][p].spd;
+                if (Grid[r][c][p].work>100) {
+                        Grid[r][c][p].col++;
+                        Grid[r][c][p].work=0;
+                        if(Grid[r][c][p].col>5){
+                            //console.log(Grid[r][c].shift());
+                        }
+                        //console.log(Grid[r][c][p]);
+                } 
+            }
+        }
+    }
+  }
+  spriteCounter+=0.025;
+  if (spriteCounter > 1) {
+    if (spriteX==1) {
+        spriteX=0;
+    } else {
+        spriteX=1;
+        spriteY=0;
+    }
+    spriteCounter=0;
+  }
+};
+</script>
+</body>

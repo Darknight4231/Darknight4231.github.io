@@ -354,7 +354,7 @@ Player.x-(Player.width/2), Player.y-(Player.height/2)
 
       function draw(){
 
-        if(PlayerDead){location.reload();if(!alerted){alert("game over dude");alerted=true;};}
+        if(PlayerDead){if(!alerted){alerted=true;location.reload();alert("game over dude");}}
 
         Player.size = Player.width*Player.height;
         ctx.beginPath();
